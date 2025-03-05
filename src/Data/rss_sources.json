@@ -1,0 +1,34 @@
+{
+    "sources": [
+        {
+            "name": "motor1",
+            "title": "Motor1.com news",
+            "url": "https://it.motor1.com/rss/articles/all/"
+        },
+        {
+            "name": "alvolante",
+            "title": "Alvolante.it news",
+            "url": "https://www.alvolante.it/rss.xml"
+        },
+        {
+            "name": "ansa_motori",
+            "title": "ANSA motori news",
+            "url": "https://www.ansa.it/canale_motori/notizie/motori_rss.xml"
+        },
+        {
+            "name": "corriere_motori",
+            "title": "Corriere.it motori news",
+            "url": "http://xml2.corriereobjects.it/rss/motori.xml"
+        },
+        {
+            "name": "il_sole_24_ore_motori",
+            "title": "Il Sole 24 ORE motori news",
+            "url": "https://www.ilsole24ore.com/rss/motori.xml"
+        },
+        {
+            "name": "motori_it",
+            "title": "Motori.it news",
+            "url": "https://www.motori.it/feed"
+        }
+    ]
+}

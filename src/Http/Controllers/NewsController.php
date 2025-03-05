@@ -2,18 +2,25 @@
 
 namespace Gabrielesbaiz\NovaCardRssNews\Http\Controllers;
 
-use SimpleXMLElement;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Gabrielesbaiz\NovaCardRssNews\RssFeedService;
 
 class NewsController
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Cache::remember('news-affariitaliani-motori::news', now()->addMinutes(5), function () {
-            $rss = new SimpleXMLElement(file_get_contents('https://it.motor1.com/rss/articles/all/'), LIBXML_NOCDATA);
+        $sourceKey = $request->get('source_key', 'motor1');
 
-            return json_encode($rss);
+        $cacheKey = "news-rss::{$sourceKey}";
+
+        $data = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($sourceKey) {
+            return RssFeedService::getRssFeed($sourceKey);
         });
+
+        if (! $data) {
+            return response()->json(['error' => 'Invalid RSS source or no data available'], 404);
+        }
 
         return response()->json($data);
     }
