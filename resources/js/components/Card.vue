@@ -51,22 +51,23 @@ export default {
 
     methods: {
         fetchRssFeed() {
-            const sourceKey = this.card.source_key || "motor1"; // Default source if not provided
+            const sourceKey = this.card.source_key || "motor1";
+            const limit = this.card.limit || 10;
 
             Nova.request()
                 .get(
                     `/nova-vendor/nova-card-rss-news/news?source_key=${sourceKey}`
                 )
                 .then((response) => {
-                    if (response.data && response.data.items) {
+                    if (response.data && response.data.feed) {
                         this.feedTitle = response.data.title;
-                        this.feedNews = response.data.items.slice(0, 10);
+                        this.feedNews = response.data.feed.slice(0, limit);
                     } else {
                         this.feedTitle = "RSS Feed Not Found";
                     }
                 })
                 .catch(() => {
-                    this.feedTitle = "Error Loading Feed";
+                    this.feedTitle = "...";
                 });
         },
 

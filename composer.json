@@ -31,8 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Gabrielesbaiz\\NovaCardRssNews\\": "src/",
-            "Gabrielesbaiz\\NovaCardRssNews\\Database\\Factories\\": "database/factories/"
+            "Gabrielesbaiz\\NovaCardRssNews\\": "src/"
         }
     },
     "autoload-dev": {

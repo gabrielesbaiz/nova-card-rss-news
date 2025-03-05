@@ -43,4 +43,15 @@ class NovaCardRssNews extends Card
     {
         return $this->withMeta(['source_key' => $sourceKey]);
     }
+
+    /**
+     * Set the limit.
+     *
+     * @param  int   $limit
+     * @return $this
+     */
+    public function limit(int $limit)
+    {
+        return $this->withMeta(['limit' => $limit]);
+    }
 }
