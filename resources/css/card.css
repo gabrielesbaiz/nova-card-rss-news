@@ -1,0 +1,7 @@
+/* Nova Tool CSS */
+@tailwind components;
+@tailwind utilities;
+
+.max-h-180px {
+    max-height: 11.25rem;
+}
