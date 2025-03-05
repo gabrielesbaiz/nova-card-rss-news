@@ -62,10 +62,7 @@ class RssFeedService
                 ];
             }
 
-            return [
-                'title' => (string) $rss->channel->title,
-                'items' => $items,
-            ];
+            return $items;
         } catch (Exception $e) {
             return null;
         }
