@@ -51,15 +51,21 @@ class RssFeedService
             $items = [];
 
             foreach ($rss->channel->item as $item) {
+                $cleanDescription = preg_replace('/<img[^>]+>/i', '', (string) $item->description);
+                $cleanDescription = strip_tags($cleanDescription);
+
                 $items[] = [
                     'title' => (string) $item->title,
                     'link' => (string) $item->link,
-                    'description' => (string) $item->description,
+                    'description' => trim($cleanDescription),
                     'pubDate' => (string) $item->pubDate,
                 ];
             }
 
-            return $items;
+            return [
+                'title' => (string) $rss->channel->title,
+                'items' => $items,
+            ];
         } catch (Exception $e) {
             return null;
         }
