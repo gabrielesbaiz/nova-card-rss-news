@@ -14,6 +14,16 @@ class NovaCardRssNews extends Card
     public $width = '1/2';
 
     /**
+     * Constructor with default metadata.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->withMeta(['source_key' => 'motor1']);
+    }
+
+    /**
      * Get the component name for the element.
      *
      * @return string
@@ -21,5 +31,16 @@ class NovaCardRssNews extends Card
     public function component()
     {
         return 'nova-card-rss-news';
+    }
+
+    /**
+     * Set the RSS source key.
+     *
+     * @param  string $sourceKey
+     * @return $this
+     */
+    public function source(string $sourceKey)
+    {
+        return $this->withMeta(['source_key' => $sourceKey]);
     }
 }
