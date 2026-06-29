@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Fake Feed</title>
+        <link>https://example.test</link>
+        <description>Fixture used by the package test suite.</description>
+        <item>
+            <title>Controlli dell&#039;auto prima delle vacanze</title>
+            <link>https://example.test/news/1</link>
+            <description><![CDATA[<p>Una <strong>guida</strong> ai controlli &amp; agli accessori essenziali.</p><img src="x.jpg" />]]></description>
+            <pubDate>Mon, 29 Jun 2026 10:00:00 +0200</pubDate>
+        </item>
+        <item>
+            <title>Seconda notizia</title>
+            <link>https://example.test/news/2</link>
+            <description><![CDATA[Testo semplice.]]></description>
+            <pubDate>Mon, 29 Jun 2026 11:00:00 +0200</pubDate>
+        </item>
+    </channel>
+</rss>
