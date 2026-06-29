@@ -2,6 +2,16 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.2.0 - 2026-06-29
+
+**Breaking:** sources moved from internal `src/Data/rss_sources.json` to a publishable Laravel config.
+
+- New `config/nova-card-rss-news.php` config file. Sources are now grouped by category (Motori, Agenzie di stampa, Quotidiani nazionali, Economia / Finanza, Sport, Aggregatori). Disable any source by commenting it out.
+- Greatly expanded catalogue: ANSA (Top News, Cronaca, Sport, Economia, Cultura), Adnkronos, Repubblica, Corriere, La Stampa, Il Fatto Quotidiano, Il Post, Panorama, Il Sole 24 ORE (Italia, Finanza, Norme & Tributi, Risparmio), Gazzetta dello Sport, Google News Italia.
+- `GET /sources` endpoint now returns sources grouped by category.
+- `NovaCardRssNewsSelect` dropdown now renders sources inside `<optgroup>` elements by category.
+- To customise the catalogue in the host app, run `php artisan vendor:publish --tag=nova-card-rss-news-config`.
+
 ## 2.1.0 - 2026-06-29
 
 - New `NovaCardRssNewsSelect` card variant with an in-header dropdown to switch RSS source at runtime. Selection persists per browser via `localStorage`.

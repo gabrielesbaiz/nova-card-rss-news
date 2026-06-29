@@ -2,32 +2,31 @@
 
 namespace Gabrielesbaiz\NovaCardRssNews\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
-
 class SourcesController
 {
     /**
-     * Return the list of available RSS sources.
+     * Return the list of available RSS sources grouped by category.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
-        $jsonPath = __DIR__ . '/../../Data/rss_sources.json';
+        $categories = config('nova-card-rss-news.categories', []);
 
-        if (! File::exists($jsonPath)) {
-            return response()->json(['sources' => []]);
-        }
-
-        $data = json_decode(File::get($jsonPath), true);
-
-        $sources = collect($data['sources'] ?? [])
-            ->map(fn (array $source): array => [
-                'name' => $source['name'],
-                'title' => $source['title'],
+        $payload = collect($categories)
+            ->map(fn (array $category, string $key): array => [
+                'key' => $key,
+                'label' => $category['label'] ?? $key,
+                'sources' => collect($category['sources'] ?? [])
+                    ->map(fn (array $source, string $name): array => [
+                        'name' => $name,
+                        'title' => $source['title'] ?? $name,
+                    ])
+                    ->values(),
             ])
+            ->filter(fn (array $cat): bool => count($cat['sources']) > 0)
             ->values();
 
-        return response()->json(['sources' => $sources]);
+        return response()->json(['categories' => $payload]);
     }
 }

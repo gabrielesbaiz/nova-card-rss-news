@@ -29,17 +29,23 @@
                                 class="rss-news-source-select"
                                 :value="selectedSource"
                                 @change="onSourceChange($event.target.value)"
-                                :disabled="loading || !sources.length"
+                                :disabled="loading || !categories.length"
                             >
-                                <option
-                                    v-for="src in sources"
-                                    :key="src.name"
-                                    :value="src.name"
+                                <optgroup
+                                    v-for="cat in categories"
+                                    :key="cat.key"
+                                    :label="cat.label"
                                 >
-                                    {{ src.title }}
-                                </option>
+                                    <option
+                                        v-for="src in cat.sources"
+                                        :key="src.name"
+                                        :value="src.name"
+                                    >
+                                        {{ src.title }}
+                                    </option>
+                                </optgroup>
                                 <option
-                                    v-if="!sources.length"
+                                    v-if="!categories.length"
                                     :value="selectedSource"
                                 >
                                     {{ feedTitle }}
@@ -218,7 +224,7 @@ export default {
 
     data() {
         return {
-            sources: [],
+            categories: [],
             selectedSource: this.card.source_key || "motor1",
             feedTitle: "Caricamento…",
             feedUrl: null,
@@ -310,10 +316,10 @@ export default {
             Nova.request()
                 .get("/nova-vendor/nova-card-rss-news/sources")
                 .then((response) => {
-                    this.sources = response.data.sources || [];
+                    this.categories = response.data.categories || [];
                 })
                 .catch(() => {
-                    this.sources = [];
+                    this.categories = [];
                 });
         },
 

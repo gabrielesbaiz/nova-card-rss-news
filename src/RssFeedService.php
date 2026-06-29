@@ -4,27 +4,18 @@ namespace Gabrielesbaiz\NovaCardRssNews;
 
 use Exception;
 use SimpleXMLElement;
-use Illuminate\Support\Facades\File;
 
 class RssFeedService
 {
+    /**
+     * Get the configured RSS feed by source name.
+     *
+     * @param  string $sourceName
+     * @return array|null
+     */
     public static function getRssFeed(string $sourceName): ?array
     {
-        $jsonPath = __DIR__ . '/Data/rss_sources.json';
-
-        if (! File::exists($jsonPath)) {
-            return null;
-        }
-
-        $jsonContent = File::get($jsonPath);
-
-        $data = json_decode($jsonContent, true);
-
-        if (! isset($data['sources'])) {
-            return null;
-        }
-
-        $source = collect($data['sources'])->firstWhere('name', $sourceName);
+        $source = self::findSource($sourceName);
 
         if (! $source) {
             return null;
@@ -37,6 +28,33 @@ class RssFeedService
         ];
     }
 
+    /**
+     * Look up a source across all configured categories.
+     *
+     * @param  string $name
+     * @return array|null
+     */
+    private static function findSource(string $name): ?array
+    {
+        $categories = config('nova-card-rss-news.categories', []);
+
+        foreach ($categories as $category) {
+            $sources = $category['sources'] ?? [];
+
+            if (isset($sources[$name])) {
+                return $sources[$name];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Fetch and parse a remote RSS feed.
+     *
+     * @param  string $url
+     * @return array|null
+     */
     private static function fetchRssFeed(string $url): ?array
     {
         try {
