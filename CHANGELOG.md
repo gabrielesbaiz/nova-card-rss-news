@@ -2,6 +2,10 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.3.2 - 2026-06-29
+
+- Fix `NovaCardRssNewsSelect` localStorage collision: multiple cards on the same dashboard now persist their source selection independently. The storage key now includes the card's `defaultSource()` value, not just the component name.
+
 ## 2.3.1 - 2026-06-29
 
 - Update IVASS feed URL to `https://www.ivass.it/util/index.rss.html?lingua=it`.
