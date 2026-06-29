@@ -14,6 +14,74 @@ return [
 
     'categories' => [
 
+        'assicurazioni_specializzate' => [
+            'label' => 'Assicurazioni — Testate specializzate',
+            'sources' => [
+                'assinews' => [
+                    'title' => 'Assinews',
+                    'url' => 'https://www.assinews.it/feed/',
+                ],
+                'intermedia_channel' => [
+                    'title' => 'Intermedia Channel',
+                    'url' => 'https://www.intermediachannel.it/feed/',
+                ],
+                'insurance_trade' => [
+                    'title' => 'Insurance Trade',
+                    'url' => 'https://www.insurancetrade.it/rss.xml',
+                ],
+                'insurance_up' => [
+                    'title' => 'InsuranceUp',
+                    'url' => 'https://www.insuranceup.it/feed/',
+                ],
+            ],
+        ],
+
+        'assicurazioni_istituzioni' => [
+            'label' => 'Assicurazioni — Autorità e istituzioni',
+            'sources' => [
+                'ivass' => [
+                    'title' => 'IVASS — Comunicati',
+                    'url' => 'https://www.ivass.it/rss/comunicati.xml',
+                ],
+                'ania' => [
+                    'title' => 'ANIA',
+                    'url' => 'https://www.ania.it/feed/',
+                ],
+            ],
+        ],
+
+        'assicurazioni_comparatori' => [
+            'label' => 'Assicurazioni — Comparatori e consumer',
+            'sources' => [
+                'facile_it' => [
+                    'title' => 'Facile.it Assicurazioni',
+                    'url' => 'https://www.facile.it/rss/assicurazioni.xml',
+                ],
+                'segugio_it' => [
+                    'title' => 'Segugio.it',
+                    'url' => 'https://assicurazioni.segugio.it/rss/',
+                ],
+                'assicurazione_it' => [
+                    'title' => 'Assicurazione.it',
+                    'url' => 'https://www.assicurazione.it/rss.xml',
+                ],
+            ],
+        ],
+
+        'assicurazioni_economiche' => [
+            'label' => 'Assicurazioni — Sezioni da testate economiche',
+            'sources' => [
+                'il_sole_24_ore_finanza_assicurazioni' => [
+                    'title' => 'Il Sole 24 ORE — Finanza',
+                    'url' => 'https://www.ilsole24ore.com/rss/finanza.xml',
+                ],
+                'firstonline_assicurazioni' => [
+                    'title' => 'FIRSTonline — Assicurazioni',
+                    'url' => 'https://www.firstonline.info/tag/assicurazioni/feed/',
+                ],
+            ],
+        ],
+
         'motori' => [
             'label' => 'Motori',
             'sources' => [
@@ -44,36 +112,24 @@ return [
             ],
         ],
 
-        'agenzie_stampa' => [
-            'label' => 'Agenzie di stampa',
+        'economia' => [
+            'label' => 'Economia / Finanza',
             'sources' => [
-                'ansa_all' => [
-                    'title' => 'ANSA (tutte)',
-                    'url' => 'https://www.ansa.it/sito/ansait_rss.xml',
+                'il_sole_24_ore_italia' => [
+                    'title' => 'Il Sole 24 ORE — Italia',
+                    'url' => 'https://www.ilsole24ore.com/rss/italia.xml',
                 ],
-                'ansa_top_news' => [
-                    'title' => 'ANSA Top News',
-                    'url' => 'https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml',
+                'il_sole_24_ore_finanza' => [
+                    'title' => 'Il Sole 24 ORE — Finanza',
+                    'url' => 'https://www.ilsole24ore.com/rss/finanza.xml',
                 ],
-                'ansa_cronaca' => [
-                    'title' => 'ANSA Cronaca',
-                    'url' => 'https://www.ansa.it/sito/notizie/cronaca/cronaca_rss.xml',
+                'il_sole_24_ore_norme_tributi' => [
+                    'title' => 'Il Sole 24 ORE — Norme & Tributi',
+                    'url' => 'https://www.ilsole24ore.com/rss/norme-e-tributi.xml',
                 ],
-                'ansa_sport' => [
-                    'title' => 'ANSA Sport',
-                    'url' => 'https://www.ansa.it/sito/notizie/sport/sport_rss.xml',
-                ],
-                'ansa_economia' => [
-                    'title' => 'ANSA Economia',
-                    'url' => 'https://www.ansa.it/sito/notizie/economia/economia_rss.xml',
-                ],
-                'ansa_cultura' => [
-                    'title' => 'ANSA Cultura',
-                    'url' => 'https://www.ansa.it/sito/notizie/cultura/cultura_rss.xml',
-                ],
-                'adnkronos' => [
-                    'title' => 'Adnkronos',
-                    'url' => 'https://www.adnkronos.com/rss',
+                'il_sole_24_ore_risparmio' => [
+                    'title' => 'Il Sole 24 ORE — Risparmio',
+                    'url' => 'https://www.ilsole24ore.com/rss/risparmio.xml',
                 ],
             ],
         ],
@@ -128,24 +184,36 @@ return [
             ],
         ],
 
-        'economia' => [
-            'label' => 'Economia / Finanza',
+        'agenzie_stampa' => [
+            'label' => 'Agenzie di stampa',
             'sources' => [
-                'il_sole_24_ore_italia' => [
-                    'title' => 'Il Sole 24 ORE Italia',
-                    'url' => 'https://www.ilsole24ore.com/rss/italia.xml',
+                'ansa_all' => [
+                    'title' => 'ANSA (tutte)',
+                    'url' => 'https://www.ansa.it/sito/ansait_rss.xml',
                 ],
-                'il_sole_24_ore_finanza' => [
-                    'title' => 'Il Sole 24 ORE Finanza',
-                    'url' => 'https://www.ilsole24ore.com/rss/finanza.xml',
+                'ansa_top_news' => [
+                    'title' => 'ANSA Top News',
+                    'url' => 'https://www.ansa.it/sito/notizie/topnews/topnews_rss.xml',
                 ],
-                'il_sole_24_ore_norme_tributi' => [
-                    'title' => 'Il Sole 24 ORE Norme & Tributi',
-                    'url' => 'https://www.ilsole24ore.com/rss/norme-e-tributi.xml',
+                'ansa_cronaca' => [
+                    'title' => 'ANSA Cronaca',
+                    'url' => 'https://www.ansa.it/sito/notizie/cronaca/cronaca_rss.xml',
                 ],
-                'il_sole_24_ore_risparmio' => [
-                    'title' => 'Il Sole 24 ORE Risparmio',
-                    'url' => 'https://www.ilsole24ore.com/rss/risparmio.xml',
+                'ansa_sport' => [
+                    'title' => 'ANSA Sport',
+                    'url' => 'https://www.ansa.it/sito/notizie/sport/sport_rss.xml',
+                ],
+                'ansa_economia' => [
+                    'title' => 'ANSA Economia',
+                    'url' => 'https://www.ansa.it/sito/notizie/economia/economia_rss.xml',
+                ],
+                'ansa_cultura' => [
+                    'title' => 'ANSA Cultura',
+                    'url' => 'https://www.ansa.it/sito/notizie/cultura/cultura_rss.xml',
+                ],
+                'adnkronos' => [
+                    'title' => 'Adnkronos',
+                    'url' => 'https://www.adnkronos.com/rss',
                 ],
             ],
         ],

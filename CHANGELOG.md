@@ -2,6 +2,11 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.3.0 - 2026-06-29
+
+- Add 4 insurance-focused categories: `assicurazioni_specializzate` (Assinews, Intermedia Channel, Insurance Trade, InsuranceUp), `assicurazioni_istituzioni` (IVASS, ANIA), `assicurazioni_comparatori` (Facile.it, Segugio.it, Assicurazione.it), `assicurazioni_economiche` (Il Sole 24 ORE — Finanza, FIRSTonline Assicurazioni).
+- Reorder categories: insurance first, then Motori, Economia, Quotidiani, Agenzie di stampa, Sport, Aggregatori.
+
 ## 2.2.0 - 2026-06-29
 
 **Breaking:** sources moved from internal `src/Data/rss_sources.json` to a publishable Laravel config.
