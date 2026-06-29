@@ -245,7 +245,9 @@ export default {
             return this.feedNews.slice(1);
         },
         storageKey() {
-            return `${STORAGE_PREFIX}${this.card.component || "default"}`;
+            const component = this.card.component || "default";
+            const defaultSource = this.card.source_key || "motor1";
+            return `${STORAGE_PREFIX}${component}:${defaultSource}`;
         },
         faviconUrl() {
             if (!this.feedUrl) {
