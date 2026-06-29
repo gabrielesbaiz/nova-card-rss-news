@@ -2,6 +2,11 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.3.1 - 2026-06-29
+
+- Update IVASS feed URL to `https://www.ivass.it/util/index.rss.html?lingua=it`.
+- Remove dead / 404 / non-RSS sources after end-to-end validation: Insurance Trade, Facile.it, Segugio.it, Assicurazione.it, Corriere Politica, Corriere Sport, Il Post, Adnkronos, Repubblica Sport.
+
 ## 2.3.0 - 2026-06-29
 
 - Add 4 insurance-focused categories: `assicurazioni_specializzate` (Assinews, Intermedia Channel, Insurance Trade, InsuranceUp), `assicurazioni_istituzioni` (IVASS, ANIA), `assicurazioni_comparatori` (Facile.it, Segugio.it, Assicurazione.it), `assicurazioni_economiche` (Il Sole 24 ORE — Finanza, FIRSTonline Assicurazioni).

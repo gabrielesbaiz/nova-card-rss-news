@@ -25,10 +25,6 @@ return [
                     'title' => 'Intermedia Channel',
                     'url' => 'https://www.intermediachannel.it/feed/',
                 ],
-                'insurance_trade' => [
-                    'title' => 'Insurance Trade',
-                    'url' => 'https://www.insurancetrade.it/rss.xml',
-                ],
                 'insurance_up' => [
                     'title' => 'InsuranceUp',
                     'url' => 'https://www.insuranceup.it/feed/',
@@ -40,30 +36,12 @@ return [
             'label' => 'Assicurazioni — Autorità e istituzioni',
             'sources' => [
                 'ivass' => [
-                    'title' => 'IVASS — Comunicati',
-                    'url' => 'https://www.ivass.it/rss/comunicati.xml',
+                    'title' => 'IVASS',
+                    'url' => 'https://www.ivass.it/util/index.rss.html?lingua=it',
                 ],
                 'ania' => [
                     'title' => 'ANIA',
                     'url' => 'https://www.ania.it/feed/',
-                ],
-            ],
-        ],
-
-        'assicurazioni_comparatori' => [
-            'label' => 'Assicurazioni — Comparatori e consumer',
-            'sources' => [
-                'facile_it' => [
-                    'title' => 'Facile.it Assicurazioni',
-                    'url' => 'https://www.facile.it/rss/assicurazioni.xml',
-                ],
-                'segugio_it' => [
-                    'title' => 'Segugio.it',
-                    'url' => 'https://assicurazioni.segugio.it/rss/',
-                ],
-                'assicurazione_it' => [
-                    'title' => 'Assicurazione.it',
-                    'url' => 'https://www.assicurazione.it/rss.xml',
                 ],
             ],
         ],
@@ -157,14 +135,6 @@ return [
                     'title' => 'Corriere della Sera (homepage)',
                     'url' => 'https://xml2.corriereobjects.it/rss/homepage.xml',
                 ],
-                'corriere_politica' => [
-                    'title' => 'Corriere Politica',
-                    'url' => 'https://www.corriere.it/dynamic-feed/rss/section/Politica/',
-                ],
-                'corriere_sport' => [
-                    'title' => 'Corriere Sport',
-                    'url' => 'https://www.corriere.it/dynamic-feed/rss/section/Sport/',
-                ],
                 'la_stampa' => [
                     'title' => 'La Stampa (copertina)',
                     'url' => 'https://www.lastampa.it/rss/copertina.xml',
@@ -172,10 +142,6 @@ return [
                 'il_fatto_quotidiano' => [
                     'title' => 'Il Fatto Quotidiano',
                     'url' => 'https://www.ilfattoquotidiano.it/feed/',
-                ],
-                'il_post' => [
-                    'title' => 'Il Post',
-                    'url' => 'https://www.ilpost.it/feed/',
                 ],
                 'panorama' => [
                     'title' => 'Panorama',
@@ -211,10 +177,6 @@ return [
                     'title' => 'ANSA Cultura',
                     'url' => 'https://www.ansa.it/sito/notizie/cultura/cultura_rss.xml',
                 ],
-                'adnkronos' => [
-                    'title' => 'Adnkronos',
-                    'url' => 'https://www.adnkronos.com/rss',
-                ],
             ],
         ],
 
@@ -224,10 +186,6 @@ return [
                 'gazzetta' => [
                     'title' => 'Gazzetta dello Sport',
                     'url' => 'https://www.gazzetta.it/rss/home.xml',
-                ],
-                'repubblica_sport' => [
-                    'title' => 'Repubblica Sport',
-                    'url' => 'https://www.repubblica.it/rss/sport/rss2.0.xml',
                 ],
             ],
         ],
