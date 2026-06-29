@@ -53,9 +53,12 @@ class RssFeedService
             foreach ($rss->channel->item as $item) {
                 $cleanDescription = preg_replace('/<img[^>]+>/i', '', (string) $item->description);
                 $cleanDescription = strip_tags($cleanDescription);
+                $cleanDescription = html_entity_decode($cleanDescription, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+                $title = html_entity_decode((string) $item->title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
                 $items[] = [
-                    'title' => (string) $item->title,
+                    'title' => trim($title),
                     'link' => (string) $item->link,
                     'description' => trim($cleanDescription),
                     'pubDate' => (string) $item->pubDate,
