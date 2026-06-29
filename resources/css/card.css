@@ -371,6 +371,62 @@
     font-size: 0.8rem;
 }
 
+/* ---------- Source picker (Select variant) ---------- */
+
+.rss-news-source-select-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+}
+
+.rss-news-source-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    background: rgba(var(--colors-primary-500), 0.08);
+    border: 1px solid rgba(var(--colors-primary-500), 0.2);
+    color: rgba(var(--colors-gray-700), 1);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding: 4px 26px 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.rss-news-source-select:hover:not(:disabled) {
+    background: rgba(var(--colors-primary-500), 0.13);
+    border-color: rgba(var(--colors-primary-500), 0.35);
+}
+
+.rss-news-source-select:focus {
+    outline: none;
+    border-color: rgb(var(--colors-primary-500));
+    box-shadow: 0 0 0 3px rgba(var(--colors-primary-500), 0.18);
+}
+
+.rss-news-source-select:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.rss-news-source-chevron {
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    color: rgb(var(--colors-primary-500));
+    pointer-events: none;
+}
+
 /* ---------- Animations ---------- */
 
 @keyframes rssNewsFadeUp {

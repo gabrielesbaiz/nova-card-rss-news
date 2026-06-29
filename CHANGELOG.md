@@ -2,6 +2,12 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.1.0 - 2026-06-29
+
+- New `NovaCardRssNewsSelect` card variant with an in-header dropdown to switch RSS source at runtime. Selection persists per browser via `localStorage`.
+- New `GET /nova-vendor/nova-card-rss-news/sources` endpoint exposing the list of configured sources.
+- `RssFeedService` now decodes HTML entities (e.g. `&#039;`, `&amp;`) in titles and descriptions.
+
 ## 2.0.0 - 2026-06-29
 
 Full UI/UX redesign of the card.
