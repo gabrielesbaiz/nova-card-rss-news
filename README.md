@@ -144,15 +144,14 @@ return [
 
 | Category                                                  | Sources |
 | --------------------------------------------------------- | ------- |
-| **Assicurazioni — Testate specializzate**                 | Assinews, Intermedia Channel, Insurance Trade, InsuranceUp |
+| **Assicurazioni — Testate specializzate**                 | Assinews, Intermedia Channel, InsuranceUp |
 | **Assicurazioni — Autorità e istituzioni**                | IVASS, ANIA |
-| **Assicurazioni — Comparatori e consumer**                | Facile.it, Segugio.it, Assicurazione.it |
 | **Assicurazioni — Sezioni da testate economiche**         | Il Sole 24 ORE — Finanza, FIRSTonline |
 | **Motori**                                                | Motor1, Alvolante, ANSA Motori, Corriere Motori, Il Sole 24 ORE Motori, Motori.it |
 | **Economia / Finanza**                                    | Il Sole 24 ORE (Italia, Finanza, Norme & Tributi, Risparmio) |
-| **Quotidiani nazionali**                                  | Repubblica (home/politica/economia/cronaca), Corriere (home/politica/sport), La Stampa, Il Fatto Quotidiano, Il Post, Panorama |
-| **Agenzie di stampa**                                     | ANSA (tutte/top news/cronaca/sport/economia/cultura), Adnkronos |
-| **Sport**                                                 | Gazzetta dello Sport, Repubblica Sport |
+| **Quotidiani nazionali**                                  | Repubblica (home/politica/economia/cronaca), Corriere homepage, La Stampa, Il Fatto Quotidiano, Panorama |
+| **Agenzie di stampa**                                     | ANSA (tutte/top news/cronaca/sport/economia/cultura) |
+| **Sport**                                                 | Gazzetta dello Sport |
 | **Aggregatori**                                           | Google News Italia |
 
 ## How it works

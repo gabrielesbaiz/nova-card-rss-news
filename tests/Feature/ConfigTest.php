@@ -12,7 +12,6 @@ it('exposes the expected category keys', function (): void {
     expect($keys)->toContain(
         'assicurazioni_specializzate',
         'assicurazioni_istituzioni',
-        'assicurazioni_comparatori',
         'assicurazioni_economiche',
         'motori',
         'economia',
