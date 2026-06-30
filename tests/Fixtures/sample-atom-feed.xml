@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Fake Atom Feed</title>
+    <link href="https://example.test/"/>
+    <updated>2026-06-29T18:29:25Z</updated>
+    <id>https://example.test/</id>
+    <entry>
+        <id>https://example.test/news/1</id>
+        <title><![CDATA[Controlli dell&#039;auto prima delle vacanze]]></title>
+        <updated>2026-06-29T17:41:36Z</updated>
+        <published>2026-06-29T10:00:00Z</published>
+        <link href="https://example.test/news/1"/>
+        <content><![CDATA[<p>Una <strong>guida</strong> ai controlli &amp; agli accessori essenziali.</p><img src="x.jpg" />]]></content>
+    </entry>
+    <entry>
+        <id>https://example.test/news/2</id>
+        <title>Seconda notizia</title>
+        <updated>2026-06-29T16:00:00Z</updated>
+        <link rel="alternate" href="https://example.test/news/2"/>
+        <summary><![CDATA[Testo semplice.]]></summary>
+    </entry>
+</feed>
