@@ -66,26 +66,108 @@ class RssFeedService
 
             $rss = new SimpleXMLElement($rssContent, LIBXML_NOCDATA);
 
-            $items = [];
-
-            foreach ($rss->channel->item as $item) {
-                $cleanDescription = preg_replace('/<img[^>]+>/i', '', (string) $item->description);
-                $cleanDescription = strip_tags($cleanDescription);
-                $cleanDescription = html_entity_decode($cleanDescription, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-                $title = html_entity_decode((string) $item->title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-
-                $items[] = [
-                    'title' => trim($title),
-                    'link' => (string) $item->link,
-                    'description' => trim($cleanDescription),
-                    'pubDate' => (string) $item->pubDate,
-                ];
+            // Atom feeds use a <feed> root with <entry> children; RSS 2.0 uses
+            // <rss><channel><item>. Detect and parse accordingly.
+            if ($rss->getName() === 'feed') {
+                return self::parseAtomEntries($rss);
             }
 
-            return $items;
+            return self::parseRssItems($rss);
         } catch (Exception $e) {
             return null;
         }
+    }
+
+    /**
+     * Parse RSS 2.0 <item> elements.
+     *
+     * @param  SimpleXMLElement $rss
+     * @return array
+     */
+    private static function parseRssItems(SimpleXMLElement $rss): array
+    {
+        $items = [];
+
+        foreach ($rss->channel->item as $item) {
+            $items[] = [
+                'title' => self::cleanTitle((string) $item->title),
+                'link' => (string) $item->link,
+                'description' => self::cleanDescription((string) $item->description),
+                'pubDate' => (string) $item->pubDate,
+            ];
+        }
+
+        return $items;
+    }
+
+    /**
+     * Parse Atom <entry> elements.
+     *
+     * @param  SimpleXMLElement $feed
+     * @return array
+     */
+    private static function parseAtomEntries(SimpleXMLElement $feed): array
+    {
+        $items = [];
+
+        foreach ($feed->entry as $entry) {
+            // Atom links are href attributes; prefer rel="alternate" (or no rel).
+            $link = '';
+            foreach ($entry->link as $candidate) {
+                $rel = (string) $candidate['rel'];
+
+                if ($rel === '' || $rel === 'alternate') {
+                    $link = (string) $candidate['href'];
+                    break;
+                }
+
+                if ($link === '') {
+                    $link = (string) $candidate['href'];
+                }
+            }
+
+            $description = (string) $entry->summary !== ''
+                ? (string) $entry->summary
+                : (string) $entry->content;
+
+            $pubDate = (string) $entry->published !== ''
+                ? (string) $entry->published
+                : (string) $entry->updated;
+
+            $items[] = [
+                'title' => self::cleanTitle((string) $entry->title),
+                'link' => $link,
+                'description' => self::cleanDescription($description),
+                'pubDate' => $pubDate,
+            ];
+        }
+
+        return $items;
+    }
+
+    /**
+     * Decode HTML entities in a feed title.
+     *
+     * @param  string $title
+     * @return string
+     */
+    private static function cleanTitle(string $title): string
+    {
+        return trim(html_entity_decode($title, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    }
+
+    /**
+     * Strip images / markup and decode entities in a feed description.
+     *
+     * @param  string $description
+     * @return string
+     */
+    private static function cleanDescription(string $description): string
+    {
+        $clean = preg_replace('/<img[^>]+>/i', '', $description);
+        $clean = strip_tags($clean);
+        $clean = html_entity_decode($clean, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+        return trim($clean);
     }
 }

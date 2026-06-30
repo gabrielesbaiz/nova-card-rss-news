@@ -2,6 +2,10 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 2.4.0 - 2026-06-30
+
+- Support Atom feeds (`<feed>`/`<entry>`) in addition to RSS 2.0. `RssFeedService` now detects the feed type and parses Atom entries — including `href`-attribute links (preferring `rel="alternate"`), `<summary>`/`<content>` descriptions, and `<published>`/`<updated>` dates. Fixes Quattroruote (`.../newsRss/feed.xml`) and other Atom sources previously showing "Nessuna notizia disponibile".
+
 ## 2.3.2 - 2026-06-29
 
 - Fix `NovaCardRssNewsSelect` localStorage collision: multiple cards on the same dashboard now persist their source selection independently. The storage key now includes the card's `defaultSource()` value, not just the component name.
