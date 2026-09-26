@@ -9,8 +9,9 @@
     "Retry": "Retry",
     "Showing cached copy": "Showing cached copy",
     "Mark all as read": "Mark all as read",
+    ":count item": ":count item",
+    ":count items": ":count items",
     ":count new": ":count new",
-    ":count item|:count items": ":count item|:count items",
     "updated :time": "updated :time",
     "All sources": "All sources"
 }

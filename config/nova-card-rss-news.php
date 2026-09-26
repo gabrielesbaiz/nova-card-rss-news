@@ -112,13 +112,14 @@ return [
     | Interface
     |--------------------------------------------------------------------------
     |
-    | favicons: 'google' resolves site icons through Google's S2 service (this
-    | tells Google which feeds you read); 'none' renders initials instead.
+    | favicons: 'google' resolves site icons through Google's S2 service, which
+    | tells Google which feeds this dashboard reads. Set 'none' to draw initials
+    | locally instead and make no third-party request.
     |
     */
 
     'ui' => [
-        'favicons' => 'none',
+        'favicons' => 'google',
         'images' => true,
     ],
 

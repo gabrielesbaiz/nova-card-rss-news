@@ -20,7 +20,7 @@ import { useFavicon } from "../composables/useFavicon";
 const props = defineProps({
     title: { type: String, default: "" },
     siteUrl: { type: String, default: null },
-    mode: { type: String, default: "none" },
+    mode: { type: String, default: "google" },
 });
 
 const favicon = useFavicon(

@@ -14,13 +14,16 @@ export function __(key, replacements = {}) {
 }
 
 /**
- * Pick the right side of a "singular|plural" translation.
+ * Pick a singular or plural key, then substitute :count locally.
+ *
+ * Nova's __() leaves ":count" alone when the key carries a "singular|plural"
+ * pipe, so the card rendered ":count items". Two flat keys avoid the pipe, and
+ * the replacement happens here whether or not a translation was found.
  */
-export function choice(key, count) {
-    const line = __(key, { count });
-    const [singular, plural] = line.split("|");
+export function choice(count, singularKey, pluralKey) {
+    const line = __(count === 1 ? singularKey : pluralKey, { count });
 
-    return count === 1 ? singular : (plural ?? singular);
+    return line.replace(/:count/g, count);
 }
 
 export function novaLocale() {

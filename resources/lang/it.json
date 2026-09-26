@@ -9,8 +9,9 @@
     "Retry": "Riprova",
     "Showing cached copy": "Copia in cache",
     "Mark all as read": "Segna tutte come lette",
+    ":count item": ":count notizia",
+    ":count items": ":count notizie",
     ":count new": ":count nuove",
-    ":count item|:count items": ":count notizia|:count notizie",
     "updated :time": "agg. :time",
     "All sources": "Tutte le fonti"
 }

@@ -65,6 +65,34 @@
     letter-spacing: 0.02em;
 }
 
+/* ---------- Header ---------- */
+
+.rss-news-header {
+    display: flex;
+    align-items: center;   /* one centre line for icon, title, badge, buttons */
+    gap: 12px;
+}
+
+.rss-news-id {
+    flex: 1;
+    min-width: 0;
+}
+
+.rss-news-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.rss-news-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
 .rss-news-title {
     font-size: 0.875rem;
     font-weight: 700;
@@ -371,62 +399,6 @@
     font-size: 0.8rem;
 }
 
-/* ---------- Source picker (Select variant) ---------- */
-
-.rss-news-source-select-wrap {
-    position: relative;
-    flex: 1;
-    min-width: 0;
-}
-
-.rss-news-source-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    width: 100%;
-    background: rgba(var(--colors-primary-500), 0.08);
-    border: 1px solid rgba(var(--colors-primary-500), 0.2);
-    color: rgba(var(--colors-gray-700), 1);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    padding: 4px 26px 4px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.18s ease;
-    line-height: 1.2;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.rss-news-source-select:hover:not(:disabled) {
-    background: rgba(var(--colors-primary-500), 0.13);
-    border-color: rgba(var(--colors-primary-500), 0.35);
-}
-
-.rss-news-source-select:focus {
-    outline: none;
-    border-color: rgb(var(--colors-primary-500));
-    box-shadow: 0 0 0 3px rgba(var(--colors-primary-500), 0.18);
-}
-
-.rss-news-source-select:disabled {
-    opacity: 0.6;
-    cursor: default;
-}
-
-.rss-news-source-chevron {
-    position: absolute;
-    right: 7px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 14px;
-    height: 14px;
-    color: rgb(var(--colors-primary-500));
-    pointer-events: none;
-}
-
 /* ---------- Animations ---------- */
 
 @keyframes rssNewsFadeUp {
@@ -479,6 +451,9 @@
 }
 
 .rss-news-new-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
     flex-shrink: 0;
     font-size: 0.6rem;
     font-weight: 700;
@@ -811,5 +786,253 @@
     .rss-news-hero:hover,
     .rss-news-grid-card:hover {
         transform: none;
+    }
+}
+
+/* ---------- Source picker ---------- */
+
+.rss-picker {
+    position: relative;
+    min-width: 0;
+}
+
+.rss-picker-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    height: 26px;
+    padding: 0 7px 0 9px;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    color: rgba(var(--colors-gray-800), 1);
+    background: rgba(var(--colors-primary-500), 0.06);
+    border: 1px solid rgba(var(--colors-primary-500), 0.18);
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.rss-picker-trigger:hover:not(:disabled) {
+    background: rgba(var(--colors-primary-500), 0.12);
+    border-color: rgba(var(--colors-primary-500), 0.4);
+}
+
+.rss-picker-trigger:focus-visible {
+    outline: 2px solid rgb(var(--colors-primary-500));
+    outline-offset: 2px;
+}
+
+.rss-picker-trigger:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.rss-picker-value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rss-picker-caret {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: rgb(var(--colors-primary-500));
+    transition: transform 0.2s ease;
+}
+
+.rss-picker-trigger[aria-expanded="true"] .rss-picker-caret {
+    transform: rotate(180deg);
+}
+
+/* Teleported to <body>, so the panel carries its own surface and cannot be
+   clipped by the card's overflow. */
+.rss-picker-panel {
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 12px;
+    background: rgba(var(--colors-white), 1);
+    border: 1px solid rgba(var(--colors-gray-200), 1);
+    box-shadow:
+        0 24px 48px -24px rgba(0, 0, 0, 0.35),
+        0 2px 8px -4px rgba(0, 0, 0, 0.2);
+    animation: rssPickerIn 0.14s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.dark .rss-picker-panel {
+    background: rgba(var(--colors-gray-900), 1);
+    border-color: rgba(var(--colors-gray-700), 1);
+}
+
+@keyframes rssPickerIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.985);
+    }
+}
+
+.rss-picker-filter {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 11px;
+    border-bottom: 1px solid rgba(var(--colors-gray-200), 0.9);
+}
+
+.dark .rss-picker-filter {
+    border-bottom-color: rgba(var(--colors-gray-700), 0.9);
+}
+
+.rss-picker-filter svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: rgba(var(--colors-gray-400), 1);
+}
+
+.rss-picker-filter input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    font: inherit;
+    font-size: 0.82rem;
+    color: rgba(var(--colors-gray-800), 1);
+    outline: none;
+}
+
+.rss-picker-filter input::-webkit-search-cancel-button {
+    appearance: none;
+}
+
+.dark .rss-picker-filter input {
+    color: rgba(var(--colors-gray-100), 1);
+}
+
+.rss-picker-count {
+    flex-shrink: 0;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: rgb(var(--colors-primary-500));
+    background: rgba(var(--colors-primary-500), 0.1);
+    border-radius: 999px;
+    padding: 1px 6px;
+    font-variant-numeric: tabular-nums;
+}
+
+.rss-picker-scroll {
+    overflow-y: auto;
+    padding: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--colors-primary-500), 0.35) transparent;
+}
+
+.rss-picker-scroll::-webkit-scrollbar {
+    width: 7px;
+}
+
+.rss-picker-scroll::-webkit-scrollbar-thumb {
+    background: rgba(var(--colors-primary-500), 0.3);
+    border-radius: 999px;
+}
+
+.rss-picker-group {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: 6px 0 3px;
+    padding: 3px 8px;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(var(--colors-gray-400), 1);
+    background: rgba(var(--colors-white), 0.94);
+    backdrop-filter: blur(6px);
+}
+
+.dark .rss-picker-group {
+    background: rgba(var(--colors-gray-900), 0.94);
+}
+
+.rss-picker-group:first-child {
+    margin-top: 0;
+}
+
+.rss-picker-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    font: inherit;
+    font-size: 0.84rem;
+    text-align: left;
+    color: rgba(var(--colors-gray-700), 1);
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.dark .rss-picker-option {
+    color: rgba(var(--colors-gray-300), 1);
+}
+
+.rss-picker-option.is-active {
+    background: rgba(var(--colors-primary-500), 0.1);
+    color: rgba(var(--colors-gray-900), 1);
+}
+
+.dark .rss-picker-option.is-active {
+    color: rgba(var(--colors-white), 1);
+}
+
+.rss-picker-option.is-current {
+    font-weight: 700;
+    color: rgb(var(--colors-primary-500));
+}
+
+.rss-picker-tick {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: rgb(var(--colors-primary-500));
+}
+
+.rss-picker-tick svg {
+    width: 100%;
+    height: 100%;
+}
+
+.rss-picker-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rss-picker-empty {
+    padding: 18px 10px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: rgba(var(--colors-gray-400), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rss-picker-panel {
+        animation: none;
+    }
+
+    .rss-picker-caret {
+        transition: none;
     }
 }

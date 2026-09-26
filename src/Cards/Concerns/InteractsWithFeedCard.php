@@ -97,7 +97,7 @@ trait InteractsWithFeedCard
             'search' => (bool) ($defaults['search'] ?? false),
             'read_state' => (bool) ($defaults['read_state'] ?? true),
             'images' => (bool) (config('nova-card-rss-news.ui.images', true)),
-            'favicons' => (string) config('nova-card-rss-news.ui.favicons', 'none'),
+            'favicons' => (string) config('nova-card-rss-news.ui.favicons', 'google'),
         ];
     }
 }

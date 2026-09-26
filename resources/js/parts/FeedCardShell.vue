@@ -6,15 +6,15 @@
             @mouseleave="autoRefresh.resume"
         >
             <!-- Header -->
-            <div class="rss-news-header flex items-center gap-3 px-5 pt-5 pb-3">
+            <div class="rss-news-header px-5 pt-5 pb-3">
                 <FeedIcon
                     :title="feed.title.value"
                     :site-url="feed.siteUrl.value"
-                    :mode="card.favicons || 'none'"
+                    :mode="card.favicons || 'google'"
                 />
 
-                <div class="flex-1 min-w-0">
-                    <div class="flex items-center gap-2">
+                <div class="rss-news-id">
+                    <div class="rss-news-title-row">
                         <span
                             v-if="!feed.loading.value && !feed.error.value"
                             class="rss-news-live-dot"
@@ -37,7 +37,7 @@
                     </div>
 
                     <p class="rss-news-subtitle">
-                        {{ choice(":count item|:count items", visible.length) }}
+                        {{ choice(visible.length, ":count item", ":count items") }}
                         <template v-if="updatedLabel">
                             · {{ updatedLabel }}
                         </template>
@@ -47,53 +47,55 @@
                     </p>
                 </div>
 
-                <button
-                    v-if="card.search"
-                    type="button"
-                    class="rss-news-icon-button"
-                    :class="{ 'is-active': searching }"
-                    :aria-pressed="searching"
-                    :aria-label="__('Search news…')"
-                    @click="toggleSearch"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="w-4 h-4"
-                        aria-hidden="true"
+                <div class="rss-news-actions">
+                    <button
+                        v-if="card.search"
+                        type="button"
+                        class="rss-news-icon-button"
+                        :class="{ 'is-active': searching }"
+                        :aria-pressed="searching"
+                        :aria-label="__('Search news…')"
+                        @click="toggleSearch"
                     >
-                        <path
-                            fill-rule="evenodd"
-                            d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                            clip-rule="evenodd"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="w-4 h-4"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </button>
 
-                <button
-                    type="button"
-                    class="rss-news-icon-button rss-news-refresh"
-                    :class="{ 'is-spinning': feed.loading.value }"
-                    :disabled="feed.loading.value"
-                    :aria-label="__('Refresh')"
-                    :title="__('Refresh')"
-                    @click="feed.refresh"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        class="w-4 h-4"
-                        aria-hidden="true"
+                    <button
+                        type="button"
+                        class="rss-news-icon-button rss-news-refresh"
+                        :class="{ 'is-spinning': feed.loading.value }"
+                        :disabled="feed.loading.value"
+                        :aria-label="__('Refresh')"
+                        :title="__('Refresh')"
+                        @click="feed.refresh"
                     >
-                        <path
-                            fill-rule="evenodd"
-                            d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
-                            clip-rule="evenodd"
-                        />
-                    </svg>
-                </button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                            class="w-4 h-4"
+                            aria-hidden="true"
+                        >
+                            <path
+                                fill-rule="evenodd"
+                                d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
+                                clip-rule="evenodd"
+                            />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <SearchBox v-if="searching" v-model="term" />
