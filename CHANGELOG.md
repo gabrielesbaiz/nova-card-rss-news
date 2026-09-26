@@ -13,7 +13,7 @@ A rewrite. The cards look the same; everything behind them is new.
 - The `news` endpoint is now `feed`, with a normalized payload (`items`, `summary`, ISO-8601 `published_at`, `id`, `image_url`, `author`, `categories`, `source_*`) and the limit applied server side.
 - Cards moved to `Cards\RssNewsCard` / `Cards\RssNewsSelectCard`; `CardServiceProvider` is now `NovaCardRssNewsServiceProvider`. Old names remain as deprecated aliases until 4.0.
 - `RssFeedService` was removed in favour of the injectable `FeedManager`.
-- PHP 8.2+ and Laravel 11+ are required.
+- PHP 8.2+ and Laravel 11+ are required, and `laravel/nova` moved from `require-dev` to `require`: the cards extend Nova's `Card`, so it was always a hard dependency.
 - Favicons default to `none`; set `ui.favicons` to `google` for the 2.x behaviour.
 
 See [UPGRADING.md](UPGRADING.md).

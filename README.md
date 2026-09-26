@@ -53,7 +53,7 @@ the endpoints cannot be pointed at your internal network.
 
 - PHP 8.2+
 - Laravel 11 or 12
-- Laravel Nova 5, licensed separately
+- Laravel Nova 5 — a composer dependency of this package, licensed separately by Laravel
 
 ## Installation
 
