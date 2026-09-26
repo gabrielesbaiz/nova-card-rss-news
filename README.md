@@ -1,3 +1,7 @@
+<p align="center">
+    <img src="art/nova-card-rss-news-logo.png" alt="NovaCard RSS News" width="600">
+</p>
+
 # NovaCard RSS News
 
 RSS on a Laravel Nova dashboard — four feed dialects normalized to one item shape, cached so a dead publisher never blanks a card, in three cards and four layouts.
