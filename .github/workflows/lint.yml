@@ -1,0 +1,47 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  pint:
+    runs-on: ubuntu-latest
+    name: pint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+          tools: laravel/pint
+
+      - name: Check code style
+        run: pint --test
+
+  assets:
+    runs-on: ubuntu-latest
+    name: assets build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+      - run: npm run build
+
+      # The documentation playground runs its own logic in Node against a DOM stub.
+      - name: Test the docs playground
+        run: for f in tests/Browser/pgtest*.mjs; do node "$f"; done
+
+      # The built assets are committed; a drift means someone forgot to rebuild.
+      - name: Fail if dist/ is out of date
+        run: git diff --exit-code -- dist
