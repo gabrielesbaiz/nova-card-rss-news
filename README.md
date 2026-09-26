@@ -42,7 +42,7 @@ where those eighty lines quietly become a project:
 - **Three cards, four layouts.** One feed, a source picker, or many feeds merged chronologically; hero, compact, grid or ticker, with search, thumbnails and read state.
 - **A catalogue you control.** Opt-in presets, your own config, a `SourceProvider` contract, or a closure for per-user feeds.
 - **OPML in and out**, plus feed discovery from a plain site URL.
-- **Five artisan commands**, including a health check that exits non-zero in CI.
+- **Six artisan commands**, including a health check that exits non-zero in CI.
 
 A refresh button that reaches a third party is a budget, not a button, so
 cache-bypassing refreshes get their own much smaller rate limit. Ad-hoc feed
@@ -77,6 +77,7 @@ card renders real news untouched.
 
 | Command | Purpose |
 |---|---|
+| `nova-rss:list` | List the source keys available to `source()` and `defaultSource()`. `--calls` prints them paste-ready. |
 | `nova-rss:check` | Fetch every source; report parser, item count and latency. Exits non-zero on failure. |
 | `nova-rss:warm` | Pre-fetch every source so dashboards load from cache. |
 | `nova-rss:discover {url}` | Find the feed behind a website URL. |

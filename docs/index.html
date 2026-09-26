@@ -1287,14 +1287,33 @@ Schedule::command('nova-rss:warm')->everyFiveMinutes();</code></pre></section>
 </aside>
 <div class="body">
 <h1>Commands</h1>
-<p class="lede">Five artisan commands: health, warming, OPML in and out, and discovery.</p>
+<p class="lede">Six artisan commands: health, warming, OPML in and out, and discovery.</p>
 <section id="commands-table"><h2>The commands</h2><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>nova-rss:list [--keys] [--calls] [--category=*] [--search=]</code></td><td>List the source keys available to <code>source()</code> and <code>defaultSource()</code>.</td></tr>
 <tr><td><code>nova-rss:check [--source=*] [--category=*]</code></td><td>Fetches every source and prints status, parser, item count and latency. Exits non-zero if any fail — CI-friendly.</td></tr>
 <tr><td><code>nova-rss:warm [--source=*] [--category=*]</code></td><td>Pre-fetches every source into the cache.</td></tr>
 <tr><td><code>nova-rss:discover &lt;url&gt;</code></td><td>Finds the feed behind a website URL and prints a config line.</td></tr>
 <tr><td><code>nova-rss:import &lt;file&gt; [--category=] [--validate]</code></td><td>Turns an OPML export into a pastable config block.</td></tr>
 <tr><td><code>nova-rss:export [--output=]</code></td><td>Writes the resolved catalogue as OPML.</td></tr>
 </tbody></table></section>
+<section id="commands-list">
+<h2>Finding the key to type</h2>
+<p><code>source()</code> and <code>defaultSource()</code> take a catalogue key, and the keys come from whichever presets and providers you enabled. This prints them.</p>
+<pre><code><span class="c">$</span> php artisan nova-rss:list --search=ansa
+
+ Key             Title           Category
+ ansa_all        ANSA            Agenzie di stampa
+ ansa_cronaca    ANSA Cronaca    Agenzie di stampa
+ ansa_motori     ANSA Motori     Motori</code></pre>
+<p>Two shapes are meant for pasting rather than reading:</p>
+<pre><code><span class="c">$</span> php artisan nova-rss:list --keys          <span class="c"># bare keys, one per line</span>
+<span class="c">$</span> php artisan nova-rss:list --calls         <span class="c"># ready-to-paste card calls</span>
+
+-&gt;<span class="f">defaultSource</span>(<span class="s">'ansa_all'</span>)        <span class="c">// ANSA</span>
+-&gt;<span class="f">defaultSource</span>(<span class="s">'ansa_cronaca'</span>)    <span class="c">// ANSA Cronaca</span></code></pre>
+<p><code>--method=source</code> writes <code>-&gt;source()</code> calls for the fixed card instead, <code>--urls</code> adds the feed URL to the table, <code>--json</code> emits the catalogue for scripting, and <code>--category</code> / <code>--search</code> narrow the list.</p>
+</section>
+
 <section id="commands-check"><h2>Health checks</h2><pre><code>php artisan nova-rss:check
 
  Status   Source          Parser   Items   Time      URL / error

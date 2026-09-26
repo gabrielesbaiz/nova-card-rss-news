@@ -8,6 +8,7 @@ use Gabrielesbaiz\NovaCardRssNews\Console\CheckFeedsCommand;
 use Gabrielesbaiz\NovaCardRssNews\Console\DiscoverFeedCommand;
 use Gabrielesbaiz\NovaCardRssNews\Console\ExportOpmlCommand;
 use Gabrielesbaiz\NovaCardRssNews\Console\ImportOpmlCommand;
+use Gabrielesbaiz\NovaCardRssNews\Console\ListFeedsCommand;
 use Gabrielesbaiz\NovaCardRssNews\Console\WarmFeedsCommand;
 use Gabrielesbaiz\NovaCardRssNews\Contracts\FeedFetcher;
 use Gabrielesbaiz\NovaCardRssNews\Feeds\FeedManager;
@@ -39,6 +40,7 @@ class NovaCardRssNewsServiceProvider extends PackageServiceProvider
                 DiscoverFeedCommand::class,
                 ExportOpmlCommand::class,
                 ImportOpmlCommand::class,
+                ListFeedsCommand::class,
                 WarmFeedsCommand::class,
             ]);
     }
