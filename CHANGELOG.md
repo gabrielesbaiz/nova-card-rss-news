@@ -24,7 +24,7 @@ See [UPGRADING.md](UPGRADING.md).
 - Four layouts — `hero`, `compact`, `grid`, `ticker` — plus client-side search with highlighting, feed thumbnails, read/unread dimming with a "new since last visit" badge, bookmarks, and auto refresh that pauses on hidden tabs and on hover.
 - RSS 1.0 / RDF and JSON Feed support, alongside RSS 2.0 and Atom. Detection is by content. `content:encoded`, `dc:creator`, `dc:date`, `media:content`, `media:thumbnail` and image enclosures are read.
 - A pluggable source layer: presets, any `SourceProvider` class, closures (per-user feeds) and inline arrays, merged by `SourceRepository`.
-- `nova-rss:check`, `nova-rss:warm`, `nova-rss:import` (OPML), `nova-rss:export` (OPML) and `nova-rss:discover` (find a feed from a site URL).
+- `nova-rss:list`, `nova-rss:check`, `nova-rss:warm`, `nova-rss:import` (OPML), `nova-rss:export` (OPML) and `nova-rss:discover` (find a feed from a site URL).
 - `FeedFetched` and `FeedFetchFailed` events.
 - Ad-hoc feeds via `->feed($url, $title)`, with the URL encrypted into the card meta so the endpoint can never be pointed at an arbitrary host.
 - Optional gate on the endpoints, a separate and much tighter rate limit for cache-bypassing refreshes, and configurable route middleware.

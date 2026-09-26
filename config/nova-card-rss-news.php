@@ -17,7 +17,8 @@ return [
     |   - a closure returning sources (per-user or database driven)
     |   - an inline ['categories' => [...]] array (the v2 config shape)
     |
-    | Uncomment the presets you want. `nova-rss:check` validates them all.
+    | Uncomment the presets you want. `nova-rss:list` prints the keys they
+    | give you, and `nova-rss:check` validates that they all still answer.
     |
     */
 
