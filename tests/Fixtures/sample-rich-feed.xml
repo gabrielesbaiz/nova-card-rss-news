@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>Rich Feed</title>
+        <link>https://rich.test</link>
+        <item>
+            <title>Con media:content</title>
+            <link>https://rich.test/1</link>
+            <description></description>
+            <content:encoded><![CDATA[<p>Corpo completo dell'articolo.</p>]]></content:encoded>
+            <media:content url="https://rich.test/img/1.jpg" type="image/jpeg" />
+            <dc:creator>Redazione</dc:creator>
+            <category>Motori</category>
+            <category>Sicurezza</category>
+            <pubDate>Mon, 29 Jun 2026 08:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Con enclosure</title>
+            <link>https://rich.test/2</link>
+            <description><![CDATA[Testo <img src="https://rich.test/inline.png" /> con immagine.]]></description>
+            <enclosure url="https://rich.test/img/2.png" type="image/png" length="1000" />
+            <pubDate>Mon, 29 Jun 2026 07:00:00 +0000</pubDate>
+        </item>
+        <item>
+            <title>Solo immagine inline</title>
+            <link>https://rich.test/3</link>
+            <description><![CDATA[<img src="https://rich.test/inline3.webp" />Testo.]]></description>
+            <pubDate>Mon, 29 Jun 2026 06:00:00 +0000</pubDate>
+        </item>
+    </channel>
+</rss>

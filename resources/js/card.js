@@ -1,7 +1,10 @@
-import Card from "./components/Card";
-import CardSelect from "./components/CardSelect";
+import RssNewsCard from "./cards/RssNewsCard.vue";
+import RssNewsSelectCard from "./cards/RssNewsSelectCard.vue";
+import RssNewsStreamCard from "./cards/RssNewsStreamCard.vue";
+import "../css/card.css";
 
-Nova.booting((app, store) => {
-    app.component("nova-card-rss-news", Card);
-    app.component("nova-card-rss-news-select", CardSelect);
+Nova.booting((app) => {
+    app.component("nova-card-rss-news", RssNewsCard);
+    app.component("nova-card-rss-news-select", RssNewsSelectCard);
+    app.component("nova-card-rss-news-stream", RssNewsStreamCard);
 });

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns="http://purl.org/rss/1.0/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel rdf:about="https://example.test">
+        <title>Fake RDF Feed</title>
+        <link>https://example.test</link>
+        <description>RSS 1.0 fixture.</description>
+    </channel>
+    <item rdf:about="https://example.test/news/1">
+        <title>Prima notizia RDF</title>
+        <link>https://example.test/news/1</link>
+        <description>&lt;p&gt;Testo con &amp;amp; entit&#224;.&lt;/p&gt;</description>
+        <dc:date>2026-06-29T10:00:00+02:00</dc:date>
+        <dc:creator>Mario Rossi</dc:creator>
+    </item>
+    <item rdf:about="https://example.test/news/2">
+        <title>Seconda notizia RDF</title>
+        <link>https://example.test/news/2</link>
+        <description>Testo semplice.</description>
+        <dc:date>2026-06-29T09:00:00+02:00</dc:date>
+    </item>
+</rdf:RDF>

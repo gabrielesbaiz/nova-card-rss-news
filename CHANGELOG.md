@@ -2,6 +2,48 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 3.0.0 - 2026-09-25
+
+A rewrite. The cards look the same; everything behind them is new.
+
+**Breaking**
+
+- The Italian news / insurance catalogue is no longer enabled by default. It moved into opt-in presets (`ItNewsPreset`, `ItInsurancePreset`, `ItMotoriPreset`, `ItEconomyPreset`, `ItTravelPreset`, `ItSportPreset`, `AggregatorsPreset`); no source key changed. A neutral international `StarterPreset` ships enabled instead.
+- `config('nova-card-rss-news.categories')` is replaced by `sources`, a list of providers. The v2 `categories` array is still accepted as an inline entry.
+- The `news` endpoint is now `feed`, with a normalized payload (`items`, `summary`, ISO-8601 `published_at`, `id`, `image_url`, `author`, `categories`, `source_*`) and the limit applied server side.
+- Cards moved to `Cards\RssNewsCard` / `Cards\RssNewsSelectCard`; `CardServiceProvider` is now `NovaCardRssNewsServiceProvider`. Old names remain as deprecated aliases until 4.0.
+- `RssFeedService` was removed in favour of the injectable `FeedManager`.
+- PHP 8.2+ and Laravel 11+ are required, and `laravel/nova` moved from `require-dev` to `require`: the cards extend Nova's `Card`, so it was always a hard dependency.
+- Favicons default to `none`; set `ui.favicons` to `google` for the 2.x behaviour.
+
+See [UPGRADING.md](UPGRADING.md).
+
+**Added**
+
+- `RssNewsStreamCard`: several feeds merged into one chronological stream, badged by source, deduplicated, resilient to one feed failing.
+- Four layouts — `hero`, `compact`, `grid`, `ticker` — plus client-side search with highlighting, feed thumbnails, read/unread dimming with a "new since last visit" badge, bookmarks, and auto refresh that pauses on hidden tabs and on hover.
+- RSS 1.0 / RDF and JSON Feed support, alongside RSS 2.0 and Atom. Detection is by content. `content:encoded`, `dc:creator`, `dc:date`, `media:content`, `media:thumbnail` and image enclosures are read.
+- A pluggable source layer: presets, any `SourceProvider` class, closures (per-user feeds) and inline arrays, merged by `SourceRepository`.
+- `nova-rss:list`, `nova-rss:check`, `nova-rss:warm`, `nova-rss:import` (OPML), `nova-rss:export` (OPML) and `nova-rss:discover` (find a feed from a site URL).
+- `FeedFetched` and `FeedFetchFailed` events.
+- Ad-hoc feeds via `->feed($url, $title)`, with the URL encrypted into the card meta so the endpoint can never be pointed at an arbitrary host.
+- Optional gate on the endpoints, a separate and much tighter rate limit for cache-bypassing refreshes, and configurable route middleware.
+- English and Italian translations; relative dates via `Intl.RelativeTimeFormat` in the viewer's locale.
+- `aria-live` updates, focus-visible outlines and `prefers-reduced-motion` support.
+
+**Fixed**
+
+- The refresh button now actually refreshes. In 2.x it only busted the browser cache while the server kept serving its 5-minute cached copy.
+- Feed requests have timeouts, retries, a real user agent, gzip and bounded redirects (`file_get_contents` had none of these, and a hung publisher hung the dashboard).
+- Fast source switching can no longer be overwritten by a slower earlier response; in-flight requests are aborted.
+- Every card on a page shares one 30-second clock instead of running its own interval.
+
+**Changed**
+
+- Caching is stale-while-revalidate with conditional `ETag` / `Last-Modified` revalidation and optional queued background refresh. A failed fetch serves the cached copy, flagged as stale, instead of blanking the card.
+- The Vue is `<script setup>` with composables and shared parts; Laravel Mix was replaced by Vite. Output paths are unchanged.
+- Test suite grown to 89 tests; PHPStan level 5 and CI across PHP 8.2–8.4 and Laravel 11–12.
+
 ## 2.4.0 - 2026-06-30
 
 - Support Atom feeds (`<feed>`/`<entry>`) in addition to RSS 2.0. `RssFeedService` now detects the feed type and parses Atom entries — including `href`-attribute links (preferring `rel="alternate"`), `<summary>`/`<content>` descriptions, and `<published>`/`<updated>` dates. Fixes Quattroruote (`.../newsRss/feed.xml`) and other Atom sources previously showing "Nessuna notizia disponibile".
