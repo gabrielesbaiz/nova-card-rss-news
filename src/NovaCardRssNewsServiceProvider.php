@@ -84,13 +84,43 @@ class NovaCardRssNewsServiceProvider extends PackageServiceProvider
 
         if (class_exists(Nova::class)) {
             Nova::serving(function (ServingNova $event): void {
-                Nova::script('nova-card-rss-news', __DIR__.'/../dist/js/card.js');
-                Nova::style('nova-card-rss-news', __DIR__.'/../dist/css/card.css');
-                // Fall back to English when the app locale has no bundled file.
-                $locale = __DIR__.'/../resources/lang/'.app()->getLocale().'.json';
-
-                Nova::translations(is_file($locale) ? $locale : __DIR__.'/../resources/lang/en.json');
+                $this->registerAssets();
+                $this->registerTranslations();
             });
+        }
+    }
+
+    /**
+     * Nova serves package assets by name, with no fingerprint, so a rebuilt
+     * file keeps its old URL and a browser holds on to the stale bundle. The
+     * name carries a short hash of the built files, making every build a new
+     * URL.
+     */
+    protected function registerAssets(): void
+    {
+        $js = __DIR__.'/../dist/js/card.js';
+        $css = __DIR__.'/../dist/css/card.css';
+
+        $build = substr(md5((string) @md5_file($js).(string) @md5_file($css)), 0, 8);
+
+        Nova::script("nova-card-rss-news-{$build}", $js);
+        Nova::style("nova-card-rss-news-{$build}", $css);
+    }
+
+    /**
+     * English first as a base, then the app locale on top, so a locale the
+     * package does not ship degrades to English rather than to raw keys.
+     */
+    protected function registerTranslations(): void
+    {
+        $directory = __DIR__.'/../resources/lang/';
+
+        Nova::translations($directory.'en.json');
+
+        $locale = $directory.app()->getLocale().'.json';
+
+        if (is_file($locale)) {
+            Nova::translations($locale);
         }
     }
 

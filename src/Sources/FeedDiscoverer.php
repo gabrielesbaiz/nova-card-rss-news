@@ -16,6 +16,9 @@ final class FeedDiscoverer
 {
     private const PROBES = ['/feed', '/feed/', '/rss', '/rss.xml', '/atom.xml', '/index.xml', '/feed.json'];
 
+    /** Candidates found but not fetched, because of the limit. */
+    private int $skipped = 0;
+
     public function __construct(
         private readonly FeedFetcher $fetcher,
         private readonly ParserRegistry $parsers,
@@ -79,7 +82,7 @@ final class FeedDiscoverer
     }
 
     /**
-     * Candidates found but not fetched because of the limit.
+     * How many candidates the last discover() left unchecked.
      */
     public function skipped(): int
     {
