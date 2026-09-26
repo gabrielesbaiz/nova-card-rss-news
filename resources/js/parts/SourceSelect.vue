@@ -4,7 +4,7 @@
             ref="trigger"
             type="button"
             class="rss-picker-trigger"
-            :disabled="disabled || !categories.length"
+            :disabled="disabled"
             :aria-expanded="open"
             aria-haspopup="listbox"
             :aria-label="__('All sources')"
@@ -103,7 +103,7 @@
                     </template>
 
                     <p v-if="!flat.length" class="rss-picker-empty">
-                        {{ __("No results") }}
+                        {{ categories.length ? __("No results") : __("Feed unavailable") }}
                     </p>
                 </div>
             </div>
@@ -122,7 +122,7 @@ const props = defineProps({
     fallbackLabel: { type: String, default: "" },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "reload"]);
 
 const root = ref(null);
 const trigger = ref(null);
@@ -185,7 +185,11 @@ function place() {
 }
 
 function openPanel(index = 0) {
-    if (props.disabled || !props.categories.length) return;
+    if (props.disabled) return;
+
+    // The catalogue may have failed to load; ask again rather than sitting
+    // there greyed out.
+    if (!props.categories.length) emit("reload");
 
     open.value = true;
     term.value = "";

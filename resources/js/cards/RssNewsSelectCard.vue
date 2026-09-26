@@ -3,6 +3,7 @@
         <template #title>
             <SourceSelect
                 v-model="selected"
+                @reload="loadSources"
                 :categories="categories"
                 :disabled="feed.loading.value"
                 :fallback-label="feed.title.value"
