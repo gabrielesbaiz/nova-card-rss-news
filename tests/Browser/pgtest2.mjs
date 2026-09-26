@@ -1,5 +1,5 @@
 import fs from 'fs';
-const html = fs.readFileSync('/Users/gabriele/Coding/gabrielesbaiz/nova-card-rss-news/docs/index.html','utf8');
+const html = fs.readFileSync(new URL('../../docs/index.html', import.meta.url), 'utf8');
 const js = html.split('<script>').pop().split('</script>')[0];
 const store = {};
 const handlers = [];
