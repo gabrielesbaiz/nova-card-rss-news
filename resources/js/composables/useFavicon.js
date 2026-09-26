@@ -5,7 +5,7 @@ import { computed, ref } from "vue";
  * tells Google which feeds the dashboard reads — so it is opt-in, and every
  * other mode falls back to initials drawn locally.
  */
-export function useFavicon(siteUrl, title, mode = "none") {
+export function useFavicon(siteUrl, title, mode = "google") {
     const failed = ref(false);
 
     const url = computed(() => {

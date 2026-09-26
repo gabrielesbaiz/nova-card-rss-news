@@ -21,7 +21,7 @@ it('seeds every card with the configured defaults', function (): void {
         ->toHaveKey('limit', 7)
         ->toHaveKey('layout', 'compact')
         ->toHaveKey('read_state', true)
-        ->toHaveKey('favicons', 'none');
+        ->toHaveKey('favicons', 'google');
 });
 
 it('builds the fixed-source card fluently', function (): void {

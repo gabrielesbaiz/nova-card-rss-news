@@ -632,7 +632,7 @@ public function cards(): array
 </div>
 </div></section>
 <section id="intro-trade"><h2>The trade</h2><p>It is opinionated about the payload. Every dialect is normalized to one flat item — title, link, summary, date, image, author, categories — and anything a dialect carries beyond that is dropped before it reaches the browser. If you need the raw <code>&lt;item&gt;</code> with its custom namespaces intact, use a plain reader such as <a href="https://github.com/willvincent/laravel-feed-reader">willvincent/laravel-feed-reader</a> and render it yourself.</p>
-<p>There is also a genuine privacy cost to favicons, which is why they are off by default: the only reliable way to resolve them without shipping an icon set is Google's S2 service, and that tells Google which feeds your dashboard reads. With favicons off, each card draws initials from the feed title.</p>
+<p>There is also a genuine privacy cost to favicons: the only reliable way to resolve them without shipping an icon set is Google's S2 service, and that tells Google which feeds your dashboard reads. They are on by default because most dashboards want them; <code>ui.favicons =&gt; 'none'</code> turns them off and draws initials from the feed title instead.</p>
 <div class="note"><b>Default catalogue.</b> With no configuration at all you get a small neutral starter set — BBC, NPR, Al Jazeera, Hacker News, The Verge, Ars Technica, Laravel News, PHP.Watch, The GitHub Blog — so the card shows real news the first time you load it.</div></section>
 <div class="pager">
 <a href="#/home"><span>Previous</span><b>Home</b></a>
@@ -831,7 +831,7 @@ RssNewsCard::make()
 <tr><td><code>routes.fresh_throttle</code></td><td><code>'20,1'</code></td><td>Budget for <code>?fresh=1</code> reads, which reach upstream.</td></tr>
 </tbody></table></section>
 <section id="configuration-uikeys"><h2>Interface defaults</h2><table><thead><tr><th>Key</th><th>Default</th><th>Effect</th></tr></thead><tbody>
-<tr><td><code>ui.favicons</code></td><td><code>'none'</code></td><td><code>'google'</code> resolves site icons via Google S2 — and tells Google which feeds you read.</td></tr>
+<tr><td><code>ui.favicons</code></td><td><code>'google'</code></td><td>Resolves site icons via Google's S2 service, which tells Google which feeds you read. <code>'none'</code> draws initials locally and makes no third-party request.</td></tr>
 <tr><td><code>ui.images</code></td><td><code>true</code></td><td>Default for <code>images()</code>.</td></tr>
 <tr><td><code>defaults.limit</code></td><td><code>10</code></td><td>Default for <code>limit()</code>.</td></tr>
 <tr><td><code>defaults.layout</code></td><td><code>'hero'</code></td><td>Default for <code>layout()</code>.</td></tr>
@@ -917,7 +917,7 @@ RssNewsCard::make()
         <label class="sw-row"><input type="checkbox" id="pgSearch"><span class="track"></span><span><code>searchable()</code></span></label>
         <label class="sw-row"><input type="checkbox" id="pgRead" checked><span class="track"></span><span><code>readState()</code></span></label>
         <label class="sw-row"><input type="checkbox" id="pgAuto"><span class="track"></span><span><code>autoRefresh(10)</code></span></label>
-        <label class="sw-row"><input type="checkbox" id="pgFav"><span class="track"></span><span><code>ui.favicons</code></span></label>
+        <label class="sw-row"><input type="checkbox" id="pgFav" checked><span class="track"></span><span><code>ui.favicons</code></span></label>
       </div>
       <h4 style="margin-top:1.1rem">limit()</h4>
       <div class="range-row">
@@ -1052,7 +1052,7 @@ RssNewsCard::make()
 <p>The interval pauses while the tab is hidden and while the pointer is over the card — a list that reshuffles under the cursor mid-read is worse than a stale one. Auto refreshes read through the cache; they do not hammer upstream.</p>
 
 <h3>Favicons</h3>
-<p>Off by default. <code>ui.favicons =&gt; 'google'</code> turns them on, at the cost of telling Google which feeds your dashboard reads.</p></section>
+<p>On by default: each card shows the publisher's site icon, resolved through Google's S2 service. That tells Google which feeds your dashboard reads, so set <code>ui.favicons =&gt; 'none'</code> to draw initials locally instead and make no third-party request.</p></section>
 <section id="cards-adhoc"><h2>Ad-hoc feeds</h2><p><code>feed()</code> points a card at a URL that is not in the catalogue:</p>
 <pre><code>RssNewsCard::make()
     ->feed('https://example.com/blog/feed.xml', 'Company blog')
@@ -1745,7 +1745,7 @@ Event::listen(FeedFetchFailed::class, function (FeedFetchFailed $event): void {
 <li><b>Redirects are bounded</b> by <code>http.max_redirects</code>, and TLS is verified by default.</li>
 <li><b>Two rate limits</b>, so the refresh button cannot be used to hammer a third party from inside your admin panel.</li>
 <li><b>Optional gate</b> on every endpoint via <code>routes.authorize</code>, on top of Nova's own authentication.</li>
-<li><b>Favicons are off by default</b>, because the alternative leaks the list of feeds you read to a third party.</li>
+<li><b>Favicons are a deliberate trade.</b> They resolve through Google's S2 service, which learns which feeds you read. One config line — <code>ui.favicons =&gt; 'none'</code> — turns them off and draws initials locally.</li>
 </ul></section>
 <section id="security-remains"><h2>What remains yours</h2><p>Feeds are third-party content. A publisher can put anything in a title, and links point wherever they point. Everything renders as text, and every link carries <code>rel="noopener"</code>, but deciding which publishers belong on an administration dashboard is the deploying application's call.</p>
 <p>Read state and bookmarks live in the viewer's <code>localStorage</code>. Nothing about reading behaviour is written to your database or sent anywhere.</p></section>
@@ -2589,7 +2589,7 @@ npm run build        <span class="c"># rebuilds dist/js/card.js and dist/css/car
 
   const cfg = {
     card: 'fixed', layout: 'hero', limit: 5, width: '1/2',
-    images: true, search: false, read: true, auto: false, favicons: false,
+    images: true, search: false, read: true, auto: false, favicons: true,
     state: 'fresh', source: 'laravel_news',
     sources: ['bbc_world', 'the_verge', 'laravel_news'],
   };

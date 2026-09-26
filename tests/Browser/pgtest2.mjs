@@ -58,7 +58,9 @@ click('#pgWidth button',1);
 
 // toggles
 const toggle = (id, v) => { nodes[id].checked = v; nodes[id]._h.change(); };
-toggle('pgImages', false); t('images off removes thumbnails', !html_().includes('data:image/svg+xml'));
+// assert on the thumbnails themselves: the header favicon is also an inline
+// SVG, and it stays when images() is off
+toggle('pgImages', false); t('images off removes thumbnails', !/class="(rss-)?(mini-)?thumb"/.test(html_()));
 t('images(false) in code', code_().includes('->images(false)'));
 toggle('pgImages', true);
 toggle('pgSearch', true); t('search box opens', html_().includes('rss-search') && html_().includes('Search news'));
