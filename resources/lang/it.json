@@ -1,0 +1,17 @@
+{
+    "Refresh": "Aggiorna",
+    "Loading…": "Caricamento…",
+    "Feed unavailable": "Feed non disponibile",
+    "No news available": "Nessuna notizia disponibile",
+    "Featured": "In evidenza",
+    "Search news…": "Cerca notizie…",
+    "No results": "Nessun risultato",
+    "Retry": "Riprova",
+    "Showing cached copy": "Copia in cache",
+    "Mark all as read": "Segna tutte come lette",
+    ":count item": ":count notizia",
+    ":count items": ":count notizie",
+    ":count new": ":count nuove",
+    "updated :time": "agg. :time",
+    "All sources": "Tutte le fonti"
+}
