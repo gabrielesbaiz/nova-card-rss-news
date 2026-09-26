@@ -1,32 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Gabrielesbaiz\NovaCardRssNews\Http\Controllers;
+
+use Gabrielesbaiz\NovaCardRssNews\Sources\SourceRepository;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SourcesController
 {
     /**
-     * Return the list of available RSS sources grouped by category.
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * The catalogue grouped by category, for the source picker.
      */
-    public function index()
+    public function index(Request $request, SourceRepository $sources): JsonResponse
     {
-        $categories = config('nova-card-rss-news.categories', []);
+        /** @var array<int, string> $only */
+        $only = array_values(array_filter((array) $request->input('categories', [])));
 
-        $payload = collect($categories)
-            ->map(fn (array $category, string $key): array => [
-                'key' => $key,
-                'label' => $category['label'] ?? $key,
-                'sources' => collect($category['sources'] ?? [])
-                    ->map(fn (array $source, string $name): array => [
-                        'name' => $name,
-                        'title' => $source['title'] ?? $name,
-                    ])
-                    ->values(),
-            ])
-            ->filter(fn (array $cat): bool => count($cat['sources']) > 0)
-            ->values();
-
-        return response()->json(['categories' => $payload]);
+        return response()->json(['categories' => $sources->grouped($only)]);
     }
 }

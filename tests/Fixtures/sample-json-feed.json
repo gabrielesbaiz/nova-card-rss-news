@@ -1,0 +1,25 @@
+{
+    "version": "https://jsonfeed.org/version/1.1",
+    "title": "Fake JSON Feed",
+    "home_page_url": "https://example.test",
+    "feed_url": "https://example.test/feed.json",
+    "items": [
+        {
+            "id": "1",
+            "url": "https://example.test/news/1",
+            "title": "Prima notizia JSON",
+            "content_html": "<p>Testo <strong>ricco</strong> &amp; entità.</p><img src=\"https://example.test/a.jpg\" />",
+            "image": "https://example.test/a.jpg",
+            "date_published": "2026-06-29T10:00:00Z",
+            "author": { "name": "Mario Rossi" },
+            "tags": ["auto", "vacanze"]
+        },
+        {
+            "id": "2",
+            "url": "https://example.test/news/2",
+            "title": "Seconda notizia JSON",
+            "content_text": "Testo semplice.",
+            "date_published": "2026-06-29T09:00:00Z"
+        }
+    ]
+}

@@ -1,0 +1,2905 @@
+<title>NovaCard RSS News — Documentation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#f7f8fa; --ink:#101828; --sub:#475467; --muted:#606d84;
+  --rule:#e4e7ec; --wash:#eef1f5;
+  --accent:#0891b2; --accent-text:#0b6a83; --accent-ink:#02222b;
+  --raised:#ffffff;            /* panels sit above the page in light */
+  --display:"Sora",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,monospace;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0b1220; --ink:#e8eefc; --sub:#a9b5cc; --muted:#7c8aa5;
+    --rule:#1d2739; --wash:#121b2c;
+    --accent:#22d3ee; --accent-text:#4fd8ef; --accent-ink:#041016;
+    --raised:#151f33;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0b1220; --ink:#e8eefc; --sub:#a9b5cc; --muted:#7c8aa5;
+  --rule:#1d2739; --wash:#121b2c;
+  --accent:#22d3ee; --accent-text:#4fd8ef; --accent-ink:#041016;
+  --raised:#151f33;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--display);-webkit-font-smoothing:antialiased;padding-top:3.6rem}
+:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px}
+a{color:var(--accent-text)}
+
+.mx{max-width:88rem;margin:0 auto;padding-inline:clamp(1.1rem,3.5vw,2.8rem)}
+@media(min-width:1700px){.mx{max-width:100rem}}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-text);margin:0}
+.num{font-variant-numeric:tabular-nums}
+.hidden{display:none!important}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.reveal.seen{opacity:1;transform:none}
+
+.btn{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-family:var(--mono);font-weight:600;font-size:.82rem;letter-spacing:.02em;padding:.8rem 1.25rem;background:var(--ink);color:var(--paper);border:1px solid var(--ink);transition:background .18s,color .18s,border-color .18s}
+.btn:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.btn.ghost:hover{border-color:var(--accent-text);color:var(--accent-text);background:transparent}
+
+/* masthead */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.top .in{display:flex;align-items:center;gap:.9rem;height:3.6rem}
+.top .brand{display:inline-flex;align-items:baseline;gap:.55rem;font-weight:800;letter-spacing:-.02em;font-size:1.02rem;text-decoration:none;white-space:nowrap;color:var(--accent-text)}
+.top .brand i{font-style:normal;color:var(--ink)}
+.top .ver{font-family:var(--mono);font-size:.66rem;color:var(--accent-text);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent-text) 35%,transparent);padding:.1rem .42rem;border-radius:999px}
+.top nav{display:none;align-items:center;gap:.1rem;margin-left:auto;font-size:.84rem}
+@media(min-width:1080px){.top nav{display:flex}}
+.top nav a{text-decoration:none;color:var(--sub);padding:.34rem .62rem;border-radius:.3rem;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a[aria-current="true"],.top nav a[aria-current="page"]{color:var(--accent-text);border-color:color-mix(in srgb,var(--accent-text) 45%,transparent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.top nav a.sponsor{color:var(--accent-text);font-weight:600}
+.top .tools{display:flex;align-items:center;gap:.45rem;margin-left:auto}
+@media(min-width:1080px){.top .tools{margin-left:.6rem}}
+.top .search{display:inline-flex;align-items:center;gap:.5rem;cursor:pointer;font-family:var(--mono);font-size:.72rem;color:var(--muted);background:var(--wash);border:1px solid var(--rule);border-radius:999px;padding:.34rem .55rem .34rem .7rem}
+.top .search svg{width:.8rem;height:.8rem;fill:none;stroke:currentColor;stroke-width:1.8}
+.top .search kbd{font-family:inherit;font-size:.62rem;border:1px solid var(--rule);border-radius:.25rem;padding:.06rem .3rem}
+.top .mode{font-family:var(--mono);font-size:.72rem;font-weight:600;cursor:pointer;background:var(--ink);color:var(--paper);border:1px solid var(--ink);padding:.36rem .7rem;border-radius:calc(var(--radius) - 4px)}
+.top .mode:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.progress{position:absolute;inset:auto auto -1px 0;height:2px;width:0;background:var(--accent-text);transition:width .08s linear}
+
+/* command palette */
+.pal[hidden]{display:none}
+.pal{position:fixed;inset:0;z-index:80;display:grid;place-items:start center;padding-top:clamp(3rem,12vh,8rem);background:color-mix(in srgb,var(--ink) 38%,transparent);backdrop-filter:blur(3px)}
+.pal .box{width:min(34rem,92vw);background:var(--raised);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;box-shadow:0 30px 70px -30px rgba(0,0,0,.5)}
+.pal input{width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;color:var(--ink);font:inherit;font-size:1rem;padding:1rem 1.1rem;outline:none}
+.pal ul{list-style:none;margin:0;padding:.4rem;max-height:52vh;overflow-y:auto}
+.pal li{display:flex;align-items:baseline;gap:.7rem;padding:.6rem .7rem;cursor:pointer;font-size:.92rem;color:var(--sub)}
+.pal li b{font-weight:600;color:var(--ink)}
+.pal li em{font-style:normal;margin-left:auto;font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pal li[aria-selected="true"]{background:var(--wash)}
+.pal li[aria-selected="true"] b{color:var(--accent-text)}
+
+/* shared type */
+h1,h2,h3,h4{font-family:var(--display)}
+code,pre,.mono{font-family:var(--mono)}
+pre{background:var(--wash);border:1px solid var(--rule);border-left:3px solid var(--accent-text);border-radius:var(--radius);padding:1rem 1.1rem;overflow-x:auto;font-size:.78rem;line-height:1.65;margin:1.1rem 0 0;max-width:62rem}
+pre code{background:none;padding:0;border:0;font-size:inherit;color:var(--sub)}
+code{background:var(--wash);border:1px solid var(--rule);border-radius:.25rem;padding:.06rem .32rem;font-size:.84em;color:var(--accent-text)}
+table{border-collapse:collapse;width:100%;max-width:62rem;margin-top:1.2rem;font-size:.88rem}
+th,td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--sub)}
+th{font-family:var(--mono);font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:500;border-bottom-color:var(--ink)}
+td code{white-space:nowrap}
+.scroller{overflow-x:auto;max-width:100%}
+ul.plain{list-style:none;padding:0;margin:1.1rem 0 0;max-width:42rem}
+ul.plain li{position:relative;padding-left:1.1rem;font-size:.96rem;line-height:1.7;color:var(--sub);margin-bottom:.5rem}
+ul.plain li::before{content:"";position:absolute;left:0;top:.65em;width:.42rem;height:1px;background:var(--accent-text)}
+
+/* docs layout */
+.docs{display:grid;gap:clamp(1.8rem,3.4vw,3rem);grid-template-columns:1fr;padding-block:clamp(2rem,4vw,3rem)}
+@media(min-width:1000px){.docs{grid-template-columns:15rem minmax(0,1fr)}}
+@media(min-width:1280px){.docs{grid-template-columns:15rem minmax(0,1fr) 14rem}}
+@media(min-width:1700px){.docs{grid-template-columns:16rem minmax(0,1fr) 15rem;gap:clamp(2.4rem,3.4vw,4rem)}}
+.sidenav,.onthispage{display:none}
+@media(min-width:1000px){.sidenav{display:block;position:sticky;top:5.2rem;align-self:start;max-height:calc(100vh - 7rem);overflow-y:auto}}
+@media(min-width:1280px){.onthispage{display:block;position:sticky;top:5.2rem;align-self:start;max-height:calc(100vh - 7rem);overflow-y:auto}}
+.sidenav h4,.onthispage h4{font-family:var(--mono);font-size:.64rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 .7rem}
+.sidenav .group+.group{margin-top:1.5rem}
+.sidenav ul{list-style:none;margin:0;padding:0;display:grid;gap:.1rem}
+.sidenav a{display:block;text-decoration:none;color:var(--sub);font-size:.9rem;padding:.3rem .6rem;border-left:2px solid var(--rule)}
+.sidenav a:hover{color:var(--ink)}
+.sidenav a[aria-current="page"]{color:var(--accent-text);border-left-color:var(--accent-text);font-weight:600;background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.onthispage ol{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;counter-reset:toc}
+.onthispage a{display:flex;gap:.6rem;text-decoration:none;color:var(--sub);font-size:.84rem;padding:.28rem .5rem;border-left:2px solid var(--rule)}
+.onthispage a::before{counter-increment:toc;content:counter(toc,decimal-leading-zero);font-family:var(--mono);font-size:.64rem;color:var(--muted)}
+.onthispage a:hover{color:var(--ink)}
+.onthispage a[aria-current="true"]{color:var(--accent-text);border-left-color:var(--accent-text);font-weight:600}
+.onthispage a[aria-current="true"]::before{color:var(--accent-text)}
+.body{min-width:0}
+.body h1{font-size:clamp(1.8rem,4vw,2.15rem);font-weight:800;letter-spacing:-.025em;margin:0}
+.body .lede{font-size:1.05rem;line-height:1.7;color:var(--sub);max-width:46rem;margin:.6rem 0 0}
+.body section{padding-block:clamp(1.7rem,3.2vw,2.4rem);border-top:1px solid var(--rule);margin-top:1.4rem}
+.body section:first-of-type{border-top:0;margin-top:.6rem}
+.body h2{font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:800;letter-spacing:-.02em;margin:0;scroll-margin-top:5rem}
+.body h3{font-size:1.02rem;font-weight:600;margin:1.7rem 0 0;color:var(--ink)}
+.body p{font-size:.99rem;line-height:1.74;color:var(--sub);max-width:46rem;margin:.9rem 0 0}
+.note{margin-top:1.3rem;border-left:3px solid var(--accent-text);background:var(--wash);padding:.95rem 1.15rem;font-size:.92rem;line-height:1.7;color:var(--sub);max-width:42rem}
+.note b{color:var(--ink)}
+.pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:2.4rem;padding-top:1.4rem}
+.pager a{text-decoration:none;font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.pager a b{display:block;font-family:var(--display);font-size:1.05rem;letter-spacing:-.01em;text-transform:none;font-weight:800;color:var(--ink);margin-top:.3rem}
+.pager a:hover b{color:var(--accent-text)}
+.pager .next{text-align:right;margin-left:auto}
+</style>
+<style>
+/* ---------- landing identity: Nova console ---------- */
+.hero{border-bottom:1px solid var(--rule);padding-block:clamp(2.6rem,6vw,4.4rem);position:relative;overflow:hidden;
+  background:radial-gradient(58rem 26rem at 12% -14%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 62%),
+             linear-gradient(180deg,var(--wash),var(--paper))}
+.hero .grid{display:grid;gap:clamp(2rem,5vw,3.4rem);grid-template-columns:1fr;position:relative;z-index:2}
+@media(min-width:1020px){.hero .grid{grid-template-columns:1.02fr .98fr;align-items:center}}
+@media(min-width:1500px){.hero .grid{grid-template-columns:1fr 1.05fr;gap:4rem}}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:.45rem;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent-text) 30%,transparent);padding:.25rem .7rem;border-radius:999px}
+.hero h1{font-size:clamp(2.4rem,6vw,4.1rem);font-weight:800;line-height:1.02;letter-spacing:-.035em;margin:1.1rem 0 0;max-width:15ch}
+.hero h1 em{font-style:normal;color:var(--accent-text)}
+.hero .sell{font-size:1.06rem;line-height:1.68;color:var(--sub);max-width:35rem;margin:1.2rem 0 0}
+.hero .cta{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.8rem}
+.hero .facts{display:flex;gap:1.9rem;flex-wrap:wrap;margin-top:2.2rem;border-top:1px solid var(--rule);padding-top:1.3rem}
+.hero .facts b{display:block;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;color:var(--ink);font-variant-numeric:tabular-nums}
+.hero .facts span{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+.btn{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;font-family:var(--mono);font-weight:600;font-size:.8rem;padding:.78rem 1.2rem;border-radius:var(--radius);background:var(--ink);color:var(--paper);border:1px solid var(--ink);transition:background .18s,color .18s,border-color .18s}
+.btn:hover{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+.btn.ghost:hover{border-color:var(--accent-text);color:var(--accent-text);background:transparent}
+
+/* ---------- bands ----------
+   The inverted band is a DARK ground inside a LIGHT theme. In dark theme there
+   is nothing to invert to, so it becomes a raised surface instead — inverting
+   twice is what turned this section into dark text on dark panels. */
+.band{border-bottom:1px solid var(--rule);padding-block:clamp(2.6rem,5.6vw,4.2rem)}
+.band h2{font-size:clamp(1.7rem,3.8vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.08;margin:.9rem 0 0;max-width:20ch;color:inherit}
+.band p.lede{font-size:1.01rem;line-height:1.74;color:var(--sub);max-width:46rem;margin:1.1rem 0 0}
+.band.inverted{--surface:#0d1526;--surface-2:#16213a;--on:#e8eefc;--on-dim:#a9b5cc;--edge:#25324a;
+  background:linear-gradient(180deg,var(--surface),#0a1120);color:var(--on);border-bottom-color:var(--edge)}
+:root[data-theme="dark"] .band.inverted,
+:root:not([data-theme="light"]) .band.inverted{background:linear-gradient(180deg,var(--wash),var(--paper))}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .band.inverted{background:linear-gradient(180deg,#0d1526,#0a1120)}}
+.band.inverted h2{color:var(--on)}
+.band.inverted p.lede{color:var(--on-dim)}
+.band.inverted .eyebrow{color:var(--accent)}
+
+.cols3{display:grid;gap:1.1rem;grid-template-columns:1fr;margin-top:2rem}
+@media(min-width:760px){.cols3{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1040px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.cell{background:var(--raised);border:1px solid var(--rule);border-radius:var(--radius);padding:1.25rem}
+.cell h3{font-size:1.02rem;font-weight:700;margin:.65rem 0 .4rem;color:var(--ink)}
+.cell p{font-size:.92rem;line-height:1.66;color:var(--sub);margin:0}
+.band.inverted .cell{background:var(--surface-2);border-color:var(--edge)}
+.band.inverted .cell h3{color:var(--on)}
+.band.inverted .cell p{color:var(--on-dim)}
+.band.inverted .cell .eyebrow{color:var(--accent)}
+
+/* ---------- code, and what it produces ---------- */
+.io{display:grid;gap:1.3rem;grid-template-columns:1fr;margin-top:1.8rem;align-items:start}
+@media(min-width:1000px){.io{grid-template-columns:1.02fr .98fr}}
+@media(min-width:1500px){.io{gap:2.2rem}}
+figure.code{margin:0;min-width:0}
+figure.code figcaption,.cap{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem;display:flex;gap:.5rem;align-items:center}
+figure.code figcaption::before,.cap::before{content:"";width:.9rem;height:1px;background:var(--accent-text)}
+pre .k{color:var(--accent-text);font-weight:600}
+pre .s{color:color-mix(in srgb,var(--ink) 84%,transparent)}
+pre .c{color:var(--muted);font-style:italic}
+pre .f{color:var(--ink);font-weight:600}
+pre .n{color:var(--accent-text)}
+.band.inverted pre{background:var(--surface-2);border-color:var(--edge);border-left-color:var(--accent);color:var(--on-dim)}
+.band.inverted pre .s,.band.inverted pre .f{color:var(--on)}
+.band.inverted pre .k,.band.inverted pre .n{color:var(--accent)}
+.band.inverted figure.code figcaption,.band.inverted .cap{color:var(--on-dim)}
+.band.inverted code{background:var(--surface-2);border-color:var(--edge);color:var(--accent)}
+
+/* ---------- tabs: pick a card / pick a layout ---------- */
+.tabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:1.6rem}
+.tabs button{cursor:pointer;font-family:var(--mono);font-size:.72rem;font-weight:500;color:var(--sub);background:var(--raised);border:1px solid var(--rule);border-radius:999px;padding:.42rem .85rem;transition:all .16s}
+.tabs button:hover{color:var(--ink);border-color:color-mix(in srgb,var(--accent-text) 45%,transparent)}
+.tabs button[aria-selected="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.band.inverted .tabs button{background:var(--surface-2);border-color:var(--edge);color:var(--on-dim)}
+.band.inverted .tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tabhint{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:.7rem 0 0;display:flex;align-items:center;gap:.4rem}
+.tabhint::before{content:"\2190\2192";letter-spacing:0}
+
+/* ---------- the live-ish card preview ---------- */
+.preview{background:var(--raised);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent-text) 12%,transparent),0 24px 55px -34px color-mix(in srgb,var(--accent) 60%,transparent)}
+.band.inverted .preview{background:var(--surface-2);border-color:var(--edge)}
+.preview .ph{display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.band.inverted .preview .ph{border-bottom-color:var(--edge);color:var(--on-dim)}
+.preview .ph .dot{width:.4rem;height:.4rem;border-radius:999px;background:var(--accent);flex-shrink:0}
+.preview .ph .right{margin-left:auto}
+.preview .pb{padding:.2rem 0}
+.preview ul{list-style:none;margin:0;padding:0}
+.preview li{display:flex;gap:.6rem;align-items:baseline;padding:.55rem .85rem;border-bottom:1px solid var(--rule);font-size:.84rem;color:var(--sub);line-height:1.4}
+.band.inverted .preview li{border-bottom-color:var(--edge);color:var(--on-dim)}
+.preview li:last-child{border-bottom:0}
+.preview li .t{margin-left:auto;font-family:var(--mono);font-size:.56rem;color:var(--muted);white-space:nowrap}
+.preview li.read{opacity:.5}
+.preview .lead{padding:.85rem;border-bottom:1px solid var(--rule);background:color-mix(in srgb,var(--accent) 7%,transparent)}
+.band.inverted .preview .lead{border-bottom-color:var(--edge)}
+.preview .lead .tag{display:inline-block;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:.1rem .4rem;border-radius:4px}
+.preview .lead h5{margin:.5rem 0 .3rem;font-size:.98rem;font-weight:700;line-height:1.3;color:var(--ink)}
+.band.inverted .preview .lead h5{color:var(--on)}
+.preview .lead p{margin:0;font-size:.8rem;line-height:1.5;color:var(--sub)}
+.band.inverted .preview .lead p{color:var(--on-dim)}
+.preview .lead small{display:block;margin-top:.5rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--muted)}
+.preview .grid4{display:grid;gap:.55rem;grid-template-columns:repeat(2,1fr);padding:.7rem}
+@media(min-width:540px){.preview .grid4{grid-template-columns:repeat(3,1fr)}}
+.preview .g{border:1px solid var(--rule);border-radius:calc(var(--radius) - 3px);padding:.55rem;font-size:.7rem;color:var(--sub)}
+.band.inverted .preview .g{border-color:var(--edge)}
+.preview .g .thumb{height:2.2rem;border-radius:5px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--ink) 16%,transparent));margin-bottom:.4rem}
+.preview .g b{display:block;font-size:.76rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:.3rem}
+.band.inverted .preview .g b{color:var(--on)}
+.badge{display:inline-block;font-family:var(--mono);font-size:.53rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-text);border:1px solid color-mix(in srgb,var(--accent-text) 38%,transparent);border-radius:999px;padding:.04rem .34rem;white-space:nowrap}
+.band.inverted .badge{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.preview .ticker{display:flex;gap:1.4rem;padding:.7rem .85rem;overflow:hidden;white-space:nowrap;font-size:.8rem;color:var(--sub)}
+.preview .ticker span{display:inline-flex;align-items:center;gap:.45rem}
+.preview .ticker span::before{content:"";width:.34rem;height:.34rem;border-radius:999px;background:var(--accent)}
+.preview .search{display:flex;align-items:center;gap:.45rem;margin:.55rem .85rem;padding:.4rem .6rem;border:1px solid var(--rule);border-radius:999px;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.band.inverted .preview .search{border-color:var(--edge)}
+
+/* ---------- the read flow ---------- */
+.flow{display:grid;gap:.9rem;grid-template-columns:1fr;margin-top:1.9rem}
+@media(min-width:880px){.flow{grid-template-columns:repeat(2,1fr)}}
+.flow .f{display:grid;grid-template-columns:auto 1fr;gap:.35rem .9rem;align-items:start;background:var(--raised);border:1px solid var(--rule);border-left:3px solid var(--rule);border-radius:var(--radius);padding:1rem 1.1rem}
+.band.inverted .flow .f{background:var(--surface-2);border-color:var(--edge);border-left-color:var(--edge)}
+.flow .f.good{border-left-color:var(--accent-text)}
+.flow .f.warn{border-left-color:color-mix(in srgb,var(--accent-text) 55%,var(--muted))}
+.flow .f.bad{border-left-color:color-mix(in srgb,var(--muted) 80%,transparent)}
+.flow .f .n{grid-row:span 2;font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--accent-text);padding-top:.15rem}
+.flow .f h3{margin:0;font-size:.98rem;font-weight:700;color:var(--ink)}
+.band.inverted .flow .f h3{color:var(--on)}
+.flow .f p{margin:.3rem 0 0;font-size:.88rem;line-height:1.6;color:var(--sub)}
+.band.inverted .flow .f p{color:var(--on-dim)}
+.flow .f .wait{display:inline-block;margin-top:.55rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);border-radius:999px;padding:.08rem .45rem}
+.band.inverted .flow .f .wait{border-color:var(--edge)}
+.flow .f.good .wait{color:var(--accent-text);border-color:color-mix(in srgb,var(--accent-text) 40%,transparent)}
+
+.versus{display:grid;margin-top:1.9rem;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;background:var(--raised)}
+@media(min-width:900px){.versus{grid-template-columns:1fr 1fr}}
+.versus>div{padding:1.5rem 1.6rem;min-width:0}
+.versus>div+div{border-top:1px solid var(--rule)}
+@media(min-width:900px){.versus>div+div{border-top:0;border-left:1px solid var(--rule)}}
+.versus h3{margin:.65rem 0 0;font-size:1.12rem;font-weight:700}
+.versus pre{font-size:.72rem}
+
+/* ---------- sponsor band + footer ---------- */
+.support{border-top:1px solid var(--rule);padding-block:clamp(3rem,6.5vw,5rem)}
+.support .eyebrow{display:flex;align-items:center;gap:.7rem}
+.support .eyebrow::before{content:"";width:1.6rem;height:1px;background:var(--accent-text)}
+.support h2{font-size:clamp(1.9rem,5vw,3.1rem);font-weight:800;letter-spacing:-.035em;line-height:1.04;margin:.9rem 0 0;max-width:16ch}
+.support h2 em{font-style:normal;color:var(--accent-ink);background:var(--accent);padding:0 .12em;border-radius:5px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.support .top-grid{display:grid;gap:clamp(2rem,5vw,3.4rem);grid-template-columns:1fr;margin-top:1.4rem}
+@media(min-width:940px){.support .top-grid{grid-template-columns:1.15fr .85fr;align-items:start}}
+.support p.bodytext{font-size:1rem;line-height:1.74;color:var(--sub);max-width:34rem;margin:1.1rem 0 0}
+.sponsor-card{border:1px solid var(--rule);background:var(--raised);border-radius:var(--radius);padding:1.6rem}
+.sponsor-card .price{font-size:clamp(2.6rem,6vw,3.5rem);font-weight:800;letter-spacing:-.04em;color:var(--accent-text);line-height:1}
+.sponsor-card .terms{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:.7rem 0 1.3rem}
+.sponsor-card .btn{width:100%;justify-content:center}
+.sponsor-card .fine{font-size:.8rem;color:var(--muted);margin:.9rem 0 0;text-align:center}
+.ways{display:grid;grid-template-columns:1fr;margin-top:2.6rem;border-top:1px solid var(--rule)}
+@media(min-width:720px){.ways{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.ways{grid-template-columns:repeat(4,1fr)}}
+.ways .w{padding:1.4rem 1.3rem 1.6rem;border-bottom:1px solid var(--rule);position:relative}
+@media(min-width:1040px){.ways .w{border-right:1px solid var(--rule)}.ways .w:last-child{border-right:0}}
+.ways .tag{position:absolute;top:1.4rem;right:1.3rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.16em;color:var(--accent-text);border:1px solid color-mix(in srgb,var(--accent-text) 40%,transparent);padding:.1rem .4rem;border-radius:999px}
+.ways h3{font-size:1rem;font-weight:700;margin:.8rem 0 .45rem}
+.ways p{margin:0;font-size:.88rem;line-height:1.62;color:var(--sub)}
+.why{margin-top:2.2rem;border-left:3px solid var(--accent-text);background:var(--wash);padding:1.1rem 1.3rem;font-size:.92rem;line-height:1.72;color:var(--sub);border-radius:0 var(--radius) var(--radius) 0}
+.why b{color:var(--ink)}
+
+.sitefoot{border-top:1px solid var(--rule);background:var(--wash);padding-block:clamp(2.6rem,5vw,3.6rem)}
+.sitefoot .cols{display:grid;gap:2rem;grid-template-columns:repeat(2,1fr)}
+@media(min-width:880px){.sitefoot .cols{grid-template-columns:repeat(4,1fr)}}
+.sitefoot h4{font-family:var(--mono);font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 1rem}
+.sitefoot ul{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.sitefoot a{text-decoration:none;color:var(--sub);font-size:.9rem}
+.sitefoot a:hover{color:var(--accent-text)}
+.sitefoot .base{display:flex;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:2.4rem;padding-top:1.3rem;font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;color:var(--muted)}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+
+<header class="top">
+  <div class="mx in">
+    <a class="brand" href="#/home">NovaCard RSS News<i>.</i> <span class="ver">v3.0.0</span></a>
+    <nav id="nav">
+      <a href="#/intro">Intro</a>
+      <a href="#/install">Install</a>
+      <a href="#/play">Playground</a>
+      <a href="#/cards">Cards</a>
+      <a href="#/sources">Sources</a>
+      <a href="#/commands">Commands</a>
+      <a href="#/api">API</a>
+      <a class="sponsor" href="https://github.com/sponsors/gabrielesbaiz">&#9829; Sponsor</a>
+    </nav>
+    <div class="tools">
+      <button class="search" id="openPal" aria-label="Search the documentation" aria-keyshortcuts="Meta+K">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4 14 14"/></svg>
+        <span>Search</span><kbd id="kbd">&#8984;K</kbd>
+      </button>
+      <button class="mode" id="mode">Dark</button>
+    </div>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<div class="pal" id="pal" hidden>
+  <div class="box" role="dialog" aria-modal="true" aria-label="Search the documentation">
+    <input id="palInput" type="text" placeholder="Jump to&hellip;" autocomplete="off" spellcheck="false">
+    <ul id="palList" role="listbox"></ul>
+  </div>
+</div>
+
+<main>
+
+<!-- ============================= HOME ============================= -->
+<section class="page" id="home">
+
+  <div class="hero">
+    <div class="mx grid">
+      <div>
+        <p class="eyebrow">Laravel Nova &middot; dashboard card</p>
+        <h1>Three lines in a dashboard. <em>Any feed</em> on the screen.</h1>
+        <p class="sell">One card class and a source key. The feed arrives cached, cleaned, sorted and limited, in one of four layouts &mdash; with no controller, no route file and no published assets on your side.</p>
+        <div class="cta">
+          <a class="btn" href="#/install">Install it</a>
+        </div>
+        <div class="facts">
+          <div><b class="num">4</b><span>Feed formats</span></div>
+          <div><b class="num">3</b><span>Cards</span></div>
+          <div><b class="num">4</b><span>Layouts</span></div>
+          <div><b class="num">89</b><span>Tests</span></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="cap">app/Nova/Dashboards/Main.php</p>
+<pre><code><span class="k">use</span> <span class="s">Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsCard</span>;
+
+<span class="k">public function</span> <span class="f">cards</span>(): <span class="k">array</span>
+{
+    <span class="k">return</span> [
+        <span class="f">RssNewsCard</span>::<span class="f">make</span>()-&gt;<span class="f">source</span>(<span class="s">'laravel_news'</span>),
+    ];
+}</code></pre>
+        <p class="tabhint" style="margin-top:.9rem">No controller, no route file, no published assets</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 01 · try it ============ -->
+  <div class="band" id="try">
+    <div class="mx">
+      <p class="eyebrow">01 &middot; Try it</p>
+      <h2>Click a card. Click a layout. That is the API.</h2>
+      <p class="lede">Every combination below is a real call with its real result. Pick a card class, then a layout, and the code and the rendering change together.</p>
+
+      <div class="tabs" role="tablist" aria-label="Card class" id="cardTabs">
+        <button role="tab" type="button" data-card="fixed" aria-selected="true">RssNewsCard</button>
+        <button role="tab" type="button" data-card="select" aria-selected="false">RssNewsSelectCard</button>
+        <button role="tab" type="button" data-card="stream" aria-selected="false">RssNewsStreamCard</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Layout" id="layoutTabs">
+        <button role="tab" type="button" data-layout="hero" aria-selected="true">layout('hero')</button>
+        <button role="tab" type="button" data-layout="compact" aria-selected="false">layout('compact')</button>
+        <button role="tab" type="button" data-layout="grid" aria-selected="false">layout('grid')</button>
+        <button role="tab" type="button" data-layout="ticker" aria-selected="false">layout('ticker')</button>
+      </div>
+      <p class="tabhint">arrow keys step through &middot; <span id="comboName">RssNewsCard, hero layout</span></p>
+      <p style="margin:1rem 0 0"><a class="btn ghost" href="#/play">Open the playground &rarr;</a></p>
+
+      <div class="io">
+        <figure class="code">
+          <figcaption id="codeCap">The call</figcaption>
+          <pre><code id="demoCode"></code></pre>
+          <p class="lede" style="font-size:.9rem;margin-top:.9rem" id="demoNote"></p>
+        </figure>
+        <div>
+          <p class="cap">What renders</p>
+          <div class="preview" id="demoPreview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 02 · the problem ============ -->
+  <div class="band" id="problem">
+    <div class="mx">
+      <p class="eyebrow">02 &middot; The problem</p>
+      <h2>Reading a feed is easy. Reading it on a dashboard is not.</h2>
+      <p class="lede">Every one of these is a bug somebody shipped with eighty lines of their own, and every one of them is handled here.</p>
+      <div class="cols3">
+        <div class="cell">
+          <p class="eyebrow">Availability</p>
+          <h3>The publisher goes down</h3>
+          <p>A fetch without a timeout hangs the dashboard request behind it. Requests time out in 8 seconds, retry twice, and a failure serves the cached copy labelled honestly as stale.</p>
+        </div>
+        <div class="cell">
+          <p class="eyebrow">Dialects</p>
+          <h3>Four incompatible formats</h3>
+          <p>RSS 2.0, Atom, RDF and JSON Feed, detected by content because publishers get content types wrong. Everything lands in one item shape with an ISO-8601 date.</p>
+        </div>
+        <div class="cell">
+          <p class="eyebrow">Safety</p>
+          <h3>Remote content in an admin panel</h3>
+          <p>Markup is stripped and entities decoded server side. URLs are never accepted from the client — an ad-hoc feed is encrypted into the card's meta with your app key.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 03 · how a read works ============ -->
+  <div class="band inverted" id="how">
+    <div class="mx">
+      <p class="eyebrow">03 &middot; How a read works</p>
+      <h2>Five ways a read ends. Only one of them waits.</h2>
+      <p class="lede">A card asks for a feed. Before any network call happens, the cache decides which of these five it is — so the slow path is the exception, not the rule.</p>
+
+      <div class="flow">
+        <div class="f good">
+          <span class="n">01</span>
+          <div>
+            <h3>Cache is fresh</h3>
+            <p>Younger than <code>cache.ttl</code>, 300 seconds by default. Returned as is — nothing leaves your network.</p>
+            <span class="wait">Instant</span>
+          </div>
+        </div>
+        <div class="f good">
+          <span class="n">02</span>
+          <div>
+            <h3>Cache is stale, upstream is fine</h3>
+            <p>The old copy goes back immediately and a refresh runs behind it — queued when <code>queue.enabled</code>, inline otherwise. Only the first request past the TTL queues a job.</p>
+            <span class="wait">Instant, refreshed behind</span>
+          </div>
+        </div>
+        <div class="f good">
+          <span class="n">03</span>
+          <div>
+            <h3>Refresh, nothing changed</h3>
+            <p><code>ETag</code> and <code>Last-Modified</code> go back as conditional headers. A <code>304</code> extends the TTL without downloading or re-parsing anything.</p>
+            <span class="wait">A few hundred bytes</span>
+          </div>
+        </div>
+        <div class="f warn">
+          <span class="n">04</span>
+          <div>
+            <h3>Upstream failed, cache has a copy</h3>
+            <p>The cached items are served with <code>stale: true</code> and the card says "Showing cached copy". A dead publisher never blanks a dashboard.</p>
+            <span class="wait">Instant, labelled</span>
+          </div>
+        </div>
+        <div class="f bad">
+          <span class="n">05</span>
+          <div>
+            <h3>Upstream failed, cache is empty</h3>
+            <p>The only case that waits on the network, and the only one that can fail: <code>502</code>, and the card offers a retry button rather than an empty list.</p>
+            <span class="wait">Up to 8s, then retry</span>
+          </div>
+        </div>
+        <div class="f">
+          <span class="n">&rarr;</span>
+          <div>
+            <h3>Keep it in state 01</h3>
+            <p>Schedule <code>nova-rss:warm</code> every five minutes and every read is a cache hit. With <code>queue.enabled</code>, even a stale one never waits.</p>
+            <span class="wait">The recommended setup</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="io">
+        <figure class="code">
+          <figcaption>What the card receives</figcaption>
+<pre><code><span class="c"># GET /nova-vendor/nova-card-rss-news/feed?source=laravel_news&amp;limit=1</span>
+{
+  <span class="n">"key"</span>: <span class="s">"laravel_news"</span>,
+  <span class="n">"fetched_at"</span>: <span class="s">"2026-09-25T18:04:11+00:00"</span>,
+  <span class="n">"stale"</span>: <span class="k">false</span>,          <span class="c">// state 01 above</span>
+  <span class="n">"parser"</span>: <span class="s">"rss2"</span>,
+  <span class="n">"items"</span>: [{
+    <span class="n">"id"</span>: <span class="s">"b1946ac92492d2347c6235b4d2611184"</span>,
+    <span class="n">"title"</span>: <span class="s">"Laravel 12 released"</span>,
+    <span class="n">"published_at"</span>: <span class="s">"2026-09-25T10:00:00+00:00"</span>,
+    <span class="n">"source_key"</span>: <span class="s">"laravel_news"</span>
+  }]
+}</code></pre>
+        </figure>
+        <figure class="code">
+          <figcaption>Which feeds are in which state</figcaption>
+<pre><code><span class="c">$</span> php artisan nova-rss:check
+
+ Status   Source         Parser  Items  Time      URL / error
+ <span class="n">ok</span>       bbc_world      rss2    34     241 ms    https://feeds.bbci.co.uk/…
+ <span class="n">ok</span>       laravel_news   rss2    20     118 ms    https://feed.laravel-news.com/
+ <span class="k">fail</span>     old_blog       -       0      5003 ms   HTTP 404</code></pre>
+          <p class="lede" style="font-size:.9rem;margin-top:.9rem">Exits non-zero on any failure, so it belongs in CI — a moved feed is found before a user finds it.</p>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div class="support" id="support">
+    <div class="mx">
+      <p class="eyebrow">Support this package</p>
+      <h2>Free forever. Not free to <em>maintain</em>.</h2>
+      <div class="top-grid">
+        <div>
+          <p class="bodytext">When this works, you never think about it. You do not see the publisher that started returning 403 to unknown user agents, the Atom feed that moved, the news site whose dates went non-standard, or the Nova release that changed how cards receive their meta. You see headlines on a dashboard. That invisibility is the work. It stays MIT either way.</p>
+          <p class="bodytext">Sponsorship buys the boring half: keeping the presets alive, the suite green across new PHP, Laravel and Nova majors, and answering issues from people running this in production. It does not buy features, and it does not unlock anything. It stays MIT either way.</p>
+        </div>
+        <div class="sponsor-card">
+          <div class="price">$5</div>
+          <div class="terms">per month &middot; cancel anytime</div>
+          <a class="btn" href="https://github.com/sponsors/gabrielesbaiz">&#9829; Become a sponsor</a>
+          <p class="fine">Company tiers get a logo in the README and on this page.</p>
+        </div>
+      </div>
+      <div class="ways">
+        <div class="w"><span class="tag">FREE</span><div aria-hidden="true">&#11088;</div><h3>Star the repo</h3><p>Thirty seconds, and it is the first signal other developers look at.</p></div>
+        <div class="w"><span class="tag">FREE</span><div aria-hidden="true">&#128027;</div><h3>Open a good issue</h3><p>A feed URL and what you expected is worth more than you think — dead feeds are found by users first.</p></div>
+        <div class="w"><div aria-hidden="true">&#10084;&#65039;</div><h3>Sponsor from $5</h3><p>Monthly, cancel anytime. It pays for the maintenance nobody sees.</p></div>
+        <div class="w"><div aria-hidden="true">&#127970;</div><h3>Company tier</h3><p>If this runs on your team's dashboards, your logo goes in the README and here.</p></div>
+      </div>
+      <p class="why"><b>Why ask at all?</b> This package is MIT and always will be. Nothing is paywalled, nothing phones home, and no feed, preset or layout is held back for sponsors. Sponsorship buys maintenance time, not features — and if you cannot sponsor, the star and the bug report genuinely help.</p>
+    </div>
+  </div>
+
+</section>
+
+<section class="page hidden" id="intro">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Introduction</h1>
+<p class="lede">What the package is, when to reach for it, and the trade it makes.</p>
+<section id="intro-what"><h2>What it is</h2><p>A Laravel Nova dashboard card that reads RSS, Atom, RDF and JSON Feed, normalizes all four into one item shape, caches the result, and renders it in one of four layouts. Three cards ship: one pinned to a feed, one with a picker, and one that merges many feeds into a single chronological stream.</p>
+<p>Nothing is Nova-specific below the surface. The feed pipeline — <code>FeedManager</code>, the parsers, the source catalogue — is a plain service you can call from a Blade view, a notification or a report.</p>
+<pre><code>use Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsCard;
+
+public function cards(): array
+{
+    return [
+        RssNewsCard::make()->source('laravel_news'),
+    ];
+}</code></pre></section>
+<section id="intro-need"><h2>Do you need this?</h2><p>If the items already live in your database, <b>you do not need this package</b>. A Nova card with a Vue file and a controller is about eighty lines, has no dependencies, and nothing ever surprises you.</p>
+<p>You want this package when the data lives on somebody else's server. That is where the eighty lines turn into: a <code>file_get_contents</code> that hangs the dashboard when a publisher goes down; four incompatible dialects, three of which you discover in production; entity-encoded titles; <code>&lt;img&gt;</code> tags in summaries; timestamps in five formats; a cache that has to serve something when the upstream is 503; and a refresh button that must not become a way to hammer a news site from inside your admin panel.</p>
+<p>This package is those problems, solved and tested. The cards are the small part.</p>
+<div class="versus">
+<div>
+<p class="eyebrow">Your data &middot; write it yourself</p>
+<h3>Nova already does this</h3>
+<pre><code><span class="k">class</span> <span class="f">LatestPosts</span> <span class="k">extends</span> <span class="f">Card</span>
+{
+    <span class="k">public function</span> <span class="f">component</span>(): <span class="k">string</span>
+    {
+        <span class="k">return</span> <span class="s">'latest-posts'</span>;
+    }
+}
+
+<span class="c">// + one Vue file, + one controller.</span>
+<span class="c">// About eighty lines. No dependency.</span></code></pre>
+</div>
+<div>
+<p class="eyebrow">Remote feeds &middot; install this</p>
+<h3>The eighty lines become a project</h3>
+<pre><code><span class="f">RssNewsCard</span>::<span class="f">make</span>()-&gt;<span class="f">source</span>(<span class="s">'laravel_news'</span>);
+
+<span class="c">// timeouts + retries + a real user agent</span>
+<span class="c">// 4 dialects, detected by content</span>
+<span class="c">// entities decoded, markup stripped</span>
+<span class="c">// ETag revalidation, stale-while-revalidate</span>
+<span class="c">// SSRF-safe URLs, two rate limits</span>
+<span class="c">// 89 tests covering all of it</span></code></pre>
+</div>
+</div></section>
+<section id="intro-trade"><h2>The trade</h2><p>It is opinionated about the payload. Every dialect is normalized to one flat item — title, link, summary, date, image, author, categories — and anything a dialect carries beyond that is dropped before it reaches the browser. If you need the raw <code>&lt;item&gt;</code> with its custom namespaces intact, use a plain reader such as <a href="https://github.com/willvincent/laravel-feed-reader">willvincent/laravel-feed-reader</a> and render it yourself.</p>
+<p>There is also a genuine privacy cost to favicons, which is why they are off by default: the only reliable way to resolve them without shipping an icon set is Google's S2 service, and that tells Google which feeds your dashboard reads. With favicons off, each card draws initials from the feed title.</p>
+<div class="note"><b>Default catalogue.</b> With no configuration at all you get a small neutral starter set — BBC, NPR, Al Jazeera, Hacker News, The Verge, Ars Technica, Laravel News, PHP.Watch, The GitHub Blog — so the card shows real news the first time you load it.</div></section>
+<div class="pager">
+<a href="#/home"><span>Previous</span><b>Home</b></a>
+<a class="next" href="#/install"><span>Next</span><b>Installation</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="install">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install" aria-current="page">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Installation</h1>
+<p class="lede">Requirements, the composer line, what to publish and what works untouched.</p>
+<section id="install-requirements"><h2>Requirements</h2><table><thead><tr><th>Requirement</th><th>Version</th></tr></thead><tbody>
+<tr><td>PHP</td><td><code>^8.2</code></td></tr>
+<tr><td>Laravel</td><td><code>^11.0</code> or <code>^12.0</code></td></tr>
+<tr><td>Laravel Nova</td><td><code>^5.0</code> (licensed separately)</td></tr>
+<tr><td>Extensions</td><td><code>ext-simplexml</code>, bundled with every standard PHP build</td></tr>
+</tbody></table></section>
+<section id="install-install"><h2>Install</h2><pre><code>composer require gabrielesbaiz/nova-card-rss-news</code></pre>
+<p>The card's JavaScript and CSS are served by the package's own service provider. There is nothing to publish, build or add to your <code>vite.config.js</code>.</p></section>
+<section id="install-publish"><h2>Publishing</h2><p>Publish the config when you want to change the feed catalogue or any default:</p>
+<pre><code>php artisan vendor:publish --tag="nova-card-rss-news-config"</code></pre>
+<p>Publish the translations to edit the interface strings:</p>
+<pre><code>php artisan vendor:publish --tag="nova-card-rss-news-translations"</code></pre>
+<p>Neither is required. The defaults render a working card with real news.</p></section>
+<section id="install-first"><h2>First run</h2><p>Add a card to any dashboard or resource:</p>
+<pre><code>use Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsCard;
+
+RssNewsCard::make()
+    ->source('laravel_news')
+    ->limit(8)
+    ->width('1/3');</code></pre>
+<p>Three variations you are likely to want next &mdash; a pinned card, a user-switchable one, and everything in one stream:</p>
+<pre><code><span class="k">use</span> <span class="s">Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsCard</span>;
+<span class="k">use</span> <span class="s">Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsSelectCard</span>;
+<span class="k">use</span> <span class="s">Gabrielesbaiz\NovaCardRssNews\Cards\RssNewsStreamCard</span>;
+
+<span class="k">public function</span> <span class="f">cards</span>(): <span class="k">array</span>
+{
+    <span class="k">return</span> [
+        <span class="c">// Pinned to one feed, compact, refreshing every five minutes.</span>
+        <span class="f">RssNewsCard</span>::<span class="f">make</span>()
+            -&gt;<span class="f">source</span>(<span class="s">'laravel_news'</span>)
+            -&gt;<span class="f">layout</span>(<span class="s">'compact'</span>)
+            -&gt;<span class="f">limit</span>(<span class="n">8</span>)
+            -&gt;<span class="f">autoRefresh</span>(<span class="n">300</span>)
+            -&gt;<span class="f">width</span>(<span class="s">'1/3'</span>),
+
+        <span class="c">// User-switchable: the reader picks the feed, the choice is remembered.</span>
+        <span class="f">RssNewsSelectCard</span>::<span class="f">make</span>()
+            -&gt;<span class="f">defaultSource</span>(<span class="s">'hacker_news'</span>)
+            -&gt;<span class="f">categories</span>([<span class="s">'technology'</span>, <span class="s">'development'</span>])
+            -&gt;<span class="f">width</span>(<span class="s">'1/3'</span>),
+
+        <span class="c">// Everything in one chronological stream, searchable.</span>
+        <span class="f">RssNewsStreamCard</span>::<span class="f">make</span>()
+            -&gt;<span class="f">categories</span>([<span class="s">'world'</span>, <span class="s">'technology'</span>])
+            -&gt;<span class="f">layout</span>(<span class="s">'grid'</span>)
+            -&gt;<span class="f">searchable</span>()
+            -&gt;<span class="f">limit</span>(<span class="n">24</span>),
+    ];
+}</code></pre>
+<p>Then confirm every feed in your catalogue answers:</p>
+<pre><code>php artisan nova-rss:check
+
+ Status   Source          Parser   Items   Time     URL / error
+ ok       bbc_world       rss2     34      241 ms   https://feeds.bbci.co.uk/news/world/rss.xml
+ ok       laravel_news    rss2     20      118 ms   https://feed.laravel-news.com/</code></pre></section>
+<div class="pager">
+<a href="#/intro"><span>Previous</span><b>Introduction</b></a>
+<a class="next" href="#/configuration"><span>Next</span><b>Configuration</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="configuration">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration" aria-current="page">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Configuration</h1>
+<p class="lede">Every key in config/nova-card-rss-news.php, its default, and what changing it does.</p>
+<section id="configuration-shape"><h2>The file</h2><pre><code>return [
+    'sources' => [Presets\StarterPreset::class],
+
+    'http' => [
+        'timeout' => 8,
+        'connect_timeout' => 3,
+        'retries' => 2,
+        'retry_delay' => 200,
+        'max_redirects' => 5,
+        'verify' => true,
+        'user_agent' => 'Mozilla/5.0 (compatible; NovaCardRssNews/3.0; …)',
+    ],
+
+    'cache' => [
+        'store' => null,
+        'ttl' => 300,
+        'stale_ttl' => 3600,
+        'prefix' => 'nova-card-rss-news',
+    ],
+
+    'queue' => ['enabled' => false, 'connection' => null, 'queue' => null],
+
+    'routes' => [
+        'middleware' => ['nova'],
+        'authorize' => null,
+        'throttle' => '120,1',
+        'fresh_throttle' => '20,1',
+    ],
+
+    'ui' => ['favicons' => 'none', 'images' => true],
+
+    'defaults' => [
+        'limit' => 10,
+        'layout' => 'hero',
+        'auto_refresh' => 0,
+        'search' => false,
+        'read_state' => true,
+    ],
+];</code></pre></section>
+<section id="configuration-http"><h2>HTTP</h2><table><thead><tr><th>Key</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>http.timeout</code></td><td><code>8</code></td><td>Seconds before a feed request is abandoned. The ceiling on how long a dashboard can wait.</td></tr>
+<tr><td><code>http.connect_timeout</code></td><td><code>3</code></td><td>Seconds to establish the connection.</td></tr>
+<tr><td><code>http.retries</code></td><td><code>2</code></td><td>Attempts before a fetch is declared failed.</td></tr>
+<tr><td><code>http.retry_delay</code></td><td><code>200</code></td><td>Milliseconds between attempts.</td></tr>
+<tr><td><code>http.max_redirects</code></td><td><code>5</code></td><td>Redirect hops followed.</td></tr>
+<tr><td><code>http.verify</code></td><td><code>true</code></td><td>TLS verification. Turn off only for an internal feed with a self-signed certificate.</td></tr>
+<tr><td><code>http.user_agent</code></td><td>see above</td><td>Some publishers 403 unknown agents; some allowlist specific ones.</td></tr>
+</tbody></table></section>
+<section id="configuration-cachekeys"><h2>Cache and queue</h2><table><thead><tr><th>Key</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>cache.store</code></td><td><code>null</code></td><td>Cache store to use; <code>null</code> is the app default.</td></tr>
+<tr><td><code>cache.ttl</code></td><td><code>300</code></td><td>Seconds a feed counts as fresh.</td></tr>
+<tr><td><code>cache.stale_ttl</code></td><td><code>3600</code></td><td>Extra seconds a stale copy stays usable when upstream fails.</td></tr>
+<tr><td><code>cache.prefix</code></td><td><code>nova-card-rss-news</code></td><td>Cache key prefix.</td></tr>
+<tr><td><code>queue.enabled</code></td><td><code>false</code></td><td>Refresh stale feeds in a job instead of inline.</td></tr>
+<tr><td><code>queue.connection</code> / <code>queue.queue</code></td><td><code>null</code></td><td>Where those jobs go.</td></tr>
+</tbody></table></section>
+<section id="configuration-routeskeys"><h2>Routes</h2><table><thead><tr><th>Key</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>routes.middleware</code></td><td><code>['nova']</code></td><td>Middleware on all three endpoints.</td></tr>
+<tr><td><code>routes.authorize</code></td><td><code>null</code></td><td>A gate ability or closure; <code>null</code> allows any Nova user.</td></tr>
+<tr><td><code>routes.throttle</code></td><td><code>'120,1'</code></td><td>Budget for cached reads, <code>attempts,minutes</code>.</td></tr>
+<tr><td><code>routes.fresh_throttle</code></td><td><code>'20,1'</code></td><td>Budget for <code>?fresh=1</code> reads, which reach upstream.</td></tr>
+</tbody></table></section>
+<section id="configuration-uikeys"><h2>Interface defaults</h2><table><thead><tr><th>Key</th><th>Default</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>ui.favicons</code></td><td><code>'none'</code></td><td><code>'google'</code> resolves site icons via Google S2 — and tells Google which feeds you read.</td></tr>
+<tr><td><code>ui.images</code></td><td><code>true</code></td><td>Default for <code>images()</code>.</td></tr>
+<tr><td><code>defaults.limit</code></td><td><code>10</code></td><td>Default for <code>limit()</code>.</td></tr>
+<tr><td><code>defaults.layout</code></td><td><code>'hero'</code></td><td>Default for <code>layout()</code>.</td></tr>
+<tr><td><code>defaults.auto_refresh</code></td><td><code>0</code></td><td>Default for <code>autoRefresh()</code>; <code>0</code> disables.</td></tr>
+<tr><td><code>defaults.search</code></td><td><code>false</code></td><td>Default for <code>searchable()</code>.</td></tr>
+<tr><td><code>defaults.read_state</code></td><td><code>true</code></td><td>Default for <code>readState()</code>.</td></tr>
+</tbody></table></section>
+<div class="pager">
+<a href="#/install"><span>Previous</span><b>Installation</b></a>
+<a class="next" href="#/cards"><span>Next</span><b>Cards &amp; layouts</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="play">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play" aria-current="page">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Playground</h1>
+<p class="lede">The three cards, the four layouts and every option, running in this page. Nothing here is a screenshot &mdash; click an item to mark it read, type in the search box, switch the source, break the feed and watch what the card does about it.</p>
+
+<section id="play-build">
+<h2>Build a card</h2>
+<p>Every control is one method on the card class. The code underneath updates as you go, and it is the code you would paste into a dashboard.</p>
+
+<div class="play-grid">
+  <div class="play-controls">
+    <div class="panel">
+      <h4>Card class</h4>
+      <div class="seg" id="pgCard">
+        <button type="button" data-card="fixed" aria-pressed="true">RssNewsCard</button>
+        <button type="button" data-card="select" aria-pressed="false">Select</button>
+        <button type="button" data-card="stream" aria-pressed="false">Stream</button>
+      </div>
+      <p class="state-note" id="pgCardNote"></p>
+    </div>
+
+    <div class="panel">
+      <h4>layout()</h4>
+      <div class="seg" id="pgLayout">
+        <button type="button" data-layout="hero" aria-pressed="true">hero</button>
+        <button type="button" data-layout="compact" aria-pressed="false">compact</button>
+        <button type="button" data-layout="grid" aria-pressed="false">grid</button>
+        <button type="button" data-layout="ticker" aria-pressed="false">ticker</button>
+      </div>
+    </div>
+
+    <div class="panel" id="pgStreamPanel" hidden>
+      <h4>sources()</h4>
+      <div class="chips" id="pgSources"></div>
+    </div>
+
+    <div class="panel">
+      <h4>Options</h4>
+      <div class="switches">
+        <label class="sw-row"><input type="checkbox" id="pgImages" checked><span class="track"></span><span><code>images()</code></span></label>
+        <label class="sw-row"><input type="checkbox" id="pgSearch"><span class="track"></span><span><code>searchable()</code></span></label>
+        <label class="sw-row"><input type="checkbox" id="pgRead" checked><span class="track"></span><span><code>readState()</code></span></label>
+        <label class="sw-row"><input type="checkbox" id="pgAuto"><span class="track"></span><span><code>autoRefresh(10)</code></span></label>
+        <label class="sw-row"><input type="checkbox" id="pgFav"><span class="track"></span><span><code>ui.favicons</code></span></label>
+      </div>
+      <h4 style="margin-top:1.1rem">limit()</h4>
+      <div class="range-row">
+        <input type="range" id="pgLimit" min="1" max="8" value="5" aria-label="limit">
+        <b id="pgLimitVal">5</b>
+      </div>
+      <h4 style="margin-top:1.1rem">width()</h4>
+      <div class="seg" id="pgWidth">
+        <button type="button" data-width="1/3" aria-pressed="false">1/3</button>
+        <button type="button" data-width="1/2" aria-pressed="true">1/2</button>
+        <button type="button" data-width="full" aria-pressed="false">full</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>Force a cache state</h4>
+      <div class="seg" id="pgState">
+        <button type="button" data-state="fresh" aria-pressed="true">01 fresh</button>
+        <button type="button" data-state="stale" aria-pressed="false">04 stale</button>
+        <button type="button" data-state="down" aria-pressed="false">05 cold fail</button>
+      </div>
+      <p class="state-note" id="pgStateNote"></p>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div id="pgCardHost"></div>
+    <div class="readout" id="pgReadout"></div>
+    <div class="codebar"><p class="cap">The card, as PHP</p><button class="copy" id="pgCopy" type="button">Copy</button></div>
+    <pre><code id="pgCode"></code></pre>
+  </div>
+</div>
+</section>
+
+
+
+<section id="play-real">
+<h2>What differs from the real thing</h2>
+<p>The rendering, the options and the state machine match. Three things cannot be simulated honestly in a static page, and are faked deliberately:</p>
+<table><thead><tr><th>Here</th><th>In your app</th></tr></thead><tbody>
+<tr><td>Fixture items in the page</td><td>A real HTTP fetch through <code>FeedManager</code>, cached in your cache store</td></tr>
+<tr><td>Thumbnails drawn as SVG</td><td><code>media:content</code>, <code>media:thumbnail</code> or an image <code>&lt;enclosure&gt;</code> from the feed</td></tr>
+<tr><td>Refresh invents one new item</td><td><code>?fresh=1</code> re-fetches upstream, subject to <code>routes.fresh_throttle</code></td></tr>
+</tbody></table>
+<p>Everything else &mdash; server-side limit, newest-first sort, dedup by item id, entity-decoded titles, the five cache outcomes, read and bookmark state &mdash; is the same behaviour the test suite covers.</p>
+</section>
+
+<div class="pager">
+<a href="#/configuration"><span>Previous</span><b>Configuration</b></a>
+<a class="next" href="#/cards"><span>Next</span><b>Cards &amp; layouts</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="cards">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards" aria-current="page">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Cards and layouts</h1>
+<p class="lede">Three cards, four layouts, and the reading options they share. Every option on this page is switchable in the <a href="#/play">playground</a>.</p>
+<section id="cards-three"><h2>The three cards</h2><h3>RssNewsCard</h3>
+<p>One card, one feed, chosen in PHP. <code>source()</code> takes a catalogue key, not a URL — run <code>nova-rss:export</code> to see every key available.</p>
+<pre><code>RssNewsCard::make()
+    ->source('bbc_world')
+    ->limit(6)
+    ->heading('World news')
+    ->width('1/2');</code></pre>
+
+<h3>RssNewsSelectCard</h3>
+<p>The same card with a picker in the header. The selection persists in <code>localStorage</code>, keyed by component <b>and</b> default source, so two pickers on one dashboard never overwrite each other's choice. The picker groups sources into <code>&lt;optgroup&gt;</code> elements by category; <code>categories()</code> restricts it to the keys you name, and leaving it out offers the whole catalogue.</p>
+<pre><code>RssNewsSelectCard::make()
+    ->defaultSource('laravel_news')
+    ->categories(['development', 'world'])
+    ->remember(false)
+    ->limit(12);</code></pre>
+
+<h3>RssNewsStreamCard</h3>
+<p>Several feeds merged into one chronological stream. Items carry a source badge, duplicates across feeds are dropped, and a feed that fails is skipped rather than taking the card down.</p>
+<pre><code>RssNewsStreamCard::make()
+    ->sources(['bbc_world', 'npr_news'])
+    ->categories(['technology'])
+    ->limit(30)
+    ->layout('grid')
+    ->width('full');</code></pre>
+<p><code>sources()</code> and <code>categories()</code> are additive: the stream is the union of both.</p>
+<div class="note"><b>The limit applies to the merged stream</b>, after sorting. Ten feeds with a limit of 20 give you the 20 newest items overall, not 20 per feed.</div></section>
+<section id="cards-layouts"><h2>Layouts</h2><pre><code>RssNewsCard::make()->source('the_verge')->layout('grid');</code></pre>
+<table><thead><tr><th>Layout</th><th>Shape</th><th>Good for</th></tr></thead><tbody>
+<tr><td><code>hero</code></td><td>A featured first item with image and summary, then a compact list</td><td>A single feed on a half-width card</td></tr>
+<tr><td><code>compact</code></td><td>A dense one-line-per-item list, no hero</td><td>Sidebars, <code>1/3</code> cards, long lists</td></tr>
+<tr><td><code>grid</code></td><td>Responsive cards with thumbnails</td><td>Full-width cards, image-heavy feeds</td></tr>
+<tr><td><code>ticker</code></td><td>A single horizontal marquee, paused on hover</td><td>A status strip along the top of a dashboard</td></tr>
+</tbody></table>
+<p>Change the default for every card at once with <code>defaults.layout</code>.</p></section>
+<section id="cards-reading"><h2>Reading experience</h2><h3>Search</h3>
+<p><code>searchable()</code> adds a search toggle to the header. Filtering happens in the browser across title, summary and source name — no request per keystroke — and matches are highlighted. The term resets when the feed changes.</p>
+
+<h3>Thumbnails</h3>
+<p><code>images()</code> shows an image when the feed provides one: <code>media:content</code>, then <code>media:thumbnail</code>, then an image <code>&lt;enclosure&gt;</code>, then the first <code>&lt;img&gt;</code> in the description. Nothing is proxied or re-hosted; a broken image simply disappears.</p>
+
+<h3>Read state and bookmarks</h3>
+<p>Opened items are dimmed and the header badges how many are new since the last visit. Each item gets a bookmark toggle on hover. Both live in <code>localStorage</code>, per card and per browser — nothing is written to your database, and nothing is shared between users. The read list is capped at 400 ids per card.</p>
+
+<h3>Auto refresh</h3>
+<pre><code>RssNewsCard::make()->source('ansa_top_news')->autoRefresh(300);</code></pre>
+<p>The interval pauses while the tab is hidden and while the pointer is over the card — a list that reshuffles under the cursor mid-read is worse than a stale one. Auto refreshes read through the cache; they do not hammer upstream.</p>
+
+<h3>Favicons</h3>
+<p>Off by default. <code>ui.favicons =&gt; 'google'</code> turns them on, at the cost of telling Google which feeds your dashboard reads.</p></section>
+<section id="cards-adhoc"><h2>Ad-hoc feeds</h2><p><code>feed()</code> points a card at a URL that is not in the catalogue:</p>
+<pre><code>RssNewsCard::make()
+    ->feed('https://example.com/blog/feed.xml', 'Company blog')
+    ->limit(5);</code></pre>
+<p>The URL is encrypted into the card's meta with your application key, and the endpoint accepts only that encrypted form. A client cannot hand the server an arbitrary URL to fetch, which would otherwise turn every dashboard into an SSRF proxy into your private network.</p>
+<p>Use this for one-off feeds. For anything a second card might want, put it in the catalogue instead — you get caching keyed by source, <code>nova-rss:check</code> coverage and a picker entry.</p></section>
+<div class="pager">
+<a href="#/configuration"><span>Previous</span><b>Configuration</b></a>
+<a class="next" href="#/sources"><span>Next</span><b>Sources</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="sources">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources" aria-current="page">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Sources</h1>
+<p class="lede">Presets, your own feeds, providers, and per-user catalogues.</p>
+<section id="sources-model"><h2>How the catalogue resolves</h2><p>A source is a feed with a key, a title and a category. The catalogue is the merge of every entry in the <code>sources</code> config array, in order, with later entries overriding earlier ones by key. An entry may be a preset class, any class implementing <code>SourceProvider</code>, a closure, or an inline array.</p>
+<pre><code>use Gabrielesbaiz\NovaCardRssNews\Presets;
+
+'sources' => [
+    Presets\StarterPreset::class,       // shipped preset
+    App\Feeds\TeamFeeds::class,         // your own provider
+    fn () => auth()->user()?->rssFeeds,  // per-user, evaluated per request
+    ['categories' => [/* … */]],         // inline, the v2 shape
+],</code></pre></section>
+<section id="sources-presets"><h2>Presets</h2><table><thead><tr><th>Preset</th><th>Contents</th></tr></thead><tbody>
+<tr><td><code>StarterPreset</code></td><td><b>Enabled by default.</b> BBC World, NPR, Al Jazeera, Hacker News, The Verge, Ars Technica, Laravel News, PHP.Watch, The GitHub Blog</td></tr>
+<tr><td><code>ItNewsPreset</code></td><td>Italian nationals and wires: ANSA (six feeds), Repubblica (four), Corriere, La Stampa, Il Fatto Quotidiano, Panorama</td></tr>
+<tr><td><code>ItInsurancePreset</code></td><td>Assinews, InsuranceUp, Intermedia Channel, IVASS, ANIA, FIRSTonline Assicurazioni, Il Sole 24 ORE Finanza</td></tr>
+<tr><td><code>ItMotoriPreset</code></td><td>Quattroruote, Alvolante, Motor1, Motori.it, ANSA Motori, Corriere Motori, Il Sole 24 ORE Motori</td></tr>
+<tr><td><code>ItEconomyPreset</code></td><td>Il Sole 24 ORE: Finanza, Italia, Norme &amp; Tributi, Risparmio</td></tr>
+<tr><td><code>ItTravelPreset</code></td><td>MasterViaggi (nine sections), SiViaggia, TravelQuotidiano, Nonsoloturisti</td></tr>
+<tr><td><code>ItSportPreset</code></td><td>Gazzetta dello Sport</td></tr>
+<tr><td><code>AggregatorsPreset</code></td><td>Google News Italia</td></tr>
+</tbody></table>
+<p>A preset is a class with a static array, so you can extend one to add a feed:</p>
+<pre><code>class OurNewsroom extends ItNewsPreset
+{
+    public static function categories(): array
+    {
+        return array_merge(parent::categories(), [
+            'internal' => [
+                'label' => 'Internal',
+                'sources' => [
+                    'newsroom' => ['title' => 'Newsroom', 'url' => 'https://intranet.example/feed'],
+                ],
+            ],
+        ]);
+    }
+}</code></pre></section>
+<section id="sources-own"><h2>Your own feeds</h2><pre><code>'sources' => [
+    Presets\StarterPreset::class,
+
+    [
+        'categories' => [
+            'team' => [
+                'label' => 'Team',
+                'sources' => [
+                    'company_blog' => ['title' => 'Company blog', 'url' => 'https://example.com/feed'],
+                    'status' => [
+                        'title' => 'Status page',
+                        'url' => 'https://status.example.com/history.atom',
+                        'ttl' => 60,          // this one is time-sensitive
+                    ],
+                    'archive' => [
+                        'title' => 'Archive',
+                        'url' => 'https://example.com/old/feed',
+                        'enabled' => false,   // keep the entry, hide the feed
+                    ],
+                ],
+            ],
+        ],
+    ],
+],</code></pre>
+<p>Per-source keys: <code>title</code>, <code>url</code>, <code>site_url</code>, <code>ttl</code>, <code>enabled</code>, <code>parser</code>, <code>category</code>, <code>category_label</code>.</p></section>
+<section id="sources-providers"><h2>Source providers</h2><pre><code>use Gabrielesbaiz\NovaCardRssNews\Contracts\SourceProvider;
+use Gabrielesbaiz\NovaCardRssNews\Data\Source;
+use Illuminate\Support\Collection;
+
+class DatabaseFeeds implements SourceProvider
+{
+    public function sources(): Collection
+    {
+        return Feed::query()->where('active', true)->get()
+            ->map(fn (Feed $feed): Source => new Source(
+                key: $feed->slug,
+                title: $feed->name,
+                url: $feed->url,
+                categoryKey: $feed->category,
+                ttl: $feed->ttl,
+            ));
+    }
+}</code></pre>
+<p>Providers are resolved through the container, so constructor injection works.</p></section>
+<section id="sources-peruser"><h2>Per-user feeds</h2><p>A closure is re-evaluated per request, which is what makes per-user catalogues possible without the package owning a migration:</p>
+<pre><code>'sources' => [
+    Presets\StarterPreset::class,
+
+    fn () => auth()->user()?->rssFeeds->map(fn ($feed) => new Source(
+        key: "user_{$feed->id}",
+        title: $feed->title,
+        url: $feed->url,
+        categoryKey: 'my_feeds',
+    )) ?? [],
+],</code></pre>
+<div class="note"><b>Cache keys are per source, not per user.</b> Two users whose feeds share a key and a URL share the cached response — which is what you want. Different URLs under the same key do not collide, but the picker shows whichever the request resolved.</div></section>
+<section id="sources-labels"><h2>Categories and labels</h2><p>A category needs no declaration; it exists because sources point at it. A label may be a literal string, or a translation key resolved through your lang files:</p>
+<pre><code>'label' => 'nova-card-rss-news::sources.team',</code></pre>
+<p>The shipped presets use translation keys, which is why the starter categories read "World" in English and "Mondo" in Italian. Unresolvable keys fall back to a humanized version of the key rather than printing the raw key.</p></section>
+<div class="pager">
+<a href="#/cards"><span>Previous</span><b>Cards &amp; layouts</b></a>
+<a class="next" href="#/caching"><span>Next</span><b>Caching</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="caching">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching" aria-current="page">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Fetching and caching</h1>
+<p class="lede">How a read resolves, and the four knobs that change it.</p>
+<section id="caching-pipeline"><h2>The pipeline</h2><p>Every read goes through <code>FeedManager</code>:</p>
+<ul class="plain">
+<li><b>Fresh cache hit</b> — younger than <code>cache.ttl</code> (300s) — returned as is.</li>
+<li><b>Soft-expired</b> — older than the TTL, younger than <code>ttl + stale_ttl</code> — the stale copy is returned immediately and a refresh runs: queued if <code>queue.enabled</code>, inline otherwise.</li>
+<li><b>Hard-expired or <code>fresh=1</code></b> — fetched synchronously.</li>
+<li><b>Fetch failed, cache warm</b> — the stale copy is served, flagged <code>stale: true</code>, and the card shows "Showing cached copy".</li>
+<li><b>Fetch failed, cache cold</b> — the endpoint answers <code>502</code> and the card offers a retry button.</li>
+</ul></section>
+<section id="caching-conditional"><h2>Conditional requests</h2><p><code>ETag</code> and <code>Last-Modified</code> are stored with each cached feed and replayed as <code>If-None-Match</code> / <code>If-Modified-Since</code> on every refresh. A <code>304</code> extends the TTL without re-downloading or re-parsing anything — most refreshes cost a few hundred bytes.</p></section>
+<section id="caching-background"><h2>Background refresh</h2><pre><code>'queue' => [
+    'enabled' => true,
+    'connection' => null,
+    'queue' => 'feeds',
+],</code></pre>
+<p>With the queue enabled, a soft-expired feed is refreshed by a <code>RefreshFeed</code> job while the viewer gets the cached copy instantly. Only the first request past the TTL queues a job — the rest are deduplicated by an atomic cache lock — so a dashboard with ten cards does not queue ten refreshes.</p></section>
+<section id="caching-warming"><h2>Warming</h2><pre><code>php artisan nova-rss:warm</code></pre>
+<p>Fetches every source so the next dashboard load is a cache hit. Scheduled, no user ever waits on an upstream:</p>
+<pre><code>// routes/console.php
+Schedule::command('nova-rss:warm')->everyFiveMinutes();</code></pre></section>
+<div class="pager">
+<a href="#/sources"><span>Previous</span><b>Sources</b></a>
+<a class="next" href="#/commands"><span>Next</span><b>Commands</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="commands">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands" aria-current="page">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Commands</h1>
+<p class="lede">Five artisan commands: health, warming, OPML in and out, and discovery.</p>
+<section id="commands-table"><h2>The commands</h2><table><thead><tr><th>Command</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>nova-rss:check [--source=*] [--category=*]</code></td><td>Fetches every source and prints status, parser, item count and latency. Exits non-zero if any fail — CI-friendly.</td></tr>
+<tr><td><code>nova-rss:warm [--source=*] [--category=*]</code></td><td>Pre-fetches every source into the cache.</td></tr>
+<tr><td><code>nova-rss:discover &lt;url&gt;</code></td><td>Finds the feed behind a website URL and prints a config line.</td></tr>
+<tr><td><code>nova-rss:import &lt;file&gt; [--category=] [--validate]</code></td><td>Turns an OPML export into a pastable config block.</td></tr>
+<tr><td><code>nova-rss:export [--output=]</code></td><td>Writes the resolved catalogue as OPML.</td></tr>
+</tbody></table></section>
+<section id="commands-check"><h2>Health checks</h2><pre><code>php artisan nova-rss:check
+
+ Status   Source          Parser   Items   Time      URL / error
+ ok       bbc_world       rss2     34      241 ms    https://feeds.bbci.co.uk/news/world/rss.xml
+ ok       laravel_news    rss2     20      118 ms    https://feed.laravel-news.com/
+ fail     old_blog        -        0       5003 ms   Feed [https://old.example/feed] responded with HTTP 404.</code></pre>
+<p>It exits non-zero on any failure, so it belongs in CI. This is the command that catches a publisher moving its feed before a user does.</p></section>
+<section id="commands-opml"><h2>OPML import and export</h2><p>OPML is what every feed reader exports &mdash; Feedly, Inoreader, NetNewsWire, all of them. Point the command at one and it prints a config block:</p>
+<pre><code>php artisan nova-rss:import ~/Downloads/feedly.opml</code></pre>
+<pre><code>[
+    'categories' => [
+        'tech_news' => [
+            'label' => 'Tech News',
+            'sources' => [
+                'the_verge' => ['title' => 'The Verge', 'url' => 'https://www.theverge.com/rss/index.xml'],
+            ],
+        ],
+    ],
+],</code></pre>
+<p>Nested outlines become categories; keys are slugified from each title. Two useful options:</p>
+<pre><code>php artisan nova-rss:import feeds.opml --category=imported   # flatten into one category
+php artisan nova-rss:import feeds.opml --validate            # fetch each feed, drop the dead ones</code></pre>
+<p>Export goes the other way, and is the fastest way to list every key available to <code>source()</code>. Without <code>--output</code> it prints to stdout, so it pipes:</p>
+<pre><code>php artisan nova-rss:export --output=feeds.opml</code></pre></section>
+<section id="commands-discover"><h2>Discovery</h2><p>You rarely know a feed's URL; you know the site's:</p>
+<pre><code>php artisan nova-rss:discover https://laravel-news.com
+
+ Feed URL                        Title          Format   Items
+ https://feed.laravel-news.com/  Laravel News   rss2     20
+
+'laravel_news' => ['title' => 'Laravel News', 'url' => 'https://feed.laravel-news.com/'],</code></pre>
+<p>It reads <code>&lt;link rel="alternate"&gt;</code> from the page head, and falls back to probing <code>/feed</code>, <code>/feed/</code>, <code>/rss</code>, <code>/rss.xml</code>, <code>/atom.xml</code>, <code>/index.xml</code> and <code>/feed.json</code>. Every candidate is fetched and parsed before it is reported, so a result is a feed that actually works.</p></section>
+<div class="pager">
+<a href="#/caching"><span>Previous</span><b>Caching</b></a>
+<a class="next" href="#/recipes"><span>Next</span><b>Recipes</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="recipes">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes" aria-current="page">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Recipes</h1>
+<p class="lede">Whole solutions to the tasks that actually come up.</p>
+<section id="recipes-migrate"><h2>Migrate a reader collection</h2><pre><code># 1. Export OPML from your reader, then import it — validating as you go,
+#    which drops feeds that died while you were not looking.
+php artisan nova-rss:import ~/Downloads/feedly.opml --validate
+
+# 2. Paste the printed block into config/nova-card-rss-news.php under 'sources'.
+
+# 3. Confirm every feed is healthy and see which parser each one uses.
+php artisan nova-rss:check</code></pre>
+<p><code>--validate</code> fetches each feed before printing it, so what lands in your config is a list that works today, not a list that worked when you subscribed.</p></section>
+<section id="recipes-newsroom"><h2>A newsroom dashboard</h2><pre><code>RssNewsStreamCard::make()
+    ->categories(['wires'])
+    ->layout('ticker')
+    ->limit(25)
+    ->autoRefresh(120)
+    ->heading('Wires')
+    ->width('full'),
+
+RssNewsStreamCard::make()
+    ->categories(['world', 'economy'])
+    ->layout('grid')
+    ->searchable()
+    ->images()
+    ->limit(24)
+    ->width('full'),</code></pre>
+<p>The ticker pauses on hover so a headline can be read, and both cards share one 30-second clock rather than running a timer each.</p></section>
+<section id="recipes-nowait"><h2>Never make a viewer wait</h2><pre><code>'cache' => ['ttl' => 300, 'stale_ttl' => 86400],
+'queue' => ['enabled' => true, 'queue' => 'feeds'],</code></pre>
+<pre><code>Schedule::command('nova-rss:warm')->everyFiveMinutes();</code></pre>
+<p>The scheduler keeps every feed warm; a soft-expired feed refreshes in a job while the viewer gets the cached copy immediately; and a full day of <code>stale_ttl</code> means even a long outage leaves the dashboard populated and honestly labelled.</p></section>
+<section id="recipes-alert"><h2>Alert when a feed goes dark</h2><pre><code>use Gabrielesbaiz\NovaCardRssNews\Events\FeedFetchFailed;
+
+Event::listen(FeedFetchFailed::class, function (FeedFetchFailed $event): void {
+    if ($event->servedStale) {
+        return;   // the reader saw something; not worth waking anyone
+    }
+
+    Notification::route('slack', config('services.slack.ops'))
+        ->notify(new FeedDown($event->source->key, $event->exception->getMessage()));
+});</code></pre>
+<p>Pair it with <code>php artisan nova-rss:check</code> in CI to catch a dead feed before a user does.</p></section>
+<section id="recipes-peruserrecipe"><h2>Let each user curate their own feeds</h2><pre><code>// config/nova-card-rss-news.php
+'sources' => [
+    Presets\StarterPreset::class,
+
+    fn () => auth()->user()?->rssFeeds->map(fn ($feed) => new Source(
+        key: "user_{$feed->id}",
+        title: $feed->title,
+        url: $feed->url,
+        categoryKey: 'my_feeds',
+        categoryLabel: 'My feeds',
+    )) ?? [],
+],</code></pre>
+<pre><code>RssNewsSelectCard::make()->categories(['my_feeds']);</code></pre>
+<p>The closure runs per request, so a feed added through your own Nova resource appears in the picker on the next page load. Give users an <code>RssFeed</code> resource with a URL field, and wire <code>nova-rss:discover</code> into a Nova action if you want them to add feeds by site URL rather than by feed URL.</p></section>
+<section id="recipes-internal">
+<h2>Show one internal feed that is not worth cataloguing</h2>
+<pre><code><span class="f">RssNewsCard</span>::<span class="f">make</span>()
+    -&gt;<span class="f">feed</span>(<span class="s">'https://intranet.example/releases.atom'</span>, <span class="s">'Releases'</span>)
+    -&gt;<span class="f">layout</span>(<span class="s">'compact'</span>)
+    -&gt;<span class="f">limit</span>(<span class="n">6</span>)
+    -&gt;<span class="f">width</span>(<span class="s">'1/3'</span>);</code></pre>
+<p>The URL is encrypted into the card's meta with your application key, so the endpoint will never fetch a host a client asked for. Use this for one-off feeds; anything a second card might want belongs in the catalogue instead.</p>
+<div class="note">If the feed uses a self-signed certificate, <code>'http' =&gt; ['verify' =&gt; false]</code> applies to <b>every</b> feed — so prefer fixing the certificate, or put the feed behind a proxy that terminates TLS properly.</div>
+</section>
+
+<section id="recipes-restrict"><h2>Restrict the cards to some users</h2><pre><code>// AuthServiceProvider
+Gate::define('viewRssNews', fn ($user): bool => $user->hasRole('editor'));
+
+// config/nova-card-rss-news.php
+'routes' => ['authorize' => 'viewRssNews'],
+
+// the dashboard
+RssNewsCard::make()->source('laravel_news')->canSee(
+    fn ($request): bool => $request->user()->can('viewRssNews'),
+);</code></pre>
+<p><code>canSee()</code> hides the card; the gate protects the endpoints. You want both — a hidden card is not an access control.</p></section>
+<div class="pager">
+<a href="#/commands"><span>Previous</span><b>Commands</b></a>
+<a class="next" href="#/api"><span>Next</span><b>API reference</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="api">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api" aria-current="page">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>API reference</h1>
+<p class="lede">Card methods, the services behind them, the events and the endpoints.</p>
+<section id="api-methods"><h2>Card methods</h2><p>Shared by all three cards:</p>
+<table><thead><tr><th>Method</th><th>What it does</th><th>Default</th></tr></thead><tbody>
+<tr><td><code>limit(int $limit)</code></td><td>Items to fetch and render; applied server side</td><td><code>10</code> (<code>20</code> for the stream card)</td></tr>
+<tr><td><code>layout(string $layout)</code></td><td><code>hero</code>, <code>compact</code>, <code>grid</code> or <code>ticker</code></td><td><code>hero</code></td></tr>
+<tr><td><code>images(bool $images = true)</code></td><td>Show thumbnails when the feed has them</td><td><code>ui.images</code></td></tr>
+<tr><td><code>autoRefresh(int $seconds)</code></td><td>Re-fetch on an interval; <code>0</code> disables</td><td><code>0</code></td></tr>
+<tr><td><code>searchable(bool $on = true)</code></td><td>Render the search toggle</td><td><code>false</code></td></tr>
+<tr><td><code>readState(bool $on = true)</code></td><td>Track read / bookmarked items in the browser</td><td><code>true</code></td></tr>
+<tr><td><code>heading(string $heading)</code></td><td>Override the card heading</td><td>the feed's title</td></tr>
+<tr><td><code>feed(string $url, ?string $title, ?string $key)</code></td><td>Use a URL outside the catalogue, encrypted into the meta</td><td>—</td></tr>
+<tr><td><code>width(string $width)</code></td><td>Nova card width: <code>1/3</code>, <code>1/2</code>, <code>full</code></td><td><code>1/2</code> (<code>full</code> for the stream card)</td></tr>
+</tbody></table>
+<table><thead><tr><th>Card</th><th>Method</th><th>What it does</th></tr></thead><tbody>
+<tr><td><code>RssNewsCard</code></td><td><code>source(string $key)</code></td><td>The catalogue key to display</td></tr>
+<tr><td rowspan="3"><code>RssNewsSelectCard</code></td><td><code>defaultSource(string $key)</code></td><td>Selected on first visit</td></tr>
+<tr><td><code>categories(array $categories)</code></td><td>Restrict the picker to these categories</td></tr>
+<tr><td><code>remember(bool $remember = true)</code></td><td>Persist the choice in <code>localStorage</code></td></tr>
+<tr><td rowspan="2"><code>RssNewsStreamCard</code></td><td><code>sources(array $keys)</code></td><td>Explicit source keys to merge</td></tr>
+<tr><td><code>categories(array $categories)</code></td><td>Merge every source in these categories</td></tr>
+</tbody></table></section>
+<section id="api-manager"><h2>FeedManager</h2><pre><code>use Gabrielesbaiz\NovaCardRssNews\Feeds\FeedManager;
+use Gabrielesbaiz\NovaCardRssNews\Sources\SourceRepository;
+
+$sources = app(SourceRepository::class);
+$feeds = app(FeedManager::class);
+
+$feed = $feeds->get($sources->findOrFail('laravel_news'), limit: 5);
+
+$feed->title;            // 'Laravel News'
+$feed->stale;            // false
+$feed->fetchedAt;        // CarbonImmutable
+$feed->items[0]->title;  // 'Laravel 12 released'
+$feed->toArray();        // the JSON payload
+
+$feeds->stream($sources->inCategories(['technology']), limit: 20);
+$feeds->get($source, fresh: true);   // ignore the cache
+$feeds->refresh($source);            // fetch and re-cache
+$feeds->forget($source);             // drop one feed from the cache
+$feeds->cacheKey($source);           // the key it uses</code></pre></section>
+<section id="api-repository"><h2>SourceRepository</h2><pre><code>$sources->all();                          // Collection&lt;string, Source&gt;, keyed by source key
+$sources->find('laravel_news');           // ?Source
+$sources->findOrFail('laravel_news');     // Source, throws SourceNotFound
+$sources->only(['bbc_world', 'npr_news']);
+$sources->inCategories(['world']);
+$sources->grouped();                      // the array the picker renders
+$sources->extend(NewProvider::class);     // add a provider at runtime
+$sources->flush();                        // forget the resolved catalogue</code></pre>
+<p><code>extend()</code> is the seam for tests and for packages that contribute feeds from their own service provider.</p></section>
+<section id="api-events"><h2>Events</h2><pre><code>use Gabrielesbaiz\NovaCardRssNews\Events\FeedFetched;
+use Gabrielesbaiz\NovaCardRssNews\Events\FeedFetchFailed;
+
+Event::listen(FeedFetched::class, function (FeedFetched $event): void {
+    $event->source->key;      // 'laravel_news'
+    $event->feed->items;      // FeedItem[]
+    $event->durationMs;       // 143.28
+    $event->notModified;      // true when the upstream answered 304
+});
+
+Event::listen(FeedFetchFailed::class, function (FeedFetchFailed $event): void {
+    $event->exception;        // FeedUnreachable | UnsupportedFeedFormat
+    $event->servedStale;      // true when the reader still got a cached copy
+});</code></pre></section>
+<section id="api-auth">
+<h2>Authorization and rate limiting</h2>
+<p>Every route already requires an authenticated Nova user. To narrow it further:</p>
+<pre><code>'routes' =&gt; [
+    'middleware' =&gt; [<span class="s">'nova'</span>],
+    'authorize' =&gt; <span class="s">'viewRssNews'</span>,        <span class="c">// a Gate ability…</span>
+    <span class="c">// 'authorize' =&gt; fn ($request) =&gt; $request-&gt;user()-&gt;isAdmin(),</span>
+    'throttle' =&gt; <span class="s">'120,1'</span>,               <span class="c">// normal, cached reads</span>
+    'fresh_throttle' =&gt; <span class="s">'20,1'</span>,          <span class="c">// ?fresh=1, which hits upstream</span>
+],</code></pre>
+<p>The two budgets are separate on purpose. Cached reads are nearly free and should not be throttled aggressively; <code>fresh=1</code> reaches out to a third party, and without its own much smaller budget the refresh button becomes a way to hammer a news site from inside your admin panel.</p>
+<div class="note">Pair the gate with <code>canSee()</code> on the card itself. <code>canSee()</code> hides the card; the gate protects the endpoints — a hidden card is not an access control.</div>
+</section>
+
+<section id="api-endpoints"><h2>HTTP endpoints</h2><p>All three live under <code>nova-vendor/nova-card-rss-news</code> and carry the <code>nova</code> middleware group plus whatever you add in <code>routes.middleware</code>.</p>
+<table><thead><tr><th>Method</th><th>Path</th><th>Query</th><th>Returns</th></tr></thead><tbody>
+<tr><td><code>GET</code></td><td><code>/feed</code></td><td><code>source</code>, <code>feed</code>, <code>limit</code>, <code>fresh</code></td><td>One normalized feed</td></tr>
+<tr><td><code>GET</code></td><td><code>/stream</code></td><td><code>sources[]</code>, <code>categories[]</code>, <code>limit</code>, <code>fresh</code></td><td>Several feeds merged</td></tr>
+<tr><td><code>GET</code></td><td><code>/sources</code></td><td><code>categories[]</code></td><td>The catalogue, grouped for the picker</td></tr>
+</tbody></table>
+<p>Status codes: <code>404</code> for an unknown source or an invalid encrypted feed, <code>422</code> for a malformed query, <code>429</code> when the refresh budget is spent, <code>502</code> when the upstream failed and nothing was cached.</p></section>
+<div class="pager">
+<a href="#/recipes"><span>Previous</span><b>Recipes</b></a>
+<a class="next" href="#/formats"><span>Next</span><b>Feed formats</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="formats">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats" aria-current="page">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Feed formats</h1>
+<p class="lede">The four dialects, how they are detected, and the shape everything becomes.</p>
+<section id="formats-dialects"><h2>The dialects</h2><table><thead><tr><th>Format</th><th>Detected by</th><th>Notes</th></tr></thead><tbody>
+<tr><td>RSS 2.0</td><td><code>&lt;rss&gt;</code> root</td><td>Reads <code>content:encoded</code>, <code>dc:creator</code>, <code>dc:date</code>, <code>&lt;category&gt;</code>, <code>media:*</code>, <code>&lt;enclosure&gt;</code></td></tr>
+<tr><td>Atom 1.0</td><td><code>&lt;feed&gt;</code> root</td><td>Prefers <code>rel="alternate"</code> links; <code>&lt;summary&gt;</code> then <code>&lt;content&gt;</code>; <code>&lt;published&gt;</code> then <code>&lt;updated&gt;</code></td></tr>
+<tr><td>RSS 1.0 / RDF</td><td><code>&lt;rdf:RDF&gt;</code> root</td><td>Dublin Core dates and authors</td></tr>
+<tr><td>JSON Feed 1.x</td><td>A JSON object with <code>items</code></td><td><code>content_text</code> and <code>content_html</code>, <code>tags</code>, <code>authors</code></td></tr>
+</tbody></table>
+<p>Detection is by content, not by extension or content type — publishers get both wrong routinely. Force a parser for a stubborn feed with the per-source <code>'parser' =&gt; 'atom'</code> key.</p></section>
+<section id="formats-payload"><h2>The normalized item</h2><pre><code>{
+    "id": "b1946ac92492d2347c6235b4d2611184",
+    "title": "Laravel 12 released",
+    "link": "https://example.com/news/1",
+    "summary": "Plain text, entities decoded, markup stripped, 400 chars.",
+    "published_at": "2026-06-29T10:00:00+00:00",
+    "image_url": "https://example.com/img/1.jpg",
+    "author": "Taylor Otwell",
+    "categories": ["releases"],
+    "source_key": "laravel_news",
+    "source_title": "Laravel News",
+    "source_site": "https://laravel-news.com"
+}</code></pre>
+<p>The envelope adds <code>key</code>, <code>title</code>, <code>url</code>, <code>feed_url</code>, <code>fetched_at</code>, <code>stale</code> and <code>parser</code>.</p></section>
+<section id="formats-cleaning"><h2>Cleaning and ordering</h2><p>Titles and summaries are entity-decoded and stripped of markup <b>server side</b>, so nothing from a feed is ever rendered as HTML in your admin panel. Summaries are trimmed to 400 characters on a word boundary.</p>
+<p>Items are sorted newest first, deduplicated by <code>id</code> (a hash of the link, or the title when a feed omits links), and cut to the requested limit before they are serialized. The client receives exactly what it renders.</p>
+<p>Dates are parsed leniently — RFC 822, RFC 3339, and whatever else a publisher invented — and emitted as ISO-8601 in UTC. A date that cannot be parsed becomes <code>null</code> rather than today.</p></section>
+<div class="pager">
+<a href="#/api"><span>Previous</span><b>API reference</b></a>
+<a class="next" href="#/troubleshooting"><span>Next</span><b>Troubleshooting</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="troubleshooting">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting" aria-current="page">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Troubleshooting</h1>
+<p class="lede">The failures people actually hit, and what each one means.</p>
+<section id="troubleshooting-empty"><h2>&ldquo;No news available&rdquo;, but the feed opens in a browser</h2><pre><code>php artisan nova-rss:check --source=my_feed</code></pre>
+<p>Three common answers:</p>
+<ul class="plain">
+<li><b>HTTP 403</b> — the publisher blocks unknown agents. Set a browser-like <code>http.user_agent</code>.</li>
+<li><b>No parser was able to read the feed</b> — the URL returns HTML, not a feed. Run <code>nova-rss:discover &lt;site-url&gt;</code> to find the real one.</li>
+<li><b>Zero items with <code>ok</code></b> — the feed is genuinely empty, or it is a format variant. Force the parser with <code>'parser' =&gt; 'atom'</code> on the source.</li>
+</ul></section>
+<section id="troubleshooting-refresh"><h2>The refresh button does nothing</h2><p>In 2.x it truly did nothing for five minutes: it only busted the browser cache while the server kept returning its cached copy. In 3.0 refresh sends <code>?fresh=1</code>, which bypasses the server cache.</p>
+<p>If it still seems inert, watch for a <code>429</code>: <code>routes.fresh_throttle</code> defaults to 20 refreshes a minute per user, and the card surfaces "Too many refreshes".</p></section>
+<section id="troubleshooting-timeout"><h2>cURL error 28 — Operation timed out</h2><p><code>http.timeout</code> is 8 seconds by default, deliberately: it is the ceiling on how long a dashboard request can hang. Raise it if the publisher is genuinely slow, but the better fix is to stop fetching in the request at all:</p>
+<pre><code>'queue' => ['enabled' => true],</code></pre>
+<pre><code>Schedule::command('nova-rss:warm')->everyFiveMinutes();</code></pre></section>
+<section id="troubleshooting-stale"><h2>The card says &ldquo;Showing cached copy&rdquo;</h2><p>The upstream fetch failed and a cached copy was served instead. This is the package working as designed, not an error. <code>nova-rss:check</code> tells you why, and <code>FeedFetchFailed</code> fires on every occurrence if you want it logged.</p>
+<p>Once <code>cache.ttl + cache.stale_ttl</code> has passed with no successful fetch, the cached copy is dropped and the card shows an error with a retry button.</p></section>
+<section id="troubleshooting-locale"><h2>Timestamps are in the wrong language</h2><p>They follow the Nova locale, not the app locale: whatever <code>Nova.config('locale')</code> reports is what <code>Intl.RelativeTimeFormat</code> receives. Interface strings come from the bundled JSON translations; a locale the package does not ship falls back to English.</p></section>
+<section id="troubleshooting-missing"><h2>Italian sources disappeared after upgrading</h2><p>They are opt-in now. Add the presets you were using:</p>
+<pre><code>'sources' => [
+    Presets\ItNewsPreset::class,
+    Presets\ItInsurancePreset::class,
+    Presets\ItMotoriPreset::class,
+],</code></pre>
+<p>Every source key is unchanged, so <code>-&gt;source('motor1')</code> keeps working once the preset that owns it is enabled.</p></section>
+<section id="troubleshooting-pickers">
+<h2>Two picker cards on one dashboard fight over the selection</h2>
+<p>They do not, as of 2.3.2: the <code>localStorage</code> key includes each card's <code>defaultSource()</code>, not just the component name.</p>
+<p>Two pickers with the <b>same</b> default do share one key, which is usually what you want. Give them different defaults, or turn persistence off on one:</p>
+<pre><code><span class="f">RssNewsSelectCard</span>::<span class="f">make</span>()-&gt;<span class="f">defaultSource</span>(<span class="s">'bbc_world'</span>),
+<span class="f">RssNewsSelectCard</span>::<span class="f">make</span>()-&gt;<span class="f">defaultSource</span>(<span class="s">'laravel_news'</span>)-&gt;<span class="f">remember</span>(<span class="k">false</span>),</code></pre>
+</section>
+
+<section id="troubleshooting-assets"><h2>The card renders unstyled, or not at all</h2><p>Assets are registered by the package's service provider, so this is almost always a stale cached view or route:</p>
+<pre><code>php artisan optimize:clear</code></pre>
+<p>If you listed <code>CardServiceProvider</code> manually in <code>config/app.php</code>, replace it with <code>NovaCardRssNewsServiceProvider</code> — the old class still works, but it is deprecated.</p></section>
+<div class="pager">
+<a href="#/formats"><span>Previous</span><b>Feed formats</b></a>
+<a class="next" href="#/security"><span>Next</span><b>Security</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="security">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security" aria-current="page">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Security</h1>
+<p class="lede">The threat model, what is deliberate, and what remains the publisher's.</p>
+<section id="security-model"><h2>The threat model</h2><p>The card fetches URLs from a server inside your infrastructure and renders the result in an admin panel. Both halves of that are handled deliberately.</p>
+<ul class="plain">
+<li><b>No client-supplied URLs.</b> The endpoints accept a catalogue key, or a URL encrypted with your application key by <code>feed()</code>. A crafted request cannot make the server fetch <code>http://169.254.169.254/</code> or an internal host.</li>
+<li><b>No HTML from feeds reaches the DOM.</b> Titles and summaries are stripped of markup and entity-decoded server side. The only markup the card inserts is the <code>&lt;mark&gt;</code> around a search match, around already-escaped text.</li>
+<li><b>Redirects are bounded</b> by <code>http.max_redirects</code>, and TLS is verified by default.</li>
+<li><b>Two rate limits</b>, so the refresh button cannot be used to hammer a third party from inside your admin panel.</li>
+<li><b>Optional gate</b> on every endpoint via <code>routes.authorize</code>, on top of Nova's own authentication.</li>
+<li><b>Favicons are off by default</b>, because the alternative leaks the list of feeds you read to a third party.</li>
+</ul></section>
+<section id="security-remains"><h2>What remains yours</h2><p>Feeds are third-party content. A publisher can put anything in a title, and links point wherever they point. Everything renders as text, and every link carries <code>rel="noopener"</code>, but deciding which publishers belong on an administration dashboard is the deploying application's call.</p>
+<p>Read state and bookmarks live in the viewer's <code>localStorage</code>. Nothing about reading behaviour is written to your database or sent anywhere.</p></section>
+<section id="security-report"><h2>Reporting a vulnerability</h2><p>Email <b>gabriele@sbaiz.com</b> rather than opening a public issue. Include the version, the configuration involved, and a reproduction if you have one.</p></section>
+<div class="pager">
+<a href="#/troubleshooting"><span>Previous</span><b>Troubleshooting</b></a>
+<a class="next" href="#/upgrade"><span>Next</span><b>Upgrading</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="upgrade">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade" aria-current="page">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Upgrading from 2.x</h1>
+<p class="lede">What breaks, what is shimmed, and the order to do it in.</p>
+<section id="upgrade-catalogue"><h2>The catalogue is opt-in</h2><p>The change most installations notice first. 2.x shipped an Italian news, insurance, motoring, travel and sport catalogue enabled by default. It is all still here, reclassified into presets, and <b>no source key changed</b>.</p>
+<pre><code>use Gabrielesbaiz\NovaCardRssNews\Presets;
+
+'sources' => [
+    Presets\StarterPreset::class,
+    Presets\ItNewsPreset::class,
+    Presets\ItInsurancePreset::class,
+    Presets\ItMotoriPreset::class,
+    Presets\ItEconomyPreset::class,
+    Presets\ItTravelPreset::class,
+    Presets\ItSportPreset::class,
+    Presets\AggregatorsPreset::class,
+],</code></pre>
+<p>Already customised your published config? Do not rewrite it — paste the whole <code>categories</code> array into <code>sources</code> as one inline entry; the v2 shape is still understood.</p>
+<pre><code>php artisan nova-rss:export | grep xmlUrl | wc -l
+php artisan nova-rss:check</code></pre></section>
+<section id="upgrade-classes"><h2>Classes moved</h2><table><thead><tr><th>2.x</th><th>3.0</th></tr></thead><tbody>
+<tr><td><code>NovaCardRssNews</code></td><td><code>Cards\RssNewsCard</code></td></tr>
+<tr><td><code>NovaCardRssNewsSelect</code></td><td><code>Cards\RssNewsSelectCard</code></td></tr>
+<tr><td><code>CardServiceProvider</code></td><td><code>NovaCardRssNewsServiceProvider</code></td></tr>
+<tr><td><code>RssFeedService</code></td><td><code>Feeds\FeedManager</code> (no alias)</td></tr>
+</tbody></table>
+<p>The old card and provider names remain as <code>@deprecated</code> subclasses, so dashboards keep working untouched. They are removed in 4.0.</p>
+<div class="io">
+<figure class="code"><figcaption>2.x — static, uncached, no timeout</figcaption>
+<pre><code><span class="s">$data</span> = <span class="f">RssFeedService</span>::<span class="f">getRssFeed</span>(<span class="s">'motor1'</span>);
+
+<span class="s">$data</span>[<span class="s">'feed'</span>][<span class="n">0</span>][<span class="s">'pubDate'</span>];
+<span class="c">// 'Mon, 29 Jun 2026 10:00:00 +0200' — a raw, unsorted string</span></code></pre></figure>
+<figure class="code"><figcaption>3.0 — injectable, cached, typed</figcaption>
+<pre><code><span class="s">$feed</span> = <span class="f">app</span>(<span class="f">FeedManager</span>::<span class="k">class</span>)-&gt;<span class="f">get</span>(
+    <span class="f">app</span>(<span class="f">SourceRepository</span>::<span class="k">class</span>)-&gt;<span class="f">findOrFail</span>(<span class="s">'motor1'</span>),
+    limit: <span class="n">5</span>,
+);
+
+<span class="s">$feed</span>-&gt;<span class="f">items</span>[<span class="n">0</span>]-&gt;<span class="f">publishedAt</span>;  <span class="c">// CarbonImmutable, newest first</span>
+<span class="s">$feed</span>-&gt;<span class="f">stale</span>;                    <span class="c">// true when a cached copy was served</span></code></pre></figure>
+</div></section>
+<section id="upgrade-payloadchange"><h2>Endpoints and payload</h2><table><thead><tr><th>2.x</th><th>3.0</th></tr></thead><tbody>
+<tr><td><code>GET …/news?source_key=</code></td><td><code>GET …/feed?source=</code></td></tr>
+<tr><td>—</td><td><code>GET …/stream?sources[]=&amp;categories[]=</code></td></tr>
+<tr><td><code>feed</code></td><td><code>items</code></td></tr>
+<tr><td><code>description</code></td><td><code>summary</code></td></tr>
+<tr><td><code>pubDate</code> (raw, unsorted)</td><td><code>published_at</code> (ISO-8601, newest first)</td></tr>
+<tr><td>—</td><td><code>id</code>, <code>image_url</code>, <code>author</code>, <code>categories</code>, <code>source_*</code>, <code>stale</code>, <code>parser</code></td></tr>
+</tbody></table>
+<p><code>limit</code> is now applied server side. This only matters if you called the endpoints yourself; the bundled Vue was rewritten with them.</p></section>
+<section id="upgrade-rest"><h2>Requirements, config and assets</h2><p>PHP 8.2 and Laravel 11 are the floor. <code>categories</code> at the top level is replaced by <code>sources</code>; everything else — <code>http</code>, <code>cache</code>, <code>queue</code>, <code>routes</code>, <code>ui</code>, <code>defaults</code> — is new and optional.</p>
+<p>One default changed on purpose: favicons. 2.x always used Google's favicon service; 3.0 defaults to <code>none</code>. Set <code>ui.favicons</code> back to <code>'google'</code> if you prefer the icons.</p>
+<p>Contributors only: Laravel Mix was replaced by Vite. Output paths are unchanged, and host applications are unaffected — the assets ship built.</p>
+<pre><code>php artisan optimize:clear
+php artisan nova-rss:check</code></pre></section>
+<div class="pager">
+<a href="#/security"><span>Previous</span><b>Security</b></a>
+<a class="next" href="#/changelog"><span>Next</span><b>Changelog</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="changelog">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog" aria-current="page">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Changelog</h1>
+<p class="lede">Mirrors CHANGELOG.md. The current release in full, earlier ones summarised.</p>
+<section id="changelog-v3"><h2>3.0.0 — 2026-09-25</h2><p>A rewrite. The cards look the same; everything behind them is new.</p>
+<h3>Breaking</h3>
+<ul class="plain">
+<li>The Italian news / insurance catalogue is no longer enabled by default; it moved into opt-in presets. No source key changed. A neutral international <code>StarterPreset</code> ships enabled instead.</li>
+<li><code>config('nova-card-rss-news.categories')</code> is replaced by <code>sources</code>, a list of providers. The v2 array is still accepted as an inline entry.</li>
+<li>The <code>news</code> endpoint is now <code>feed</code>, with a normalized payload and the limit applied server side.</li>
+<li>Cards moved to <code>Cards\RssNewsCard</code> / <code>Cards\RssNewsSelectCard</code>; <code>CardServiceProvider</code> is now <code>NovaCardRssNewsServiceProvider</code>. Old names remain as deprecated aliases until 4.0.</li>
+<li><code>RssFeedService</code> was removed in favour of the injectable <code>FeedManager</code>.</li>
+<li>PHP 8.2+ and Laravel 11+ are required. Favicons default to <code>none</code>.</li>
+</ul>
+<h3>Added</h3>
+<ul class="plain">
+<li><code>RssNewsStreamCard</code>: several feeds merged chronologically, badged by source, deduplicated, resilient to one feed failing.</li>
+<li>Four layouts — hero, compact, grid, ticker — plus client-side search with highlighting, thumbnails, read/unread dimming with a "new since last visit" badge, bookmarks, and auto refresh that pauses on hidden tabs and on hover.</li>
+<li>RSS 1.0 / RDF and JSON Feed support alongside RSS 2.0 and Atom, detected by content. <code>content:encoded</code>, <code>dc:creator</code>, <code>dc:date</code>, <code>media:content</code>, <code>media:thumbnail</code> and image enclosures are read.</li>
+<li>A pluggable source layer: presets, <code>SourceProvider</code> classes, closures and inline arrays, merged by <code>SourceRepository</code>.</li>
+<li><code>nova-rss:check</code>, <code>nova-rss:warm</code>, <code>nova-rss:import</code>, <code>nova-rss:export</code> and <code>nova-rss:discover</code>.</li>
+<li><code>FeedFetched</code> and <code>FeedFetchFailed</code> events; ad-hoc feeds via <code>feed()</code> with the URL encrypted into the card meta.</li>
+<li>Optional gate on the endpoints, a separate tighter rate limit for cache-bypassing refreshes, English and Italian translations, <code>aria-live</code> updates and <code>prefers-reduced-motion</code> support.</li>
+</ul>
+<h3>Fixed</h3>
+<ul class="plain">
+<li>The refresh button now actually refreshes. In 2.x it only busted the browser cache while the server kept serving its 5-minute cached copy.</li>
+<li>Feed requests have timeouts, retries, a real user agent, gzip and bounded redirects — <code>file_get_contents</code> had none of these, and a hung publisher hung the dashboard.</li>
+<li>Fast source switching can no longer be overwritten by a slower earlier response; in-flight requests are aborted.</li>
+<li>Every card on a page shares one 30-second clock instead of running its own interval.</li>
+</ul>
+<h3>Changed</h3>
+<ul class="plain">
+<li>Caching is stale-while-revalidate with conditional <code>ETag</code> / <code>Last-Modified</code> revalidation and optional queued background refresh.</li>
+<li>The Vue is <code>&lt;script setup&gt;</code> with composables and shared parts; Laravel Mix was replaced by Vite. Output paths are unchanged.</li>
+<li>Test suite grown to 89 tests; PHPStan level 5 and CI across PHP 8.2–8.4 and Laravel 11–12.</li>
+</ul></section>
+<section id="changelog-earlier"><h2>Earlier releases</h2><table><thead><tr><th>Version</th><th>Date</th><th>Headline</th></tr></thead><tbody>
+<tr><td>2.4.0</td><td>2026-06-30</td><td>Atom feed support; fixed Quattroruote and other Atom sources showing no news</td></tr>
+<tr><td>2.3.2</td><td>2026-06-29</td><td>Fixed the <code>localStorage</code> collision between two picker cards on one dashboard</td></tr>
+<tr><td>2.3.1</td><td>2026-06-29</td><td>Updated the IVASS feed URL; removed dead sources after end-to-end validation</td></tr>
+<tr><td>2.3.0</td><td>2026-06-29</td><td>Four insurance categories added; categories reordered</td></tr>
+<tr><td>2.2.0</td><td>2026-06-29</td><td><b>Breaking:</b> sources moved from an internal JSON file to a publishable config, grouped by category</td></tr>
+<tr><td>2.1.0</td><td>2026-06-29</td><td>The select card, the <code>sources</code> endpoint, HTML entity decoding</td></tr>
+<tr><td>2.0.0</td><td>2026-06-29</td><td>The redesigned card: hero item, favicon, relative timestamps, skeleton loader</td></tr>
+</tbody></table>
+<p>The full history is in <a href="https://github.com/gabrielesbaiz/nova-card-rss-news/blob/main/CHANGELOG.md">CHANGELOG.md</a>.</p></section>
+<div class="pager">
+<a href="#/upgrade"><span>Previous</span><b>Upgrading</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+<section class="page hidden" id="project">
+<div class="mx docs">
+<aside class="sidenav" aria-label="Documentation">
+<div class="group"><h4>Getting started</h4><ul>
+<li><a href="#/intro">Introduction</a></li>
+<li><a href="#/install">Installation</a></li>
+<li><a href="#/configuration">Configuration</a></li>
+</ul></div>
+<div class="group"><h4>Usage</h4><ul>
+<li><a href="#/play">Playground</a></li>
+<li><a href="#/cards">Cards &amp; layouts</a></li>
+<li><a href="#/sources">Sources</a></li>
+<li><a href="#/caching">Caching</a></li>
+<li><a href="#/commands">Commands</a></li>
+<li><a href="#/recipes">Recipes</a></li>
+</ul></div>
+<div class="group"><h4>Reference</h4><ul>
+<li><a href="#/api">API reference</a></li>
+<li><a href="#/formats">Feed formats</a></li>
+<li><a href="#/troubleshooting">Troubleshooting</a></li>
+</ul></div>
+<div class="group"><h4>Project</h4><ul>
+<li><a href="#/security">Security</a></li>
+<li><a href="#/upgrade">Upgrading</a></li>
+<li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project" aria-current="page">Project &amp; licence</a></li>
+</ul></div>
+</aside>
+<div class="body">
+<h1>Project &amp; licence</h1>
+<p class="lede">Who maintains this, what it is built on, how to contribute to it, and the terms it is published under.</p>
+
+<section id="project-licence">
+<h2>Licence</h2>
+<p>MIT, and it stays MIT. Nothing is paywalled, nothing is held back for sponsors, and there is no separate commercial licence to buy.</p>
+<pre><code>The MIT License (MIT)
+
+Copyright (c) Gabriele Sbaiz &lt;gabriele@sbaiz.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</code></pre>
+<p>The warranty disclaimer and limitation of liability in the full text apply in full. Read it in <a href="https://github.com/gabrielesbaiz/nova-card-rss-news/blob/main/LICENSE.md">LICENSE.md</a>.</p>
+<div class="note"><b>Laravel Nova is not covered by this licence.</b> Nova is commercial software sold separately by Laravel LLC, and you need your own licence for it. This package only adds cards to a Nova you already own.</div>
+<h3>What it does not promise</h3>
+<p>The package renders content published by third parties, whose availability, accuracy and continued existence are outside its control. The bundled presets are a convenience, not an endorsement &mdash; feeds break, move and disappear without notice. Deciding what is acceptable to display inside an administration panel is the deploying application&rsquo;s responsibility, not this package&rsquo;s.</p>
+</section>
+
+<section id="project-credits">
+<h2>Credits</h2>
+<table><thead><tr><th>Role</th><th>Who</th></tr></thead><tbody>
+<tr><td>Author and maintainer</td><td><a href="https://github.com/gabrielesbaiz">Gabriele Sbaiz</a> &mdash; <code>gabriele@sbaiz.com</code></td></tr>
+<tr><td>Contributors</td><td><a href="https://github.com/gabrielesbaiz/nova-card-rss-news/graphs/contributors">Everyone who has sent a pull request</a></td></tr>
+</tbody></table>
+<h3>What it is built on</h3>
+<table><thead><tr><th>Dependency</th><th>Constraint</th><th>Why</th></tr></thead><tbody>
+<tr><td><code>php</code></td><td><code>^8.2</code></td><td>Readonly promoted properties, enums, named arguments</td></tr>
+<tr><td><code>illuminate/support</code></td><td><code>^11.0|^12.0</code></td><td>The HTTP client, cache, queue, events and container</td></tr>
+<tr><td><code>spatie/laravel-package-tools</code></td><td><code>^1.16</code></td><td>Config, translations and command registration</td></tr>
+<tr><td><code>laravel/nova</code></td><td><code>^5.0</code> <span class="badge">dev</span></td><td>The card classes extend Nova&rsquo;s <code>Card</code></td></tr>
+<tr><td><code>ext-simplexml</code></td><td>bundled with PHP</td><td>RSS, Atom and RDF parsing</td></tr>
+</tbody></table>
+<p>Feed parsing uses PHP&rsquo;s own <code>SimpleXML</code> rather than a parsing library, so the package adds no XML dependency to your application. The card scaffolding started from Nova&rsquo;s own card generator.</p>
+</section>
+
+<section id="project-contributing">
+<h2>Contributing</h2>
+<p>Pull requests are welcome, and so are good issues. The fastest way to get a fix merged is to arrive with a failing test.</p>
+<pre><code><span class="c"># fork, clone, then:</span>
+composer install
+composer test        <span class="c"># 89 tests, no network access</span>
+composer analyse     <span class="c"># PHPStan level 5 over src, config, routes</span>
+composer format      <span class="c"># Pint</span>
+
+npm install
+npm run build        <span class="c"># rebuilds dist/js/card.js and dist/css/card.css</span></code></pre>
+<p>The suite covers each feed dialect against fixtures, the cache pipeline (freshness, stale-while-revalidate, <code>304</code> revalidation, serving stale on failure), SSRF rejection of unsigned URLs, both throttles, the gate, every artisan command and an OPML round trip. No test reaches the network.</p>
+<h3>What CI checks</h3>
+<table><thead><tr><th>Workflow</th><th>Runs</th></tr></thead><tbody>
+<tr><td><code>tests.yml</code></td><td>Pest on PHP 8.2, 8.3 and 8.4 &times; Laravel 11 and 12</td></tr>
+<tr><td><code>static-analysis.yml</code></td><td>PHPStan with Larastan</td></tr>
+<tr><td><code>lint.yml</code></td><td>Pint, the asset build, and the documentation playground suites</td></tr>
+</tbody></table>
+<div class="note"><b>Nova is a private Composer repository.</b> A fork&rsquo;s CI needs <code>NOVA_USERNAME</code> and <code>NOVA_LICENSE_KEY</code> secrets before <code>composer install</code> can resolve <code>laravel/nova</code>. Without them the test workflow cannot run &mdash; that is a licence constraint, not a bug in the workflow.</div>
+<h3>House rules</h3>
+<ul class="plain">
+<li><b>Tests reach no network.</b> Feed fixtures live in <code>tests/Fixtures/</code> and the HTTP client is faked. A test that fetches a real feed will not be merged.</li>
+<li><b>New feeds go in a preset</b>, not in the default config, and <code>php artisan nova-rss:check</code> has to pass for them.</li>
+<li><b>Behaviour changes need a changelog entry</b> and, when they break something, a line in <code>UPGRADING.md</code>.</li>
+<li><b>Built assets are committed.</b> Run <code>npm run build</code> before opening the pull request; CI fails if <code>dist/</code> has drifted from source.</li>
+</ul>
+<h3>Reporting things</h3>
+<p>Bugs and feature requests go through <a href="https://github.com/gabrielesbaiz/nova-card-rss-news/issues">GitHub issues</a>, which ask for the package, PHP and Laravel versions &mdash; a dead feed usually turns out to be a specific publisher, so the feed URL helps more than anything else.</p>
+<p>Security vulnerabilities are the exception: email <b>gabriele@sbaiz.com</b> rather than opening a public issue. See <a href="#/security">Security</a>.</p>
+</section>
+
+<section id="project-support">
+<h2>Versions and support</h2>
+<p>The package follows semantic versioning. Deprecated classes survive one major version: the v2 names &mdash; <code>NovaCardRssNews</code>, <code>NovaCardRssNewsSelect</code> and <code>CardServiceProvider</code> &mdash; still work in 3.x and are removed in 4.0.</p>
+<table><thead><tr><th>Version</th><th>PHP</th><th>Laravel</th><th>Nova</th><th>Status</th></tr></thead><tbody>
+<tr><td><b>3.x</b></td><td>8.2 &ndash; 8.4</td><td>11, 12</td><td>5</td><td>Active</td></tr>
+<tr><td>2.x</td><td>8.0+</td><td>10, 11, 12</td><td>5</td><td>Security fixes only</td></tr>
+<tr><td>1.x</td><td>8.0+</td><td>9, 10</td><td>4</td><td>End of life</td></tr>
+</tbody></table>
+<p>A new Laravel or Nova major is supported as soon as the suite passes against it. That work, rather than new features, is what sponsorship pays for.</p>
+<h3>Sponsoring</h3>
+<p>This is maintained on evenings and weekends, alongside a full-time job writing insurance software. If the package saves you time, <a href="https://github.com/sponsors/gabrielesbaiz">sponsoring from $5 a month</a> keeps it green across new framework releases. A star and a good bug report help too, and cost nothing.</p>
+</section>
+
+<div class="pager">
+<a href="#/changelog"><span>Previous</span><b>Changelog</b></a>
+<a class="next" href="#/home"><span>Next</span><b>Home</b></a>
+</div>
+</div>
+<aside class="onthispage" aria-label="On this page"><h4>On this page</h4><ol class="toc"></ol></aside>
+</div></section>
+
+
+</main>
+<style>
+/* ---------- playground ---------- */
+.play-grid{display:grid;gap:1.4rem;grid-template-columns:1fr;margin-top:1.5rem;align-items:start}
+/* Below the split, the controls tile across the top so the card keeps the
+   whole width instead of being squeezed into a third of it. */
+.play-controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.9rem;align-items:start}
+.play-controls .panel+.panel{margin-top:0}
+@media(min-width:1180px){
+  .play-grid{grid-template-columns:16rem minmax(0,1fr)}
+  .play-controls{display:block}
+  .play-controls .panel+.panel{margin-top:.9rem}
+}
+@media(min-width:1560px){.play-grid{grid-template-columns:17rem minmax(0,1fr);gap:2rem}}
+.panel{background:var(--raised);border:1px solid var(--rule);border-radius:var(--radius);padding:1.1rem}
+.panel+.panel{margin-top:.9rem}
+.panel h4{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 .7rem}
+.seg{display:flex;flex-wrap:wrap;gap:.3rem}
+.seg button{cursor:pointer;font-family:var(--mono);font-size:.68rem;color:var(--sub);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:.32rem .66rem;transition:all .15s}
+.seg button:hover{color:var(--ink);border-color:color-mix(in srgb,var(--accent-text) 45%,transparent)}
+.seg button[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.switches{display:grid;gap:.15rem}
+.sw-row{display:flex;align-items:center;gap:.6rem;padding:.34rem 0;font-size:.85rem;color:var(--sub);cursor:pointer}
+.sw-row input{position:absolute;opacity:0;width:0;height:0}
+.sw-row .track{width:2.05rem;height:1.15rem;border-radius:999px;background:var(--rule);position:relative;flex-shrink:0;transition:background .16s}
+.sw-row .track::after{content:"";position:absolute;top:.17rem;left:.17rem;width:.81rem;height:.81rem;border-radius:999px;background:var(--raised);transition:transform .16s}
+.sw-row input:checked+.track{background:var(--accent)}
+.sw-row input:checked+.track::after{transform:translateX(.9rem)}
+.sw-row input:focus-visible+.track{outline:2px solid var(--accent-text);outline-offset:2px}
+.sw-row code{font-size:.68rem}
+.range-row{display:flex;align-items:center;gap:.7rem;margin-top:.2rem}
+.range-row input[type=range]{flex:1;accent-color:var(--accent)}
+.range-row b{font-family:var(--mono);font-size:.8rem;color:var(--accent-text);min-width:1.2rem;text-align:right;font-variant-numeric:tabular-nums}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.chips button{cursor:pointer;font-family:var(--mono);font-size:.64rem;color:var(--sub);background:transparent;border:1px solid var(--rule);border-radius:999px;padding:.24rem .55rem}
+.chips button[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
+.state-note{font-size:.8rem;line-height:1.55;color:var(--muted);margin:.7rem 0 0}
+
+/* the card itself — a faithful copy of what the package renders */
+.stage{background:var(--wash);border:1px solid var(--rule);border-radius:var(--radius);padding:clamp(1rem,2vw,1.6rem);min-width:0}
+.rss{background:var(--raised);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--accent-text) 10%,transparent),0 24px 55px -34px color-mix(in srgb,var(--accent) 55%,transparent)}
+.rss.w-half{max-width:min(100%,42rem)}
+.rss.w-third{max-width:min(100%,28rem)}
+.rss-head{display:flex;align-items:center;gap:.7rem;padding:.85rem 1rem .6rem;flex-wrap:nowrap}
+.rss-ico{width:2rem;height:2rem;border-radius:8px;display:grid;place-items:center;flex-shrink:0;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent-text) 25%,transparent);font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--accent-text);overflow:hidden}
+.rss-ico img{width:100%;height:100%;object-fit:cover}
+.rss-id{flex:1;min-width:0}
+.rss-title-row{display:flex;align-items:center;gap:.45rem}
+.rss-live{width:.42rem;height:.42rem;border-radius:999px;background:var(--accent);flex-shrink:0;animation:rssPulse 2.4s ease-in-out infinite}
+@keyframes rssPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.rss-title{margin:0;font-size:.92rem;font-weight:700;letter-spacing:-.01em;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rss-select{font:inherit;font-size:.86rem;font-weight:600;color:var(--ink);background:transparent;border:1px solid var(--rule);border-radius:6px;padding:.16rem 1.5rem .16rem .4rem;cursor:pointer;max-width:100%;
+  appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:right .62rem center,right .44rem center;background-size:.3rem .3rem,.3rem .3rem;background-repeat:no-repeat}
+.rss-sub{margin:.2rem 0 0;font-size:.68rem;color:var(--muted);font-family:var(--mono);letter-spacing:.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rss-new{font-family:var(--mono);font-size:.56rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);border-radius:999px;padding:.08rem .4rem;flex-shrink:0}
+.rss-btn{width:1.75rem;height:1.75rem;display:grid;place-items:center;flex-shrink:0;border-radius:7px;cursor:pointer;color:var(--muted);background:transparent;border:1px solid transparent;transition:all .15s}
+.rss-btn:hover:not(:disabled){color:var(--accent-text);background:color-mix(in srgb,var(--accent) 10%,transparent);border-color:color-mix(in srgb,var(--accent-text) 25%,transparent)}
+.rss-btn[aria-pressed="true"]{color:var(--accent-text);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.rss-btn:disabled{opacity:.45;cursor:not-allowed}
+.rss-btn svg{width:.92rem;height:.92rem}
+.rss-btn.spin svg{animation:rssSpin .8s linear infinite}
+@keyframes rssSpin{to{transform:rotate(360deg)}}
+.rss-search{display:flex;align-items:center;gap:.45rem;margin:0 1rem .55rem;padding:.4rem .65rem;border:1px solid var(--rule);border-radius:999px;background:var(--wash)}
+.rss-search input{flex:1;border:0;background:transparent;font:inherit;font-size:.8rem;color:var(--ink);outline:none;min-width:0}
+.rss-search svg{width:.8rem;height:.8rem;color:var(--muted);flex-shrink:0}
+.rss-body{padding:0 1rem 1rem;overflow-y:auto;max-height:34rem;scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent) 45%,transparent) transparent}
+.rss-body::-webkit-scrollbar{width:7px}
+.rss-body::-webkit-scrollbar-thumb{background:color-mix(in srgb,var(--accent) 40%,transparent);border-radius:99px}
+.rss-body::-webkit-scrollbar-track{background:transparent}
+.rss-body mark{background:color-mix(in srgb,var(--accent) 30%,transparent);color:inherit;border-radius:3px;padding:0 .1em}
+.rss-hero{display:block;text-decoration:none;color:inherit;border:1px solid color-mix(in srgb,var(--accent-text) 22%,transparent);border-radius:9px;padding:.8rem;margin-bottom:.7rem;background:color-mix(in srgb,var(--accent) 6%,transparent);transition:transform .18s,box-shadow .18s;cursor:pointer}
+.rss-hero:hover{transform:translateY(-1px);box-shadow:0 10px 24px -14px color-mix(in srgb,var(--accent) 70%,transparent)}
+.rss-hero.read,.rss-item.read,.rss-card.read{opacity:.52}
+.rss-hero .tag{display:inline-block;font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent);padding:.08rem .38rem;border-radius:4px}
+.rss-hero h5{margin:.5rem 0 .3rem;font-size:1rem;font-weight:700;line-height:1.3;color:var(--ink)}
+.rss-hero p{margin:0;font-size:.82rem;line-height:1.5;color:var(--sub)}
+.rss-thumb{width:100%;aspect-ratio:16/7;border-radius:7px;overflow:hidden;margin-bottom:.55rem;background:var(--wash)}
+.rss-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rss-meta{display:flex;align-items:center;gap:.45rem;margin-top:.5rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;color:var(--muted)}
+.rss-list{list-style:none;margin:0;padding:0}
+.rss-item{display:flex;gap:.6rem;align-items:center;padding:.52rem .2rem;border-top:1px solid var(--rule);cursor:pointer;border-radius:6px;transition:background .15s,padding .15s}
+.rss-item:first-child{border-top:0}
+.rss-item:hover{background:color-mix(in srgb,var(--accent) 6%,transparent);padding-inline:.45rem}
+.rss-item .mini-thumb{width:3.4rem;height:2.5rem;border-radius:5px;overflow:hidden;flex-shrink:0;background:var(--wash)}
+.rss-item .mini-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.rss-item .txt{flex:1;min-width:0;overflow-wrap:anywhere}
+.rss-item .txt p{margin:0;font-size:.85rem;font-weight:600;line-height:1.4;color:var(--ink);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rss-item .txt .m{display:flex;align-items:center;gap:.4rem;margin-top:.22rem;font-family:var(--mono);font-size:.56rem;color:var(--muted)}
+.rss-save{opacity:0;flex-shrink:0;width:1.4rem;height:1.4rem;display:grid;place-items:center;border:0;background:transparent;color:var(--muted);cursor:pointer;border-radius:5px}
+.rss-item:hover .rss-save,.rss-save[aria-pressed="true"],.rss-save:focus-visible{opacity:1}
+.rss-save[aria-pressed="true"]{color:var(--accent-text)}
+.rss-save svg{width:.85rem;height:.85rem}
+.rss-chev{width:.85rem;height:.85rem;color:var(--muted);flex-shrink:0;transition:transform .18s}
+.rss-item:hover .rss-chev{transform:translateX(3px);color:var(--accent-text)}
+.rss-grid{display:grid;gap:.65rem;grid-template-columns:repeat(auto-fill,minmax(11.5rem,1fr))}
+.rss-card{border:1px solid var(--rule);border-radius:8px;padding:.55rem;cursor:pointer;transition:transform .18s,border-color .18s}
+.rss-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent-text) 45%,transparent)}
+.rss-card b{display:block;font-size:.8rem;font-weight:700;line-height:1.3;color:var(--ink);margin:.4rem 0 .3rem}
+.rss-ticker{display:flex;gap:1.6rem;overflow:hidden;white-space:nowrap;padding:.3rem 0;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.rss-ticker .tk{display:inline-flex;align-items:center;gap:.4rem;font-size:.82rem;color:var(--sub);cursor:pointer}
+.rss-ticker .tk::before{content:"";width:.35rem;height:.35rem;border-radius:999px;background:var(--accent);flex-shrink:0}
+.rss-empty,.rss-error{text-align:center;padding:2.2rem 1rem;color:var(--muted);font-size:.86rem}
+.rss-error b{display:block;color:var(--ink);font-size:.92rem;margin-bottom:.35rem}
+.rss-retry{margin-top:.9rem;font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--accent-ink);background:var(--accent);border:0;border-radius:999px;padding:.4rem 1rem;cursor:pointer}
+.rss-stale{display:flex;align-items:center;gap:.4rem;margin:0 1rem .6rem;padding:.4rem .6rem;border-radius:6px;font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;color:var(--accent-text);background:color-mix(in srgb,var(--accent) 10%,transparent);border:1px solid color-mix(in srgb,var(--accent-text) 25%,transparent)}
+.rss-skel{padding:.6rem .2rem}
+.rss-skel div{height:.62rem;border-radius:4px;background:linear-gradient(90deg,var(--wash),color-mix(in srgb,var(--accent) 12%,transparent),var(--wash));background-size:200% 100%;animation:rssShim 1.3s linear infinite;margin-bottom:.45rem}
+@keyframes rssShim{to{background-position:-200% 0}}
+
+.readout{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.readout span{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;color:var(--sub);background:var(--raised);border:1px solid var(--rule);border-radius:999px;padding:.24rem .6rem}
+.readout span b{color:var(--accent-text);font-weight:600}
+.codebar{display:flex;align-items:center;gap:.6rem;margin-top:1.4rem;flex-wrap:wrap}
+.stage pre{max-width:100%;font-size:.76rem}
+.stage .cap{white-space:nowrap}
+.codebar .cap{margin:0}
+.copy{margin-left:auto;font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--sub);background:var(--raised);border:1px solid var(--rule);border-radius:999px;padding:.26rem .7rem;cursor:pointer}
+.copy:hover{color:var(--accent-text);border-color:var(--accent-text)}
+</style>
+
+
+
+<footer class="sitefoot">
+  <div class="mx">
+    <div class="cols">
+      <div>
+        <h4>Package</h4>
+        <ul>
+          <li><a href="https://github.com/gabrielesbaiz/nova-card-rss-news">GitHub</a></li>
+          <li><a href="https://packagist.org/packages/gabrielesbaiz/nova-card-rss-news">Packagist</a></li>
+          <li><a href="#/changelog">Changelog</a></li>
+<li><a href="#/project">Project &amp; licence</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Documentation</h4>
+        <ul>
+          <li><a href="#/intro">Introduction</a></li>
+          <li><a href="#/install">Installation</a></li>
+          <li><a href="#/configuration">Configuration</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Reference</h4>
+        <ul>
+          <li><a href="#/api">API reference</a></li>
+          <li><a href="#/formats">Feed formats</a></li>
+          <li><a href="#/troubleshooting">Troubleshooting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="#/security">Security policy</a></li>
+          <li><a href="#/upgrade">Upgrading from 2.x</a></li>
+          <li><a href="#/project">Project &amp; licence</a></li>
+          <li><a href="https://github.com/sponsors/gabrielesbaiz">Sponsor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="base">
+      <span>MIT licensed &middot; Built by Gabriele Sbaiz</span>
+      <span>Requires a Laravel Nova licence, sold separately</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  /* theme ------------------------------------------------------ */
+  const mode = document.getElementById('mode');
+  const prefersDark = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => {
+    const explicit = document.documentElement.dataset.theme;
+    return explicit ? explicit === 'dark' : prefersDark.matches;
+  };
+  const syncLabel = () => { mode.textContent = isDark() ? 'Light' : 'Dark'; };
+  mode.addEventListener('click', () => {
+    document.documentElement.dataset.theme = isDark() ? 'light' : 'dark';
+    syncLabel();
+  });
+  prefersDark.addEventListener('change', syncLabel);
+  syncLabel();
+
+  /* scroll progress -------------------------------------------- */
+  const bar = document.getElementById('progress');
+  let ticking = false;
+  const paintBar = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (max > 0 ? Math.min(100, Math.max(0, (scrollY / max) * 100)) : 0) + '%';
+    ticking = false;
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(paintBar); } }, { passive: true });
+  addEventListener('resize', paintBar, { passive: true });
+  paintBar();
+
+  /* reveal on arrival ------------------------------------------ */
+  const seen = new WeakSet();
+  const reveal = new IntersectionObserver(es => {
+    for (const e of es) {
+      if (!e.isIntersecting || seen.has(e.target)) continue;
+      seen.add(e.target);
+      e.target.classList.add('seen');
+    }
+  }, { threshold: .2, rootMargin: '0px 0px -8% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => reveal.observe(el));
+
+  /* router ------------------------------------------------------ */
+  const pages = [...document.querySelectorAll('.page')];
+  const navLinks = [...document.querySelectorAll('#nav a[href^="#/"]')];
+  let sections = [];      /* the current page's sections, for the rail + palette */
+  let railSpy = null;
+
+  const buildRail = page => {
+    if (railSpy) { railSpy.disconnect(); railSpy = null; }
+    sections = [];
+    const rail = page.querySelector('.onthispage');
+    const toc = page.querySelector('.toc');
+    if (!toc) return;
+    toc.innerHTML = '';
+
+    const found = [...page.querySelectorAll('.body > section[id]')];
+    if (found.length < 3) { if (rail) rail.style.display = 'none'; return; }
+    if (rail) rail.style.removeProperty('display');
+
+    sections = found.map(el => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + el.id;
+      a.textContent = (el.querySelector('h2')?.textContent || el.id).trim();
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+      li.appendChild(a); toc.appendChild(li);
+      return { a, el };
+    });
+
+    railSpy = new IntersectionObserver(es => {
+      const vis = es.filter(e => e.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (!vis.length) return;
+      const hit = sections.find(s => s.el === vis[0].target);
+      if (hit) sections.forEach(s => s.a.setAttribute('aria-current', String(s === hit)));
+    }, { rootMargin: '-12% 0px -72% 0px' });
+    sections.forEach(s => railSpy.observe(s.el));
+  };
+
+  const route = () => {
+    const id = location.hash.replace('#/', '').split('#')[0] || 'home';
+    const target = pages.find(p => p.id === id) || pages[0];
+    pages.forEach(p => p.classList.toggle('hidden', p !== target));
+    navLinks.forEach(a => a.setAttribute('aria-current', String(a.getAttribute('href') === '#/' + target.id)));
+    buildRail(target);
+    scrollTo({ top: 0, behavior: 'auto' });
+    paintBar();
+  };
+  addEventListener('hashchange', route);
+  route();
+
+  /* command palette --------------------------------------------- */
+  const pal = document.getElementById('pal');
+  const input = document.getElementById('palInput');
+  const list = document.getElementById('palList');
+  const open = document.getElementById('openPal');
+  document.getElementById('kbd').textContent =
+    /Mac|iPhone|iPad/.test(navigator.platform || '') ? '⌘K' : 'Ctrl K';
+
+  /* Pages come from the nav; sections from the rail of the page in view,
+     so the palette, the rail and the nav cannot drift apart. */
+  const items = () => [
+    ...sections.map(s => ({ label: s.a.textContent, hint: 'Section', href: s.a.getAttribute('href') })),
+    ...[...document.querySelectorAll('.page:not(.hidden) .sidenav a[href^="#/"]')].map(a => ({
+      label: a.textContent.trim(), hint: 'Page', href: a.getAttribute('href'),
+    })),
+    { label: 'Home', hint: 'Page', href: '#/home' },
+  ];
+
+  let rows = [], cursor = 0;
+  const select = () => rows.forEach((r, i) => r.li.setAttribute('aria-selected', String(i === cursor)));
+  const go = item => {
+    pal.hidden = true; open.focus();
+    if (!item.href) return;
+    if (item.href.startsWith('#/')) { location.hash = item.href; return; }
+    document.getElementById(item.href.slice(1))?.scrollIntoView({ block: 'start' });
+  };
+  const render = (q = '') => {
+    const all = items();
+    const hits = all.filter(i => i.label.toLowerCase().includes(q.trim().toLowerCase()));
+    list.innerHTML = ''; rows = []; cursor = 0;
+    hits.forEach((item, i) => {
+      const li = document.createElement('li');
+      li.setAttribute('role', 'option');
+      const b = document.createElement('b'); b.textContent = item.label;
+      const em = document.createElement('em'); em.textContent = item.hint;
+      li.append(b, em);
+      li.addEventListener('click', () => go(item));
+      li.addEventListener('mousemove', () => { cursor = i; select(); });
+      list.appendChild(li); rows.push({ li, item });
+    });
+    select();
+  };
+  const show = () => { pal.hidden = false; input.value = ''; render(); input.focus(); };
+  open.addEventListener('click', show);
+  input.addEventListener('input', () => render(input.value));
+  pal.addEventListener('click', e => { if (e.target === pal) { pal.hidden = true; open.focus(); } });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { pal.hidden = true; open.focus(); }
+    else if (e.key === 'ArrowDown' && rows.length) { e.preventDefault(); cursor = (cursor + 1) % rows.length; select(); }
+    else if (e.key === 'ArrowUp' && rows.length) { e.preventDefault(); cursor = (cursor - 1 + rows.length) % rows.length; select(); }
+    else if (e.key === 'Enter' && rows[cursor]) { e.preventDefault(); go(rows[cursor].item); }
+  });
+  addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); pal.hidden ? show() : (pal.hidden = true); }
+    else if (e.key === '/' && pal.hidden && !/input|textarea/i.test(e.target.tagName)) { e.preventDefault(); show(); }
+  });
+})();
+</script>
+
+<script>
+/* ---------- home: the clickable card / layout demo ---------- */
+(() => {
+  'use strict';
+  const code = document.getElementById('demoCode');
+  if (!code) return;
+  const preview = document.getElementById('demoPreview');
+  const note = document.getElementById('demoNote');
+  const cap = document.getElementById('codeCap');
+  const combo = document.getElementById('comboName');
+  const cardTabs = [...document.querySelectorAll('#cardTabs button')];
+  const layoutTabs = [...document.querySelectorAll('#layoutTabs button')];
+
+  const CARDS = {
+    fixed: { name: 'RssNewsCard', head: 'Laravel News',
+      note: 'One feed, pinned in PHP. <code>source()</code> takes a catalogue key, not a URL.',
+      lines: (l) => [['f','RssNewsCard'],['p','::'],['f','make'],['p','()'],['br'],
+        ['p','    ->'],['f','source'],['p','('],['s',"'laravel_news'"],['p',')'],['br'],
+        ['p','    ->'],['f','layout'],['p','('],['s',"'"+l+"'"],['p',')'],['br'],
+        ['p','    ->'],['f','limit'],['p','('],['n','5'],['p',');']] },
+    select: { name: 'RssNewsSelectCard', head: 'Ars Technica ▾',
+      note: 'A picker in the header, grouped by category. The choice is stored per card, per browser.',
+      lines: (l) => [['f','RssNewsSelectCard'],['p','::'],['f','make'],['p','()'],['br'],
+        ['p','    ->'],['f','defaultSource'],['p','('],['s',"'laravel_news'"],['p',')'],['br'],
+        ['p','    ->'],['f','categories'],['p','(['],['s',"'development'"],['p',', '],['s',"'technology'"],['p','])'],['br'],
+        ['p','    ->'],['f','layout'],['p','('],['s',"'"+l+"'"],['p',');']] },
+    stream: { name: 'RssNewsStreamCard', head: 'All sources',
+      note: 'Many feeds merged newest-first, deduplicated, each item badged with its source.',
+      lines: (l) => [['f','RssNewsStreamCard'],['p','::'],['f','make'],['p','()'],['br'],
+        ['p','    ->'],['f','sources'],['p','(['],['s',"'bbc_world'"],['p',', '],['s',"'npr_news'"],['p','])'],['br'],
+        ['p','    ->'],['f','layout'],['p','('],['s',"'"+l+"'"],['p',')'],['br'],
+        ['p','    ->'],['f','searchable'],['p','()'],['br'],
+        ['p','    ->'],['f','width'],['p','('],['s',"'full'"],['p',');']] },
+  };
+
+  const ITEMS = [
+    { t: 'Laravel 12 ships with a rewritten queue worker', s: 'The worker reserves jobs in a single round trip.', src: 'Laravel News', time: '22 min' },
+    { t: 'Regulator opens inquiry into pricing', s: 'The investigation covers three of the largest providers.', src: 'BBC World', time: '1 h' },
+    { t: 'Chip maker posts record quarter', s: 'Demand for inference hardware drove the result.', src: 'Ars Technica', time: '3 h' },
+    { t: 'Standards body publishes draft', s: 'Comments are open until the end of the quarter.', src: 'NPR News', time: '5 h' },
+    { t: 'Eloquent strictness in large codebases', s: 'Preventing lazy loading before it reaches production.', src: 'Laravel News', time: 'yesterday' },
+  ];
+
+  const esc = (v) => String(v).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const badge = (card, i) => card === 'stream' ? '<span class="badge">' + esc(i.src) + '</span> ' : '';
+
+  const LAYOUTS = {
+    hero: (card) => '<div class="lead"><span class="tag">Featured</span><h5>' + esc(ITEMS[0].t) + '</h5>' +
+      '<p>' + esc(ITEMS[0].s) + '</p><small>' + badge(card, ITEMS[0]) + ITEMS[0].time + ' ago</small></div>' +
+      '<ul>' + ITEMS.slice(1, 4).map((i, n) => '<li class="' + (n === 1 ? 'read' : '') + '">' +
+        badge(card, i) + esc(i.t) + '<span class="t">' + i.time + '</span></li>').join('') + '</ul>',
+    compact: (card) => '<ul>' + ITEMS.map((i, n) => '<li class="' + (n === 2 ? 'read' : '') + '">' +
+        badge(card, i) + esc(i.t) + '<span class="t">' + i.time + '</span></li>').join('') + '</ul>',
+    grid: (card) => '<div class="grid4">' + ITEMS.slice(0, 3).map(i =>
+        '<div class="g"><div class="thumb"></div><b>' + esc(i.t) + '</b>' +
+        (badge(card, i) || '<span class="t">' + i.time + ' ago</span>') + '</div>').join('') + '</div>',
+    ticker: () => '<div class="ticker">' + ITEMS.slice(0, 3).map(i => '<span>' + esc(i.t) + '</span>').join('') + '</div>',
+  };
+
+  let cardKey = 'fixed', layoutKey = 'hero';
+
+  function paint() {
+    const card = CARDS[cardKey];
+    cardTabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.card === cardKey)));
+    layoutTabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.layout === layoutKey)));
+    cap.textContent = card.name;
+    combo.textContent = card.name + ', ' + layoutKey + ' layout';
+    note.innerHTML = card.note;
+    code.innerHTML = card.lines(layoutKey).map(([kind, text]) =>
+      kind === 'br' ? '\n' : kind === 'p' ? esc(text) : '<span class="' + kind + '">' + esc(text) + '</span>').join('');
+    preview.innerHTML =
+      '<div class="ph"><span class="dot"></span>' + esc(card.head) +
+        '<span class="right">' + layoutKey + ' · 2 min ago</span></div>' +
+      (cardKey === 'stream' ? '<div class="search">⌕ Search news…</div>' : '') +
+      '<div class="pb">' + LAYOUTS[layoutKey](cardKey) + '</div>';
+  }
+
+  const step = (tabs, delta) => {
+    const keys = tabs.map(b => b.dataset.card || b.dataset.layout);
+    const cur = tabs === cardTabs ? cardKey : layoutKey;
+    const next = keys[(keys.indexOf(cur) + delta + keys.length) % keys.length];
+    tabs === cardTabs ? (cardKey = next) : (layoutKey = next);
+    paint();
+    tabs[keys.indexOf(next)].focus();
+  };
+  cardTabs.forEach(b => {
+    b.addEventListener('click', () => { cardKey = b.dataset.card; paint(); });
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(cardTabs, 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(cardTabs, -1); }
+    });
+  });
+  layoutTabs.forEach(b => {
+    b.addEventListener('click', () => { layoutKey = b.dataset.layout; paint(); });
+    b.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); step(layoutTabs, 1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); step(layoutTabs, -1); }
+    });
+  });
+
+  paint();
+})();
+</script>
+<script>
+/* ============================================================
+   Playground — a faithful re-implementation of the card in the
+   browser, over fixture feeds. Same options, same state machine.
+   ============================================================ */
+(() => {
+  'use strict';
+  const host = document.getElementById('pgCardHost');
+  if (!host) return;
+
+  /* ---------- fixture catalogue (mirrors StarterPreset) ---------- */
+  const SOURCES = {
+    laravel_news: { title: 'Laravel News', cat: 'development', ini: 'LN' },
+    php_watch:    { title: 'PHP.Watch',    cat: 'development', ini: 'PW' },
+    github_blog:  { title: 'The GitHub Blog', cat: 'development', ini: 'GB' },
+    hacker_news:  { title: 'Hacker News',  cat: 'technology',  ini: 'HN' },
+    the_verge:    { title: 'The Verge',    cat: 'technology',  ini: 'TV' },
+    ars_technica: { title: 'Ars Technica', cat: 'technology',  ini: 'AT' },
+    bbc_world:    { title: 'BBC World News', cat: 'world',     ini: 'BB' },
+    npr_news:     { title: 'NPR News',     cat: 'world',       ini: 'NP' },
+  };
+  const CATS = { development: 'Development', technology: 'Technology', world: 'World' };
+
+  const MIN = 60000;
+  const FEED = {
+    laravel_news: [
+      ['Laravel 12 ships with a rewritten queue worker', 'The worker now reserves jobs in a single round trip, cutting Redis calls per job from four to one.', 22],
+      ['Testing HTTP clients without hitting the network', 'Http::fake() covers sequences, callbacks and connection failures — the last one is the part people forget.', 95],
+      ['A closer look at deferred functions', 'defer() moves work after the response without a queue worker, and it is easier to misuse than it looks.', 260],
+      ['Eloquent strictness in large codebases', 'preventLazyLoading, preventSilentlyDiscardingAttributes, and what breaks when you turn them on late.', 1010],
+      ['Pest 3 arrives with architecture presets', 'Arch testing now ships opinionated presets, so a new package starts with rules rather than none.', 1580],
+      ['Queues: the difference between failed and dead', 'A failed job can be retried. A dead one needs a human, and most dashboards do not distinguish them.', 2400],
+      ['Reading the query log without drowning in it', 'Scoped logging around a single request, and a formatter that shows the bind values inline.', 3100],
+      ['Package development without a host app', 'Testbench workbench, and why the second application directory confuses everyone once.', 4300],
+    ],
+    php_watch: [
+      ['PHP 8.5: the pipe operator lands', 'Left-to-right composition without nesting calls. The RFC passed with the widest margin this year.', 48],
+      ['Deprecations to expect in 8.5', 'A short list this cycle, but one of them touches every codebase that still calls implode in reverse order.', 340],
+      ['Property hooks in practice', 'Six months in, the patterns that survived contact with real code.', 900],
+      ['Why array functions keep growing', 'array_find, array_any, array_all — the standard library catching up with userland helpers.', 2300],
+      ['Readonly classes, one year on', 'What they solved, and the one pattern they made harder.', 3600],
+      ['A short history of the SPL', 'It arrived early, it aged unevenly, and half of it is still the right answer.', 5200],
+    ],
+    github_blog: [
+      ['Actions runners get a faster cache layer', 'Cold restores drop by roughly half on large monorepos, according to the rollout numbers.', 140],
+      ['Secret scanning now covers more package registries', 'Leaked tokens for six additional registries are revoked automatically on push.', 700],
+      ['Dependabot grouping goes general availability', 'One pull request per ecosystem instead of forty.', 1900],
+    ],
+    hacker_news: [
+      ['Show HN: a feed reader that runs entirely in the tab', 'No server, no account. The whole index lives in IndexedDB and syncs over a file you own.', 12],
+      ['The cost of a cache miss, measured properly', 'A careful benchmark of what a cold read actually costs once you include tail latency.', 180],
+      ['Why RSS never died', 'It stopped being a product and became plumbing, which is the most durable thing software can be.', 520],
+      ['Writing a parser that survives real-world XML', 'Every feed is valid until you fetch it. A tour of the malformed documents in the wild.', 1400],
+      ['Ask HN: what broke in production this week?', 'Two hundred replies, and a third of them are DNS.', 2050],
+      ['The case against the refresh button', 'If pressing it costs a third party money, it needs a budget.', 3400],
+    ],
+    the_verge: [
+      ['Chip maker posts record quarter', 'Demand for inference hardware drove the result, and the guidance is higher still.', 60],
+      ['The browser wars are back, quietly', 'Three engines, two of them funded by advertising, one by a search deal.', 410],
+      ['A new handheld nobody asked for', 'It is well built, it is expensive, and it does one thing the phone in your pocket already does.', 1150],
+    ],
+    ars_technica: [
+      ['Standards body publishes draft on feed discovery', 'Comments are open until the end of the quarter, and the draft finally addresses JSON Feed.', 150],
+      ['The long tail of TLS misconfiguration', 'A scan of a million hosts finds the same three mistakes, over and over.', 880],
+      ['Inside a decade-old caching bug', 'It took a leap second and a load balancer to make it visible.', 2600],
+    ],
+    bbc_world: [
+      ['Regulator opens inquiry into pricing', 'The investigation covers three of the largest providers and is expected to run into next year.', 35],
+      ['Talks resume after a week of delays', 'Both delegations describe the mood as constructive, which is what they said last time.', 300],
+      ['Flooding forces evacuations in the north', 'Emergency services report no casualties so far.', 760],
+    ],
+    npr_news: [
+      ['Court to hear challenge over data rules', 'The case turns on whether an inferred attribute counts as personal data.', 85],
+      ['Rural broadband programme misses targets', 'Two thirds of the promised connections are late, per the department audit.', 480],
+      ['A small town rebuilds its newspaper', 'Circulation is four hundred. It is the only one left in the county.', 1600],
+    ],
+  };
+  const NEW_ITEMS = [
+    ['Breaking: feed returns 200 for the first time in a week', 'The publisher fixed their certificate chain without announcing it.', 0],
+    ['Just in: a new release is tagged', 'Three commits, one of them a changelog.', 0],
+    ['Filed moments ago: the conference schedule is out', 'Two tracks, one of them entirely about caching.', 0],
+  ];
+
+  /* ---------- deterministic SVG thumbnails (no external assets) ---------- */
+  const hash = (str) => { let h = 0; for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0; return h; };
+  const thumb = (title) => {
+    const h = hash(title), a = h % 360, b = (a + 38 + (h >> 8) % 60) % 360;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 70">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="hsl(${a} 62% 52%)"/><stop offset="1" stop-color="hsl(${b} 58% 32%)"/>
+      </linearGradient></defs>
+      <rect width="160" height="70" fill="url(#g)"/>
+      <circle cx="${28 + h % 90}" cy="${12 + (h >> 4) % 44}" r="${16 + (h >> 6) % 16}" fill="hsl(${b} 70% 72%)" opacity=".38"/>
+      <rect x="${(h >> 3) % 120}" y="${(h >> 9) % 50}" width="46" height="46" fill="hsl(${a} 80% 20%)" opacity=".28" transform="rotate(${h % 40} 60 35)"/>
+    </svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  };
+  const favicon = (key) => {
+    const h = hash(key), a = h % 360;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="hsl(${a} 58% 46%)"/><path d="M8 22a6 6 0 0 1 6-6M8 22a12 12 0 0 1 12-12M8 22h.01" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
+    return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+  };
+
+  /* ---------- state ---------- */
+  const LS = 'nova-rss-play';
+  const load = (k, d) => { try { return JSON.parse(localStorage.getItem(LS + ':' + k)) ?? d; } catch (e) { return d; } };
+  const save = (k, v) => { try { localStorage.setItem(LS + ':' + k, JSON.stringify(v)); } catch (e) {} };
+
+  const cfg = {
+    card: 'fixed', layout: 'hero', limit: 5, width: '1/2',
+    images: true, search: false, read: true, auto: false, favicons: false,
+    state: 'fresh', source: 'laravel_news',
+    sources: ['bbc_world', 'the_verge', 'laravel_news'],
+  };
+  let term = '', loading = false, fetchedAt = Date.now(), autoHandle = null, hovering = false;
+  let seen = new Set(load('seen', [])), saved = new Set(load('saved', []));
+  let extra = {};   /* items added by refresh, per source */
+
+  /* ---------- building the item list, the way the server does ---------- */
+  const idOf = (title) => 'i' + hash(title).toString(36);
+  const itemsFor = (key) => (FEED[key] || []).concat(extra[key] || []).map(([title, summary, mins]) => ({
+    id: idOf(title), title, summary, at: fetchedAt - mins * MIN,
+    src: key, srcTitle: SOURCES[key].title,
+  }));
+
+  function currentItems() {
+    const keys = cfg.card === 'stream' ? cfg.sources : [cfg.source];
+    let all = keys.flatMap(itemsFor);
+    all.sort((a, b) => b.at - a.at);                       /* newest first */
+    const seenIds = new Set();
+    all = all.filter(i => !seenIds.has(i.id) && seenIds.add(i.id));   /* dedup by id */
+    return all.slice(0, cfg.limit);                        /* limit, server side */
+  }
+  const matches = (i) => !term.trim() ||
+    (i.title + ' ' + i.summary + ' ' + i.srcTitle).toLowerCase().includes(term.trim().toLowerCase());
+
+  /* ---------- rendering helpers ---------- */
+  const esc = (v) => String(v).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const mark = (v) => {
+    const e = esc(v), q = term.trim();
+    if (q.length < 2) return e;
+    return e.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>');
+  };
+  const ago = (ts) => {
+    const s = Math.max(0, Math.round((Date.now() - ts) / 1000));
+    if (s < 45) return 'just now';
+    const m = Math.round(s / 60); if (m < 60) return m + ' min ago';
+    const h = Math.round(m / 60); if (h < 24) return h + ' h ago';
+    return Math.round(h / 24) + ' d ago';
+  };
+  const ICON = {
+    refresh: '<svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z" clip-rule="evenodd"/></svg>',
+    search: '<svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clip-rule="evenodd"/></svg>',
+    chev: '<svg class="rss-chev" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd"/></svg>',
+    mark: (on) => '<svg viewBox="0 0 20 20" fill="' + (on ? 'currentColor' : 'none') + '" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3.5h10a1 1 0 011 1v12l-6-3.5-6 3.5v-12a1 1 0 011-1z"/></svg>',
+  };
+
+  /* ---------- the card ---------- */
+  function renderCard() {
+    const items = currentItems();
+    const visible = items.filter(matches);
+    const unread = cfg.read ? items.filter(i => !seen.has(i.id)).length : 0;
+    const headTitle = cfg.card === 'stream' ? 'All sources' : SOURCES[cfg.source].title;
+    const widthClass = cfg.width === '1/3' ? 'w-third' : cfg.width === '1/2' ? 'w-half' : '';
+
+    const picker = cfg.card === 'select'
+      ? '<select class="rss-select" id="pgSourceSelect" aria-label="Source">' +
+          Object.entries(CATS).map(([ck, cl]) =>
+            '<optgroup label="' + cl + '">' +
+            Object.entries(SOURCES).filter(([, s]) => s.cat === ck)
+              .map(([k, s]) => '<option value="' + k + '"' + (k === cfg.source ? ' selected' : '') + '>' + esc(s.title) + '</option>').join('') +
+            '</optgroup>').join('') +
+        '</select>'
+      : '<h3 class="rss-title">' + esc(headTitle) + '</h3>';
+
+    const icon = cfg.favicons && cfg.card !== 'stream'
+      ? '<img src="' + favicon(cfg.source) + '" alt="">'
+      : (cfg.card === 'stream' ? '∑' : SOURCES[cfg.source].ini);
+
+    let body;
+    if (loading) {
+      body = '<div class="rss-skel">' + '<div style="width:72%"></div><div style="width:96%"></div><div style="width:44%"></div>'.repeat(3) + '</div>';
+    } else if (cfg.state === 'down') {
+      body = '<div class="rss-error" role="alert"><b>Feed unavailable</b>Feed [https://feed.laravel-news.com/] responded with HTTP 503.' +
+             '<br><button class="rss-retry" id="pgRetry" type="button">Retry</button></div>';
+    } else if (!visible.length) {
+      body = '<div class="rss-empty">' + (term ? 'No results for “' + esc(term) + '”' : 'No news available') + '</div>';
+    } else {
+      body = LAYOUT[cfg.layout](visible);
+    }
+
+    host.innerHTML =
+      '<div class="rss ' + widthClass + '">' +
+        '<div class="rss-head">' +
+          '<div class="rss-ico">' + icon + '</div>' +
+          '<div class="rss-id">' +
+            '<div class="rss-title-row">' +
+              (loading || cfg.state === 'down' ? '' : '<span class="rss-live"></span>') + picker +
+              (unread ? '<span class="rss-new">' + unread + ' new</span>' : '') +
+            '</div>' +
+            '<p class="rss-sub">' + visible.length + (visible.length === 1 ? ' item' : ' items') +
+              ' · updated ' + ago(fetchedAt) + '</p>' +
+          '</div>' +
+          (cfg.search ? '<button class="rss-btn" id="pgSearchToggle" aria-pressed="' + (searchOpen ? 'true' : 'false') + '" aria-label="Search">' + ICON.search + '</button>' : '') +
+          '<button class="rss-btn' + (loading ? ' spin' : '') + '" id="pgRefresh"' + (loading ? ' disabled' : '') + ' aria-label="Refresh">' + ICON.refresh + '</button>' +
+        '</div>' +
+        (cfg.state === 'stale' ? '<div class="rss-stale">⚑ Showing cached copy</div>' : '') +
+        (cfg.search && searchOpen
+          ? '<div class="rss-search">' + ICON.search + '<input id="pgSearchInput" type="search" placeholder="Search news…" value="' + esc(term) + '" aria-label="Search news"></div>'
+          : '') +
+        '<div class="rss-body" aria-live="polite" aria-busy="' + loading + '">' + body + '</div>' +
+      '</div>';
+
+    wireCard();
+    renderReadout(items, visible, unread);
+    renderCode();
+  }
+
+  const heroBlock = (i) => '<div class="rss-hero' + (cfg.read && seen.has(i.id) ? ' read' : '') + '" data-id="' + i.id + '" role="button" tabindex="0">' +
+      (cfg.images ? '<div class="rss-thumb"><img src="' + thumb(i.title) + '" alt=""></div>' : '') +
+      '<span class="tag">Featured</span><h5>' + mark(i.title) + '</h5><p>' + mark(i.summary) + '</p>' +
+      '<div class="rss-meta">' + (cfg.card === 'stream' ? '<span class="badge">' + esc(i.srcTitle) + '</span>' : '') + ago(i.at) + '</div></div>';
+
+  const row = (i) => '<li class="rss-item' + (cfg.read && seen.has(i.id) ? ' read' : '') + '" data-id="' + i.id + '" role="button" tabindex="0">' +
+      (cfg.images ? '<div class="mini-thumb"><img src="' + thumb(i.title) + '" alt=""></div>' : '') +
+      '<div class="txt"><p>' + mark(i.title) + '</p><div class="m">' +
+        (cfg.card === 'stream' ? '<span class="badge">' + esc(i.srcTitle) + '</span>' : '') + ago(i.at) + '</div></div>' +
+      (cfg.read ? '<button class="rss-save" data-save="' + i.id + '" aria-pressed="' + saved.has(i.id) + '" aria-label="Save">' + ICON.mark(saved.has(i.id)) + '</button>' : '') +
+      ICON.chev + '</li>';
+
+  const LAYOUT = {
+    hero: (v) => heroBlock(v[0]) + (v.length > 1 ? '<ul class="rss-list">' + v.slice(1).map(row).join('') + '</ul>' : ''),
+    compact: (v) => '<ul class="rss-list">' + v.map(row).join('') + '</ul>',
+    grid: (v) => '<div class="rss-grid">' + v.map(i =>
+      '<div class="rss-card' + (cfg.read && seen.has(i.id) ? ' read' : '') + '" data-id="' + i.id + '" role="button" tabindex="0">' +
+        (cfg.images ? '<div class="rss-thumb" style="aspect-ratio:16/9"><img src="' + thumb(i.title) + '" alt=""></div>' : '') +
+        '<b>' + mark(i.title) + '</b><div class="rss-meta">' +
+        (cfg.card === 'stream' ? '<span class="badge">' + esc(i.srcTitle) + '</span>' : '') + ago(i.at) + '</div></div>').join('') + '</div>',
+    ticker: (v) => '<div class="rss-ticker">' + v.map(i =>
+      '<span class="tk" data-id="' + i.id + '" role="button" tabindex="0">' + mark(i.title) + '</span>').join('') + '</div>',
+  };
+
+  function renderReadout(items, visible, unread) {
+    const el = document.getElementById('pgReadout');
+    const states = { fresh: '01 · fresh cache hit', stale: '04 · stale served', down: '05 · cold failure' };
+    el.innerHTML =
+      '<span>state <b>' + states[cfg.state] + '</b></span>' +
+      '<span>fetched <b>' + ago(fetchedAt) + '</b></span>' +
+      '<span>items <b>' + visible.length + '/' + items.length + '</b></span>' +
+      (cfg.read ? '<span>unread <b>' + unread + '</b></span><span>saved <b>' + saved.size + '</b></span>' : '') +
+      (cfg.auto ? '<span>auto-refresh <b>' + (hovering ? 'paused (hover)' : document.hidden ? 'paused (tab hidden)' : 'every 10s') + '</b></span>' : '');
+  }
+
+  function renderCode() {
+    const K = (t) => '<span class="k">' + t + '</span>', F = (t) => '<span class="f">' + t + '</span>',
+          S = (t) => '<span class="s">' + t + '</span>', N = (t) => '<span class="n">' + t + '</span>',
+          C = (t) => '<span class="c">' + t + '</span>';
+    const cls = { fixed: 'RssNewsCard', select: 'RssNewsSelectCard', stream: 'RssNewsStreamCard' }[cfg.card];
+    const lines = [F(cls) + '::' + F('make') + '()'];
+    if (cfg.card === 'fixed') lines.push('    ->' + F('source') + '(' + S("'" + cfg.source + "'") + ')');
+    if (cfg.card === 'select') lines.push('    ->' + F('defaultSource') + '(' + S("'" + cfg.source + "'") + ')');
+    if (cfg.card === 'stream') lines.push('    ->' + F('sources') + '([' + cfg.sources.map(s => S("'" + s + "'")).join(', ') + '])');
+    lines.push('    ->' + F('layout') + '(' + S("'" + cfg.layout + "'") + ')');
+    lines.push('    ->' + F('limit') + '(' + N(cfg.limit) + ')');
+    if (!cfg.images) lines.push('    ->' + F('images') + '(' + K('false') + ')');
+    if (cfg.search) lines.push('    ->' + F('searchable') + '()');
+    if (!cfg.read) lines.push('    ->' + F('readState') + '(' + K('false') + ')');
+    if (cfg.auto) lines.push('    ->' + F('autoRefresh') + '(' + N('10') + ')');
+    lines.push('    ->' + F('width') + '(' + S("'" + cfg.width + "'") + ');');
+    if (cfg.favicons) lines.push('', C('// config/nova-card-rss-news.php'), C("// 'ui' => ['favicons' => 'google'],"));
+    document.getElementById('pgCode').innerHTML = lines.join('\n');
+  }
+
+  /* ---------- interactions inside the card ---------- */
+  let searchOpen = false;
+
+  function openItem(id) {
+    if (!cfg.read) return;
+    seen.add(id); save('seen', [...seen]); renderCard();
+  }
+
+  function wireCard() {
+    host.querySelectorAll('[data-id]').forEach(el => {
+      el.addEventListener('click', e => { if (!e.target.closest('[data-save]')) openItem(el.dataset.id); });
+      el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openItem(el.dataset.id); } });
+    });
+    host.querySelectorAll('[data-save]').forEach(btn => btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.save;
+      saved.has(id) ? saved.delete(id) : saved.add(id);
+      save('saved', [...saved]); renderCard();
+    }));
+    const refresh = document.getElementById('pgRefresh');
+    if (refresh) refresh.addEventListener('click', () => doRefresh());
+    const retry = document.getElementById('pgRetry');
+    if (retry) retry.addEventListener('click', () => { setState('fresh'); doRefresh(); });
+    const toggle = document.getElementById('pgSearchToggle');
+    if (toggle) toggle.addEventListener('click', () => { searchOpen = !searchOpen; if (!searchOpen) term = ''; renderCard();
+      const i = document.getElementById('pgSearchInput'); if (i) i.focus(); });
+    const input = document.getElementById('pgSearchInput');
+    if (input) {
+      input.addEventListener('input', () => { term = input.value; renderCard();
+        const n = document.getElementById('pgSearchInput'); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } });
+      input.addEventListener('keydown', e => { if (e.key === 'Escape') { term = ''; searchOpen = false; renderCard(); } });
+    }
+    const sel = document.getElementById('pgSourceSelect');
+    if (sel) sel.addEventListener('change', () => { cfg.source = sel.value; save('source', cfg.source); doRefresh(); });
+  }
+
+  function doRefresh() {
+    if (loading || cfg.state === 'down') return;
+    loading = true; renderCard();
+    setTimeout(() => {
+      const key = cfg.card === 'stream' ? cfg.sources[0] : cfg.source;
+      const pick = NEW_ITEMS[Math.floor(Math.random() * NEW_ITEMS.length)];
+      extra[key] = (extra[key] || []);
+      if (!extra[key].some(e => e[0] === pick[0])) extra[key].unshift([pick[0], pick[1], 0]);
+      fetchedAt = Date.now();
+      loading = false; renderCard();
+    }, 620);
+  }
+
+  /* ---------- the control panel ---------- */
+  const CARD_NOTES = {
+    fixed: 'One feed, pinned in PHP. The reader cannot change it.',
+    select: 'A picker in the header. Try it — the choice is stored per card, per browser.',
+    stream: 'Several feeds merged newest-first, deduplicated, each item badged with its source.',
+  };
+  const STATE_NOTES = {
+    fresh: 'The cache answered. No network call, nothing leaves your infrastructure.',
+    stale: 'Upstream failed but the cache still holds a copy, so the card keeps working and says so.',
+    down: 'Upstream failed with nothing cached — the only outcome that shows an error.',
+  };
+
+  document.querySelectorAll('#pgCard button').forEach(b => b.addEventListener('click', () => {
+    cfg.card = b.dataset.card;
+    document.querySelectorAll('#pgCard button').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    document.getElementById('pgStreamPanel').hidden = cfg.card !== 'stream';
+    document.getElementById('pgCardNote').textContent = CARD_NOTES[cfg.card];
+    renderCard();
+  }));
+  document.querySelectorAll('#pgLayout button').forEach(b => b.addEventListener('click', () => {
+    cfg.layout = b.dataset.layout;
+    document.querySelectorAll('#pgLayout button').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    renderCard();
+  }));
+  document.querySelectorAll('#pgWidth button').forEach(b => b.addEventListener('click', () => {
+    cfg.width = b.dataset.width;
+    document.querySelectorAll('#pgWidth button').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+    renderCard();
+  }));
+  function setState(v) {
+    cfg.state = v;
+    document.querySelectorAll('#pgState button').forEach(o => o.setAttribute('aria-pressed', String(o.dataset.state === v)));
+    document.getElementById('pgStateNote').textContent = STATE_NOTES[v];
+    renderCard();
+  }
+  document.querySelectorAll('#pgState button').forEach(b => b.addEventListener('click', () => setState(b.dataset.state)));
+
+  /* source chips for the stream card */
+  const chips = document.getElementById('pgSources');
+  Object.entries(SOURCES).forEach(([k, s]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s.title;
+    b.setAttribute('aria-pressed', String(cfg.sources.includes(k)));
+    b.addEventListener('click', () => {
+      const at = cfg.sources.indexOf(k);
+      if (at > -1) { if (cfg.sources.length > 1) cfg.sources.splice(at, 1); }
+      else cfg.sources.push(k);
+      b.setAttribute('aria-pressed', String(cfg.sources.includes(k)));
+      renderCard();
+    });
+    chips.appendChild(b);
+  });
+
+  const bind = (id, key, after) => {
+    const el = document.getElementById(id);
+    el.checked = cfg[key];
+    el.addEventListener('change', () => { cfg[key] = el.checked; (after || renderCard)(); });
+  };
+  bind('pgImages', 'images');
+  bind('pgSearch', 'search', () => { if (!cfg.search) { term = ''; searchOpen = false; } else { searchOpen = true; } renderCard(); });
+  bind('pgRead', 'read');
+  bind('pgFav', 'favicons');
+  bind('pgAuto', 'auto', () => { setupAuto(); renderCard(); });
+
+  const range = document.getElementById('pgLimit'), rangeVal = document.getElementById('pgLimitVal');
+  range.addEventListener('input', () => { cfg.limit = Number(range.value); rangeVal.textContent = range.value; renderCard(); });
+
+  document.getElementById('pgCopy').addEventListener('click', async (e) => {
+    const text = document.getElementById('pgCode').textContent;
+    try { await navigator.clipboard.writeText(text); e.target.textContent = 'Copied'; }
+    catch (err) { e.target.textContent = 'Select and copy'; }
+    setTimeout(() => (e.target.textContent = 'Copy'), 1600);
+  });
+
+  /* auto refresh, paused on a hidden tab and while the pointer is over the card */
+  function setupAuto() {
+    clearInterval(autoHandle); autoHandle = null;
+    if (!cfg.auto) return;
+    autoHandle = setInterval(() => {
+      if (document.hidden || hovering || loading || cfg.state === 'down') return;
+      doRefresh();
+    }, 10000);
+  }
+  host.addEventListener('mouseenter', () => { hovering = true; renderReadoutOnly(); });
+  host.addEventListener('mouseleave', () => { hovering = false; renderReadoutOnly(); });
+  document.addEventListener('visibilitychange', () => renderReadoutOnly());
+  function renderReadoutOnly() {
+    if (!cfg.auto) return;
+    const items = currentItems();
+    renderReadout(items, items.filter(matches), cfg.read ? items.filter(i => !seen.has(i.id)).length : 0);
+  }
+
+  /* the relative timestamps tick, exactly like the card's shared clock */
+  setInterval(() => { if (!loading) renderCard(); }, 30000);
+
+  document.getElementById('pgCardNote').textContent = CARD_NOTES.fixed;
+  document.getElementById('pgStateNote').textContent = STATE_NOTES.fresh;
+  cfg.source = load('source', 'laravel_news');
+  renderCard();
+})();
+</script>
