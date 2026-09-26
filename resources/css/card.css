@@ -857,7 +857,7 @@
     flex-direction: column;
     overflow: hidden;
     border-radius: 12px;
-    background: rgba(var(--colors-white), 1);
+    background: rgb(var(--colors-white));
     border: 1px solid rgba(var(--colors-gray-200), 1);
     box-shadow:
         0 24px 48px -24px rgba(0, 0, 0, 0.35),
@@ -866,7 +866,7 @@
 }
 
 .dark .rss-picker-panel {
-    background: rgba(var(--colors-gray-900), 1);
+    background: rgb(var(--colors-gray-900));
     border-color: rgba(var(--colors-gray-700), 1);
 }
 
@@ -944,30 +944,40 @@
     border-radius: 999px;
 }
 
+/* Opaque, never translucent: a sticky header with alpha (or a backdrop
+   filter) lets the options ghost through it as they scroll underneath. */
 .rss-picker-group {
     position: sticky;
-    top: 0;
-    z-index: 1;
-    margin: 6px 0 3px;
-    padding: 3px 8px;
+    top: -5px;              /* cancel the scroller's padding */
+    z-index: 2;
+    margin: 0 -5px 3px;
+    padding: 9px 13px 5px;
     font-size: 0.58rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(var(--colors-gray-400), 1);
-    background: rgba(var(--colors-white), 0.94);
-    backdrop-filter: blur(6px);
+    color: rgba(var(--colors-gray-500), 1);
+    background: rgb(var(--colors-white));
+    box-shadow: 0 1px 0 rgba(var(--colors-gray-200), 0.8);
 }
 
 .dark .rss-picker-group {
-    background: rgba(var(--colors-gray-900), 0.94);
+    color: rgba(var(--colors-gray-400), 1);
+    background: rgb(var(--colors-gray-900));
+    box-shadow: 0 1px 0 rgba(var(--colors-gray-700), 0.8);
 }
 
-.rss-picker-group:first-child {
-    margin-top: 0;
+.rss-picker-group + .rss-picker-option {
+    margin-top: 4px;
+}
+
+.rss-picker-option:last-child {
+    margin-bottom: 4px;
 }
 
 .rss-picker-option {
+    position: relative;
+    z-index: 1;
     display: flex;
     align-items: center;
     gap: 8px;

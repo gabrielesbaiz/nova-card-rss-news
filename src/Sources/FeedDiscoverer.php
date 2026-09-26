@@ -24,15 +24,23 @@ final class FeedDiscoverer
     /**
      * @return array<int, array{url: string, title: ?string, parser: string, items: int}>
      */
-    public function discover(string $url): array
+    public function discover(string $url, int $limit = 25): array
     {
+        $this->skipped = 0;
         $url = str_starts_with($url, 'http') ? $url : 'https://'.$url;
 
         $candidates = [];
 
         try {
             $response = $this->fetcher->fetch($url);
-            $candidates = $this->fromHtml($response->body, $url);
+
+            // Declared feeds first, then anything on the page that looks like
+            // one — "feed index" pages list dozens of feeds as plain links and
+            // declare none of them in <head>.
+            $candidates = array_merge(
+                $this->fromLinkTags($response->body, $url),
+                $this->fromAnchors($response->body, $url),
+            );
 
             // The URL may already be a feed.
             if ($this->validate($url) !== null) {
@@ -50,9 +58,16 @@ final class FeedDiscoverer
             }
         }
 
+        $candidates = array_values(array_unique($candidates));
+
+        if (count($candidates) > $limit) {
+            $this->skipped = count($candidates) - $limit;
+            $candidates = array_slice($candidates, 0, $limit);
+        }
+
         $found = [];
 
-        foreach (array_unique($candidates) as $candidate) {
+        foreach ($candidates as $candidate) {
             $result = $this->validate($candidate);
 
             if ($result !== null) {
@@ -61,6 +76,14 @@ final class FeedDiscoverer
         }
 
         return $found;
+    }
+
+    /**
+     * Candidates found but not fetched because of the limit.
+     */
+    public function skipped(): int
+    {
+        return $this->skipped;
     }
 
     /**
@@ -89,9 +112,11 @@ final class FeedDiscoverer
     }
 
     /**
+     * Feeds the page declares in <head>.
+     *
      * @return array<int, string>
      */
-    private function fromHtml(string $html, string $baseUrl): array
+    private function fromLinkTags(string $html, string $baseUrl): array
     {
         if (! preg_match_all('/<link\b[^>]*>/i', $html, $matches)) {
             return [];
@@ -112,6 +137,37 @@ final class FeedDiscoverer
         }
 
         return array_values(array_filter($links));
+    }
+
+    /**
+     * Feeds the page merely links to. Matches the shapes publishers use:
+     * a .xml / .rss / .atom file, or a path segment called feed or rss.
+     *
+     * @return array<int, string>
+     */
+    private function fromAnchors(string $html, string $baseUrl): array
+    {
+        if (! preg_match_all('/<a\b[^>]*href=["\']([^"\']+)["\']/i', $html, $matches)) {
+            return [];
+        }
+
+        $links = [];
+
+        foreach ($matches[1] as $href) {
+            $href = html_entity_decode($href, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+            if (! preg_match('#\.(xml|rss|atom)(\?|$)|/(feed|rss|atom)(/|\?|$)#i', $href)) {
+                continue;
+            }
+
+            $absolute = $this->absolute($href, $baseUrl);
+
+            if (str_starts_with($absolute, 'http')) {
+                $links[] = $absolute;
+            }
+        }
+
+        return array_values(array_unique($links));
     }
 
     private function absolute(string $href, string $baseUrl): string
