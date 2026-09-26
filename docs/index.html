@@ -676,7 +676,7 @@ public function cards(): array
 <section id="install-requirements"><h2>Requirements</h2><table><thead><tr><th>Requirement</th><th>Version</th></tr></thead><tbody>
 <tr><td>PHP</td><td><code>^8.2</code></td></tr>
 <tr><td>Laravel</td><td><code>^11.0</code> or <code>^12.0</code></td></tr>
-<tr><td>Laravel Nova</td><td><code>^5.0</code> (licensed separately)</td></tr>
+<tr><td>Laravel Nova</td><td><code>^5.0</code> — required by composer, licensed separately by Laravel</td></tr>
 <tr><td>Extensions</td><td><code>ext-simplexml</code>, bundled with every standard PHP build</td></tr>
 </tbody></table></section>
 <section id="install-install"><h2>Install</h2><pre><code>composer require gabrielesbaiz/nova-card-rss-news</code></pre>
@@ -2014,7 +2014,7 @@ all copies or substantial portions of the Software.</code></pre>
 <tr><td><code>php</code></td><td><code>^8.2</code></td><td>Readonly promoted properties, enums, named arguments</td></tr>
 <tr><td><code>illuminate/support</code></td><td><code>^11.0|^12.0</code></td><td>The HTTP client, cache, queue, events and container</td></tr>
 <tr><td><code>spatie/laravel-package-tools</code></td><td><code>^1.16</code></td><td>Config, translations and command registration</td></tr>
-<tr><td><code>laravel/nova</code></td><td><code>^5.0</code> <span class="badge">dev</span></td><td>The card classes extend Nova&rsquo;s <code>Card</code></td></tr>
+<tr><td><code>laravel/nova</code></td><td><code>^5.0</code></td><td>The card classes extend Nova&rsquo;s <code>Card</code>, so it is a hard dependency</td></tr>
 <tr><td><code>ext-simplexml</code></td><td>bundled with PHP</td><td>RSS, Atom and RDF parsing</td></tr>
 </tbody></table>
 <p>Feed parsing uses PHP&rsquo;s own <code>SimpleXML</code> rather than a parsing library, so the package adds no XML dependency to your application. The card scaffolding started from Nova&rsquo;s own card generator.</p>
