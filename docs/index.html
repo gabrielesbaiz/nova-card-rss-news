@@ -141,6 +141,7 @@ ul.plain li::before{content:"";position:absolute;left:0;top:.65em;width:.42rem;h
 .hero .grid{display:grid;gap:clamp(2rem,5vw,3.4rem);grid-template-columns:1fr;position:relative;z-index:2}
 @media(min-width:1020px){.hero .grid{grid-template-columns:1.02fr .98fr;align-items:center}}
 @media(min-width:1500px){.hero .grid{grid-template-columns:1fr 1.05fr;gap:4rem}}
+.hero .mark{display:block;width:min(26rem,72vw);height:auto;margin:0 0 1.5rem}
 .hero .eyebrow{display:inline-flex;align-items:center;gap:.45rem;background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent-text) 30%,transparent);padding:.25rem .7rem;border-radius:999px}
 .hero h1{font-size:clamp(2.4rem,6vw,4.1rem);font-weight:800;line-height:1.02;letter-spacing:-.035em;margin:1.1rem 0 0;max-width:15ch}
 .hero h1 em{font-style:normal;color:var(--accent-text)}
@@ -352,6 +353,8 @@ pre .n{color:var(--accent-text)}
   <div class="hero">
     <div class="mx grid">
       <div>
+        <img class="mark" src="art/nova-card-rss-news-logo.png"
+             alt="NovaCard RSS News" width="1600" height="533">
         <p class="eyebrow">Laravel Nova &middot; dashboard card</p>
         <h1>Three lines in a dashboard. <em>Any feed</em> on the screen.</h1>
         <p class="sell">One card class and a source key. The feed arrives cached, cleaned, sorted and limited, in one of four layouts &mdash; with no controller, no route file and no published assets on your side.</p>
