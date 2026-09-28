@@ -7,7 +7,7 @@ use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
 it('sends a user agent and accepts feed content types', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     app(FeedFetcher::class)->fetch('https://example.test/feed.xml');
 
@@ -30,7 +30,7 @@ it('sends conditional headers when validators are known', function (): void {
 });
 
 it('captures etag and last-modified from the response', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200, [
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200, [
         'ETag' => '"v2"',
         'Last-Modified' => 'Mon, 29 Jun 2026 10:00:00 GMT',
     ])]);

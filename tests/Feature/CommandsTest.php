@@ -10,7 +10,7 @@ beforeEach(function (): void {
 });
 
 it('reports healthy sources and exits zero', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $this->artisan('nova-rss:check')
         ->expectsOutputToContain('alpha')
@@ -19,7 +19,7 @@ it('reports healthy sources and exits zero', function (): void {
 
 it('exits non-zero when a source is broken', function (): void {
     Http::fake([
-        'alpha.test/*' => Http::response(fixture('sample-feed.xml'), 200),
+        'alpha.test/*' => Http::response(feed_fixture('sample-feed.xml'), 200),
         'beta.test/*' => Http::response('boom', 500),
     ]);
 
@@ -27,7 +27,7 @@ it('exits non-zero when a source is broken', function (): void {
 });
 
 it('can check a single source', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $this->artisan('nova-rss:check --source=alpha')->assertSuccessful();
 
@@ -35,7 +35,7 @@ it('can check a single source', function (): void {
 });
 
 it('warms the cache for every source', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $this->artisan('nova-rss:warm')->assertSuccessful();
 
@@ -77,7 +77,7 @@ it('imports an OPML file into a pastable config block', function (): void {
 it('discovers a feed from a plain site url', function (): void {
     Http::fake([
         'example.test' => Http::response('<link rel="alternate" type="application/rss+xml" href="https://example.test/feed.xml">', 200),
-        'example.test/feed.xml' => Http::response(fixture('sample-feed.xml'), 200),
+        'example.test/feed.xml' => Http::response(feed_fixture('sample-feed.xml'), 200),
     ]);
 
     $this->artisan('nova-rss:discover https://example.test')

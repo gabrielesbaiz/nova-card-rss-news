@@ -10,8 +10,8 @@ beforeEach(function (): void {
     ]);
 
     Http::fake([
-        'alpha.test/*' => Http::response(fixture('sample-feed.xml'), 200),
-        'beta.test/*' => Http::response(fixture('sample-rich-feed.xml'), 200),
+        'alpha.test/*' => Http::response(feed_fixture('sample-feed.xml'), 200),
+        'beta.test/*' => Http::response(feed_fixture('sample-rich-feed.xml'), 200),
     ]);
 });
 

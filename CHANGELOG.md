@@ -2,6 +2,17 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## 3.1.0 - 2026-09-28
+
+**Added**
+
+- Laravel 13 support: `illuminate/support` accepts `^13.0`, and CI runs the suite across Laravel 11, 12 and 13. Laravel 13 requires PHP 8.3, so that matrix column is excluded on PHP 8.2; the package floor stays PHP 8.2 on Laravel 11 and 12.
+- `orchestra/testbench` 11 and Pest 4 are accepted in `require-dev` alongside testbench 9 / 10 and Pest 3.
+
+**Changed**
+
+- The test helper `fixture()` is now `feed_fixture()`: Pest 4 ships a global `fixture()` of its own. Tests only — no package code changed.
+
 ## 3.0.0 - 2026-09-25
 
 A rewrite. The cards look the same; everything behind them is new.

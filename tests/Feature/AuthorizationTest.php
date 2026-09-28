@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 beforeEach(function (): void {
     $this->useSources(['alpha' => ['title' => 'Alpha', 'url' => 'https://alpha.test/feed.xml']]);
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 });
 
 it('blocks the endpoints when the configured gate denies', function (): void {

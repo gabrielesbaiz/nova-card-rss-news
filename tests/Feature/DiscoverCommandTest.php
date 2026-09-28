@@ -22,7 +22,7 @@ function indexPage(): string
 /** The homepage feed names the paper; the section feeds share a generic title. */
 function feedTitled(string $title): string
 {
-    return str_replace('<title>Fake Feed</title>', "<title>{$title}</title>", fixture('sample-feed.xml'));
+    return str_replace('<title>Fake Feed</title>', "<title>{$title}</title>", feed_fixture('sample-feed.xml'));
 }
 
 beforeEach(function (): void {

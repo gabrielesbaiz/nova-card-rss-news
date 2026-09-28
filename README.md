@@ -52,7 +52,7 @@ the endpoints cannot be pointed at your internal network.
 ## Requirements
 
 - PHP 8.2+
-- Laravel 11 or 12
+- Laravel 11, 12 or 13
 - Laravel Nova 5 — a composer dependency of this package, licensed separately by Laravel
 
 ## Installation
@@ -109,7 +109,7 @@ composer format      # Pint
 Feed dialects run against fixtures; the HTTP client is faked. The suite covers
 the cache pipeline, SSRF rejection of unsigned URLs, both rate limits, every
 command and an OPML round trip. The documentation playground has its own checks
-in `tests/Browser/`, and CI runs all of it across PHP 8.2–8.4 and Laravel 11–12.
+in `tests/Browser/`, and CI runs all of it across PHP 8.2–8.4 and Laravel 11–13.
 
 ## Contributing
 

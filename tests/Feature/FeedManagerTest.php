@@ -20,7 +20,7 @@ function demoSource(array $overrides = []): Source
 }
 
 it('fetches, normalizes and caches a feed', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200, ['ETag' => '"v1"'])]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200, ['ETag' => '"v1"'])]);
 
     $feed = app(FeedManager::class)->get(demoSource());
 
@@ -37,13 +37,13 @@ it('fetches, normalizes and caches a feed', function (): void {
 });
 
 it('applies the limit server side', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     expect(app(FeedManager::class)->get(demoSource(), 1)->items)->toHaveCount(1);
 });
 
 it('bypasses the cache when a fresh copy is requested', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $manager = app(FeedManager::class);
     $first = $manager->get(demoSource());
@@ -58,7 +58,7 @@ it('bypasses the cache when a fresh copy is requested', function (): void {
 
 it('revalidates with a conditional get and keeps the cached items on 304', function (): void {
     Http::fakeSequence()
-        ->push(fixture('sample-feed.xml'), 200, ['ETag' => '"v1"'])
+        ->push(feed_fixture('sample-feed.xml'), 200, ['ETag' => '"v1"'])
         ->push('', 304);
 
     $manager = app(FeedManager::class);
@@ -80,7 +80,7 @@ it('serves the stale copy when a refresh fails', function (): void {
     Event::fake([FeedFetchFailed::class]);
 
     Http::fakeSequence()
-        ->push(fixture('sample-feed.xml'), 200)
+        ->push(feed_fixture('sample-feed.xml'), 200)
         ->push('boom', 500)
         ->push('boom', 500)
         ->push('boom', 500);
@@ -107,7 +107,7 @@ it('throws when the feed fails and nothing is cached', function (): void {
 })->throws(FeedUnreachable::class);
 
 it('honours a per-source ttl', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $manager = app(FeedManager::class);
     $manager->get(demoSource(['ttl' => 60]));
@@ -122,7 +122,7 @@ it('honours a per-source ttl', function (): void {
 
 it('dispatches FeedFetched with the parse duration', function (): void {
     Event::fake([FeedFetched::class]);
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     app(FeedManager::class)->get(demoSource());
 
@@ -131,8 +131,8 @@ it('dispatches FeedFetched with the parse duration', function (): void {
 
 it('merges several sources into one chronological stream', function (): void {
     Http::fake([
-        'a.test/*' => Http::response(fixture('sample-feed.xml'), 200),
-        'b.test/*' => Http::response(fixture('sample-rich-feed.xml'), 200),
+        'a.test/*' => Http::response(feed_fixture('sample-feed.xml'), 200),
+        'b.test/*' => Http::response(feed_fixture('sample-rich-feed.xml'), 200),
     ]);
 
     $feed = app(FeedManager::class)->stream([
@@ -149,7 +149,7 @@ it('merges several sources into one chronological stream', function (): void {
 
 it('skips unreachable sources in a stream instead of failing', function (): void {
     Http::fake([
-        'a.test/*' => Http::response(fixture('sample-feed.xml'), 200),
+        'a.test/*' => Http::response(feed_fixture('sample-feed.xml'), 200),
         'b.test/*' => Http::response('boom', 500),
     ]);
 
@@ -162,7 +162,7 @@ it('skips unreachable sources in a stream instead of failing', function (): void
 });
 
 it('deduplicates identical items', function (): void {
-    Http::fake(['*' => Http::response(fixture('sample-feed.xml'), 200)]);
+    Http::fake(['*' => Http::response(feed_fixture('sample-feed.xml'), 200)]);
 
     $feed = app(FeedManager::class)->stream([
         demoSource(['key' => 'a']),

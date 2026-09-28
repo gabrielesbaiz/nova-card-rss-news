@@ -18,7 +18,7 @@ dataset('parsers', [
 it('parses every supported dialect into two items', function (string $class, string $file, string $key): void {
     /** @var FeedParser $parser */
     $parser = new $class;
-    $body = fixture($file);
+    $body = feed_fixture($file);
 
     expect($parser->key())->toBe($key)
         ->and($parser->supports($body))->toBeTrue();
@@ -33,7 +33,7 @@ it('parses every supported dialect into two items', function (string $class, str
 })->with('parsers');
 
 it('decodes entities and strips markup from titles and summaries', function (): void {
-    $parsed = (new Rss2Parser)->parse(fixture('sample-feed.xml'));
+    $parsed = (new Rss2Parser)->parse(feed_fixture('sample-feed.xml'));
     $first = $parsed['items'][0];
 
     expect($first->title)->toContain("dell'auto")
@@ -44,21 +44,21 @@ it('decodes entities and strips markup from titles and summaries', function (): 
 });
 
 it('prefers rel=alternate links in atom entries', function (): void {
-    $parsed = (new AtomParser)->parse(fixture('sample-atom-feed.xml'));
+    $parsed = (new AtomParser)->parse(feed_fixture('sample-atom-feed.xml'));
 
     expect($parsed['items'][1]->link)->toBe('https://example.test/news/2')
         ->and($parsed['items'][1]->summary)->toBe('Testo semplice.');
 });
 
 it('reads dublin core authors and dates from rdf', function (): void {
-    $parsed = (new RdfParser)->parse(fixture('sample-rdf-feed.xml'));
+    $parsed = (new RdfParser)->parse(feed_fixture('sample-rdf-feed.xml'));
 
     expect($parsed['items'][0]->author)->toBe('Mario Rossi')
         ->and($parsed['items'][0]->publishedAt?->toDateString())->toBe('2026-06-29');
 });
 
 it('extracts images, authors and categories from a rich rss feed', function (): void {
-    $parsed = (new Rss2Parser)->parse(fixture('sample-rich-feed.xml'));
+    $parsed = (new Rss2Parser)->parse(feed_fixture('sample-rich-feed.xml'));
 
     expect($parsed['items'][0]->imageUrl)->toBe('https://rich.test/img/1.jpg')
         ->and($parsed['items'][0]->author)->toBe('Redazione')
@@ -69,7 +69,7 @@ it('extracts images, authors and categories from a rich rss feed', function (): 
 });
 
 it('reads json feed authors and tags', function (): void {
-    $parsed = (new JsonFeedParser)->parse(fixture('sample-json-feed.json'));
+    $parsed = (new JsonFeedParser)->parse(feed_fixture('sample-json-feed.json'));
 
     expect($parsed['items'][0]->author)->toBe('Mario Rossi')
         ->and($parsed['items'][0]->categories)->toBe(['auto', 'vacanze'])
@@ -80,10 +80,10 @@ it('reads json feed authors and tags', function (): void {
 it('resolves the right parser for each payload and rejects junk', function (): void {
     $registry = app(ParserRegistry::class);
 
-    expect($registry->resolve(fixture('sample-feed.xml'))->key())->toBe('rss2')
-        ->and($registry->resolve(fixture('sample-atom-feed.xml'))->key())->toBe('atom')
-        ->and($registry->resolve(fixture('sample-rdf-feed.xml'))->key())->toBe('rdf')
-        ->and($registry->resolve(fixture('sample-json-feed.json'))->key())->toBe('json');
+    expect($registry->resolve(feed_fixture('sample-feed.xml'))->key())->toBe('rss2')
+        ->and($registry->resolve(feed_fixture('sample-atom-feed.xml'))->key())->toBe('atom')
+        ->and($registry->resolve(feed_fixture('sample-rdf-feed.xml'))->key())->toBe('rdf')
+        ->and($registry->resolve(feed_fixture('sample-json-feed.json'))->key())->toBe('json');
 
     $registry->resolve('not a feed at all', null, 'https://example.test');
 })->throws(UnsupportedFeedFormat::class);
