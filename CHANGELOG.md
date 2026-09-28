@@ -2,7 +2,13 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
-## Unreleased
+## 3.2.0 - 2026-09-28
+
+The `nova-rss:warm` changes below reached users in 3.1.1, which was tagged while
+they sat uncommitted in the working tree and whose notes described it as a
+documentation release. 3.1.1 is left in place — Packagist records the commit
+behind a published version and it cannot be moved — and this entry is where the
+work is documented.
 
 **Changed**
 
@@ -17,7 +23,11 @@ All notable changes to `nova-card-rss-news` will be documented in this file.
 
 **Fixed**
 
-- Documentation only: the support matrix on the project page still listed 3.x as Laravel 11 and 12, and the README requirements did not say that Laravel 13 itself needs PHP 8.3. No package code changed; 3.1.0 is functionally identical.
+- The support matrix on the project page still listed 3.x as Laravel 11 and 12, and the README requirements did not say that Laravel 13 itself needs PHP 8.3.
+
+**Note**
+
+- This tag also carries the `nova-rss:warm` changes documented under 3.2.0, which were committed by accident. Its original notes called it a documentation-only release; they were corrected after the fact.
 
 ## 3.1.0 - 2026-09-28
 
