@@ -51,7 +51,7 @@ the endpoints cannot be pointed at your internal network.
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.2+ — Laravel 13 itself requires PHP 8.3
 - Laravel 11, 12 or 13
 - Laravel Nova 5 — a composer dependency of this package, licensed separately by Laravel
 
@@ -79,7 +79,7 @@ card renders real news untouched.
 |---|---|
 | `nova-rss:list` | List the source keys available to `source()` and `defaultSource()`. `--calls` prints them paste-ready. |
 | `nova-rss:check` | Fetch every source; report parser, item count and latency. Exits non-zero on failure. |
-| `nova-rss:warm` | Pre-fetch every source so dashboards load from cache. |
+| `nova-rss:warm` | Pre-fetch every source so dashboards load from cache. Exits zero unless every source fails; pass `--strict` to fail on any one. |
 | `nova-rss:discover {url}` | Find the feed behind a website URL. |
 | `nova-rss:import {file}` | Turn an OPML export into a config block. |
 | `nova-rss:export` | Write the resolved catalogue back out as OPML. |

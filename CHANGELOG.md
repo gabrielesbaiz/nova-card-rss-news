@@ -2,6 +2,23 @@
 
 All notable changes to `nova-card-rss-news` will be documented in this file.
 
+## Unreleased
+
+**Changed**
+
+- `nova-rss:warm` no longer fails when some sources are unreachable. A scheduled warm-up runs against publishers an application does not control, and one feed timing out failed the whole command: the scheduler threw `Scheduled command [...] failed with exit code [1]`, the monitor logged a failure and the error tracker reported it, for a cache that was warm everywhere else. The command now exits zero as long as at least one source warmed, and only fails when every source is down — which points at the application's network or configuration rather than at a publisher. `nova-rss:check` is unchanged: reporting health is what it is for.
+
+**Added**
+
+- `nova-rss:warm --strict` restores the previous all-or-nothing behaviour, for a pipeline that wants any failure to stop it.
+- Each source that cannot be warmed is now written to the log with its key and the error message. A scheduler keeps the exit code and discards the output, so without this there was no way to tell which publisher had gone down.
+
+## 3.1.1 - 2026-09-28
+
+**Fixed**
+
+- Documentation only: the support matrix on the project page still listed 3.x as Laravel 11 and 12, and the README requirements did not say that Laravel 13 itself needs PHP 8.3. No package code changed; 3.1.0 is functionally identical.
+
 ## 3.1.0 - 2026-09-28
 
 **Added**
